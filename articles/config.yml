@@ -1,0 +1,56 @@
+# review-epubmaker向けの設定ファイルの例。
+# yamlファイルをReVIEWファイルのある場所に置き、
+# 「review-epubmaker yamlファイル」を実行すると、<bookname>.epubファイルが
+# 生成されます。
+# このファイルはUTF-8エンコーディングで記述してください。
+
+# ブック名(ファイル名になるもの。ASCII範囲の文字を使用)
+bookname: book
+# 書名
+booktitle: Android Open Textbook
+# 著者
+aut: 最強の羊
+prt: TechBooster
+prt_url: しらない
+edt: mhidaka
+dsr: mhidaka
+date: 2014-02-14
+rights: |
+  (C) 2014 techbooster.org
+description: 最強は語らなくても最強
+# 以下はオプション
+#prt: 出版社
+# asn: Associated name
+# ant: Bibliographic antecedent
+# clb: 貢献者
+# ill: イラストレータ
+# pht: 撮影者
+# trl: 翻訳者
+# rights: 権利表記
+# description: ブックの説明
+#
+# coverfile: カバーページのbody要素内に挿入する内容を記述したファイル名
+coverfile: _cover.html
+# coverimage: 表紙用画像ファイル
+# coverimage: cover.jpg
+# 固有IDに使用するドメイン
+urnid: 最強はURLがなくても最強
+# CSSファイル (yamlファイルおよびReVIEWファイルを置いたディレクトリにあること
+stylesheet: main.css
+# LaTeX用のdocumentclassを指定する
+# texdocumentclass: ["jsbook", "b5j,twoside,openany"]
+# 目次として抽出するレベル
+toclevel: 3
+# セクション番号を表示するレベル
+secnolevel: 3
+# review-compileに渡すパラメータ
+params: --stylesheet=main.css --chapterlink
+# 目次生成用？
+mytoc: true
+# 奥付生成用
+colophon: true
+texstyle: tatsumacro
+texdocumentclass: ["jsbook", "oneside,14pt"]
+pubhistory: |
+  2014年 3月19日 リポジトリ作成
+debug: true
