@@ -13,22 +13,19 @@
 七分袖はなまそでに殺され、かつてその長男のユリウス・シチブソデは離島に追いやられた。
 しかしシチブソデ
 
-== これまでの章で説明していて欲しいこと
-
-* TCP/IP, および下層のレイヤ
 
 == 説明する予定のこと
 
-本章では、Android端末の外側の世界にあたる、
-Webサーバと通信する際に役に立つ基礎知識を説明します。
+本章では、Android端末の外側の世界にあたる、Webサーバと通信する際に役に立つ基礎知識を説明します。
 
-* RFC
-* HTTP / HTTPS
-* Authentication / Authorization
-* REST / RESTful
-* XML, JSONの概要
-* HttpURLConnection を試す
-* おまけ: http://y-anz-m.blogspot.jp/2011/10/androidapache-http-client.html
+ * RFC
+ * HTTP / HTTPS
+ * Authentication / Authorization
+ * REST / RESTful
+ * XML, JSONの概要
+ * HttpURLConnection を試す
+ * おまけ: http://y-anz-m.blogspot.jp/2011/10/androidapache-http-client.html
+
 
 = RFC
 
@@ -36,7 +33,9 @@ Request For Comment の略です
 
 = HTTP とは
 
-HTTPには0.9, 1.0, 1.1があります。
+執筆時点ではHTTPには0.9, 1.0, 1.1があります。
+現在2.0の仕様策定中ですが、完成はしていません。
+
 HTTP 0.9が極めてシンプルだったものであったのに対して、
 HTTP 1.1の仕様にあたるRFC 2616では実質176ページ
 (TODO: 要根拠)に渡る長大なものとなっています。
@@ -46,7 +45,6 @@ HTTP 1.1は1999年6月に公開されたRFC 2616ですが、
 特に当時は想定されていなかったWebブラウジング以外での
 HTTPの利用が増えたことが大きいでしょう。
 (TODO: AJAX？)
-
 
 == HTTP 1.1 の新RFCについて
 
@@ -66,10 +64,36 @@ HTTPの利用が増えたことが大きいでしょう。
 この改定では、HTTPのバージョンが増えたわけではありません。
 HTTP 1.1と呼ぶとき、今後はRFC 2616ではなく上記のRFCのみを参照するようにしてください。
 ちなみに、
-RFC 7230に関わっているMark Nottingham氏は自身のブログ記事"RFC2616 is Dead"（RFC2616 は死んだ）@<fn>{mark_nottingham}で、
+RFC 7230に関わっているMark Nottingham氏は自身のブログ記事"RFC2616 is Dead"（RFC2616 は死んだ）
+@<fn>{mark_nottingham}で、
 「RFC2616は使わないでください。ハードドライブ、ブックマークから削除し、
 印刷されているなら全て燃やしてしまうかリサイクルに回しましょう」とまで書いています。 
 HTTP 1.1について深く調べる際には、RFCを参照することはもちろんですが、関連記事を読む際に、古いRFCを元にしていないかを気にするのは良いことでしょう。
 
 //footnote[mark_nottingham][@<href>{https://www.mnot.net/blog/2014/06/07/rfc2616_is_dead}]
 
+
+== HTTP 2.0 について
+
+HTTP 2.0はHTTP 1.1の次バージョンとして標準化が行われている次のHTTP仕様です。
+Googleが開発しているSPDFと呼ばれる仕組みを元にしています。
+
+仕様策定としては最終段階にありますが、
+「そもそもこれを公式の仕様とするべきではない」
+
+
+http://news.mynavi.jp/news/2014/05/28/055/
+
+http://www.phoronix.com/scan.php?page=news_item&px=MTcwMTA
+
+
+
+= Android アプリからWebサーバからデータを取得する
+== DefaultHttpClientとAndroidHttpClientを使うのはやめよう
+
+HTTPアクセスを行うライブラリは他にも
+DefaultHttpClientやAndroidHttpClientといったライブラリを紹介されることがありますが、本稿ではおすすめしません。
+
+
+== HTTPSを試す
+== SSL
