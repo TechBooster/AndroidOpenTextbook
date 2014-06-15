@@ -18,13 +18,47 @@
 
 本章では、Android端末の外側の世界にあたる、Webサーバと通信する際に役に立つ基礎知識を説明します。
 
+ * サーバの役割
  * RFC
  * HTTP / HTTPS
  * Authentication / Authorization
  * REST / RESTful
  * XML, JSONの概要
  * HttpURLConnection を試す
- * おまけ: http://y-anz-m.blogspot.jp/2011/10/androidapache-http-client.html
+
+
+= サーバの役割
+
+サーバとはそもそも何でしょうか。
+
+== サーバ、クライアント
+
+英語で言えばserverで、日本語でも例えば
+「ジュースサーバ」「ビールサーバ」といった表現で登場します。
+
+//image[juiceserver][ジュースサーバー]{
+//}
+
+英語名詞であるserverに対応する動詞（「〜する」）はserveです。
+これは「〜に仕える」「〜のために働く」という意味です。
+serverはserveする人、という意味で、
+コンピュータ関連の用語ではない本来の意味は「給仕人」「接客係」です。
+つまり、仕える・給仕する相手が前提にある表現です。@<fn>{kyuuji_nin}
+
+//footnote[kyuuji_nin][ちなみに給仕の読みは「きゅうじ」であって「きゅうし」ではありません。]
+
+コンピュータ関連用語では、サーバが仕える相手を「クライアント」と呼びます。
+
+こちらの元の英語はclientです。
+日本語でも、お客さんを「クライント」と呼ぶ分野がありますね。
+
+
+
+ * データを保存・共有するために必要
+ * BaaS
+ * Webブラウザから見える「独立のアプリケーション」
+ * SaaS
+ * AWS
 
 
 = RFC
@@ -82,18 +116,48 @@ Googleが開発しているSPDFと呼ばれる仕組みを元にしています�
 「そもそもこれを公式の仕様とするべきではない」
 
 
-http://news.mynavi.jp/news/2014/05/28/055/
-
 http://www.phoronix.com/scan.php?page=news_item&px=MTcwMTA
 
 
-
 == Android アプリからWebサーバからデータを取得する
-== DefaultHttpClientとAndroidHttpClientを使うのはやめよう
 
-HTTPアクセスを行うライブラリは他にも
-DefaultHttpClientやAndroidHttpClientといったライブラリを紹介されることがありますが、本稿ではおすすめしません。
+実際にAndroid経由でHTTPアクセスをしてみましょう。
+ここでは@<code>{java.net.HttpURLConnection}を用いることにします。
+@<fn>{no_http_client}
+
+===[column] DefaultHttpClientとAndroidHttpClient について
+
+HTTPアクセスを行うライブラリは他にも@<code>{org.apache.http.impl.client.DefaultHttpClient}や
+@<code>{android.net.http.AndroidHttpClient}といったライブラリが紹介されることがあります。
+しかし本稿ではそれらの理由はおすすめしません。
+現時点でこれらの実装にはバグが多く、今後もメンテナンスされる見込みがないと考えられているためです。
+なお、非常に古いAndroidのバージョン（2.2）では@<code>{java.net.HttpURLConnection}にバグがあったため、
+それらの古いバージョンでは注意が必要です。
+
+ * 参考: Android Apache HTTP Client と HttpURLConnection どっちを使うべき？ @<href>{http://y-anz-m.blogspot.jp/2011/10/androidapache-http-client.html}@<fn>{this_is_also_old_article}
 
 
-== HTTPSを試す
+//footnote[this_is_also_old_article][記事の公開2011年10月4日に公開された点も出来れば]
+
+
+
+== UrlHttps を試す
 == SSL
+
+== 認証・認可について
+
+ * 認証: 本人確認
+ * 認可: アクセス許可
+
+コンピュータの世界から離れて役所で公的な証明書を受け取ることを考えてみます。
+例えば、戸籍。
+
+申請書類を書いて、免許証と申請書類を提出し、
+役所が大丈夫だと思えば、役所が持っている情報を提供してくれます。
+
+免許証を見せることは自分が本人であることの確認です。
+もし「自分である」ことがわかれば、方法は複数あります。
+
+
+しかし、見せたからと言って、申請する書類の許可が常に得られるとは限りません。
+
