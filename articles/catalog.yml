@@ -3,6 +3,7 @@ PREDEF:
 CHAPS:
     - sample.re
     - background01.re
+    - sensor-01.re
     - webserver-01.re
     - multidevice-01.re
     - glossary.re
