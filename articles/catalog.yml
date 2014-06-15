@@ -2,6 +2,8 @@ PREDEF:
 
 CHAPS:
     - sample.re
+    - background01.re
     - webserver-01.re
+    - multidevice-01.re
 
 POSTDEF:
