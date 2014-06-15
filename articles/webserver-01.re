@@ -31,7 +31,7 @@
 
 Request For Comment の略です
 
-= HTTP とは
+== HTTP とは
 
 執筆時点ではHTTPには0.9, 1.0, 1.1があります。
 現在2.0の仕様策定中ですが、完成はしていません。
@@ -88,7 +88,7 @@ http://www.phoronix.com/scan.php?page=news_item&px=MTcwMTA
 
 
 
-= Android アプリからWebサーバからデータを取得する
+== Android アプリからWebサーバからデータを取得する
 == DefaultHttpClientとAndroidHttpClientを使うのはやめよう
 
 HTTPアクセスを行うライブラリは他にも
