@@ -1,16 +1,16 @@
-= Android�A�v���̃o�b�N�O���E���h
+= Androidアプリのバックグラウンド
 
-== �o�b�N�O���E���h����̈Ӌ`
+== バックグラウンド動作の意義
 
-== ���������Ɣ񓯊�����
+== 同期処理と非同期処理
 
-== �v���Z�X�ƃX���b�h
+== プロセスとスレッド
 
-== ��{�I�Ȕ񓯊�����
+== 基本的な非同期処理
 
-== Asynctask��Loader
+== AsynctaskとLoader
 
-== ExecutorService�AThread
+== ExecutorService、Thread
 
 == Handler
 
@@ -18,4 +18,4 @@
 
 == IntentService
 
-== �v���Z�X�ԒʐM�iAIDL�j
+== プロセス間通信（AIDL）
