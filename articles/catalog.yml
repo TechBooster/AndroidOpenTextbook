@@ -2,6 +2,6 @@ PREDEF:
 
 CHAPS:
     - sample.re
-    - network-01.re
+    - webserver-01.re
 
 POSTDEF:
