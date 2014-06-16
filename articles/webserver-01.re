@@ -123,7 +123,6 @@ http://www.phoronix.com/scan.php?page=news_item&px=MTcwMTA
 
 実際にAndroid経由でHTTPアクセスをしてみましょう。
 ここでは@<code>{java.net.HttpURLConnection}を用いることにします。
-@<fn>{no_http_client}
 
 ===[column] DefaultHttpClientとAndroidHttpClient について
 
