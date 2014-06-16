@@ -27,7 +27,7 @@
  * HttpURLConnection を試す
 
 
-= サーバの役割
+== サーバの役割
 
 サーバとはそもそも何でしょうか。
 
@@ -61,7 +61,7 @@ serverはserveする人、という意味で、
  * AWS
 
 
-= RFC
+== RFCとは
 
 Request For Comment の略です
 
