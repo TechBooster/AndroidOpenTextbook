@@ -11,7 +11,7 @@ module.exports = function (grunt) {
 				cmd: function () {
 					var command = "review-preproc";
 					var files = [
-						"01-sample"
+						"sample"
 					];
 					var exec = command + " -r --tabwidth=2 " + files.map(function(file){ return file + ".re"; }).join(" ");
 					console.log(exec);
