@@ -16,7 +16,7 @@ Androidでは多くのセンサー情報が取得できますが、実際のハ�
 //footnote[sensor_ref][http://developer.android.com/reference/android/hardware/Sensor.html]
 
 == 搭載されるセンサーの種類
-リファレンスによると、現在のAPI19で使用可能なセンサーの一覧は以下のようになります。
+リファレンスによると、現在のAPI-Level19で使用可能なセンサーの一覧は以下のようになります。
 //image[sensor-01-list][センサー一覧]{
 //}
 
@@ -56,7 +56,7 @@ Androidでは多くのセンサー情報が取得できますが、実際のハ�
 が呼ばれるようになります。
 
 リスナーは2つ用意します。
-//list[listener][イベントリスナー]{
+//list[listener][イベントコールバック]{
   @Override
   public final void onAccuracyChanged(Sensor sensor, int accuracy) {
       // TODO
@@ -71,8 +71,8 @@ Androidでは多くのセンサー情報が取得できますが、実際のハ�
 基本的な流れは以上になりますが、実際に使用する場合の実装はだいたい以下のようになります。
 
  * onCreate()もしくはonResume()でSensorManagerを取得
- * onResume()でrsgisterListnerで有効化
- * onPause()でunregisterListenerで無効化
+ * onResume()でSensorManager#registerListner()で有効化
+ * onPause()でSensorManager#unregisterListener()で無効化
 
 センサーの有効化と無効化があるのは、必要な時のみセンサー情報を使用するようにするためです。
 センサー情報をずっと使用すると電池を消費してしまうためです。そのため、たいていのアプリで
@@ -130,7 +130,7 @@ public class SensorActivity extends Activity implements SensorEventListener {
 
 === センサー取得の遅延設定
 
-@<list>{register}の「SensorManager.SENSOR_DELAY_NORMAL」はセンサーの取得の遅延設定値です。
+@<list>{register}の"SensorManager.SENSOR_DELAY_NORMAL"はセンサーの取得の遅延設定値です。
 この設定値は使用する目的によって設定します。
 //image[sensor-01-delay][センサーの遅延設定]{
 //}
@@ -158,7 +158,7 @@ public class SensorActivity extends Activity implements SensorEventListener {
  * SensorEvent.values[1] : y軸加速度
  * SensorEvent.values[2] : z軸加速度
 
-加速度ですから、そのままx,y,xのそれぞれの加速度が取得できます。これを
+加速度なので、そのままx,y,xのそれぞれの加速度が取得できます。これを
 コードで取得するには以下のように上記のコードに追加すると以下のようになります。
 
 //list[sensorchange][センサー値変化イベントリスナー]{
@@ -221,21 +221,8 @@ y軸の加速度が重力加速度の約9.8に近い値になっています。�
 端末に搭載されているセンサーをすべて列挙して取得し、センサーのハードウェア情報を取得してみます。
 センサーから取得できるハードウェア情報は以下になります。
 
-//table[sensor_hard_info][センサーのハードウェ情報]{
-型	メソッド	意味
-----------------
-int	getFifoMaxEventCount()		センサーイベントに保管できるFIFOの段数
-int	getFifoReservedEventCount()	バッチモードで使用した時のFIFO内のデータ数
-float	getMaximumRange()		センサー値の最大値
-int	getMinDelay()			センサー値の最小値
-String	getName()			センサーの名前
-float	getPower()			センサー使用時の電流消費量(mA)
-float	getResolution()			センサーの解像度
-int	getType()			センサーのタイプ
-String	getVendor()			センサーモジュールのベンダ名
-int	getVersion()			センサーモジュールのバージョン
+//image[sensor-01-hard][センサーのハードウェ情報]{
 //}
-
 
 全センサーの取得には"Sensor.TYPE_ALL"を指定すると、センサーのリストとして取得できます。
 ログとして表示するようにしてみたのが下記になります。
@@ -325,31 +312,237 @@ int	getVersion()			センサーモジュールのバージョン
 
 基本は実際に搭載されているセンサを意味していて、それぞれのセンサーデータを取得します。
 それ以外のセンサー値については、基本を組み合わせて生成したものと、一部生データを提供
-するものとになります。これを相関図として整理すると以下のようになります@<fn>{sensor_category}。
+するものとになります（もちろんハードウェアとして実装されていても構わないはずです）。
+これを相関図として整理すると以下のようになります@<fn>{sensor_category}。
 
 //image[sensor-01-category][センサーのカテゴリ分け]{
 //}
 
 こうして整理してみることで、それぞれのセンサー値がどのように合成されているかわかります。
-ただしここにある、基本のセンサーでも搭載されていない機種があるので、基本だからといって
+ただし、ここにある基本のセンサーでも搭載されていない機種があるので、基本だからといって
 センサー値が取得できるとは限りません。
 
 //footnote[sensor_category][https://source.android.com/devices/sensors/index.html]
 
-//----------------------- ここまで書いた
 
 
-http://dev.classmethod.jp/smartphone/android/android-google-play-services-location-api-current-location/
-
-GPSはGoogle Play Serviceを使用する体で
+#@#----------------------- ここまで書いた
 
 
+== GPSの概要
 
-== GPSを使う
- * Google Play Services
+センサーとして重要なデバイスとしてGPSがあります。GPSは"Global Positioning System"
+の略で、アメリカが上げた軍事用衛星のうち、複数からの電波を受信することで、現在位置を正確
+に知ることができます。位置情報は3つ以上の衛星の電波を捕捉するすることで3次元測位が可能と
+なります。日本で受信可能な衛星の数は6〜10個程度です。
 
-#@# SIMはない予定・WiMAXはある
-#@# Kitkat 4.4
-#@# Windows8.1
+GPSは受信精度が高ければ、正確な位置を10m程度の誤差で測位できますが、いくつかの弱点もあり
+ますので留意して下さい。
+
+ * 高層ビルの間など空がひらけていない場合、十分な衛星を補足できない、あるいはマルチパス
+ の影響を受けるため、都心部ではむしろ位置精度が落ちることがある
+ * 衛星の補足と位置検出には、60秒以上の時間が掛かる場合がある
+
+#@# コラム的な感じにする？
+なお、日本では独自GPS衛星として「みちびき」@<fn[[mitibiki]の打ち上げに成功し、今後4機
+での本格運用が計画されています。これは「準天頂衛星システム」といい、従来のGPSを補完する
+ため、常に1機は日本上空にあって、マルチパスの影響を受けず正確な位置を測位することが可能に
+なります。
+
+//footnote[mitibiki][http://www.jaxa.jp/projects/sat/qzss/index_j.html]
+
+== GPSを利用した位置情報取得
+
+GPSを利用して位置情報を取得しますが、これは通常のセンサーと異なり"Google Play Services"
+ライブラリを導入して、この中にあるLocationClientを使って取得します。
+
+=== Google Play Services Libraryの導入
+
+"Android SDK Manager"から@<b>{Google Play Services}を選択して、インストールします。
+//image[sensor-01-play_service-01][Google Play Servicesのインストール 1]{
+//}
+
+"Existing Android Code into Worksapce"を選択します。
+//image[sensor-01-play_service-02][Google Play Servicesのインストール 2]{
+//}
+
+"Browse"から@<b>{google-play-services_lib}を選択し、@<b>{Copy projects into workspaceにチェック}
+を入れて"Finish"ボタンを押します。
+//image[sensor-01-play_service-03][Google Play Servicesのインストール 3]{
+//}
+
+正常にビルドしてエラーが無いことを確認しておきましょう。
+//image[sensor-01-play_service-04][Google Play Servicesのインストール 4]{
+//}
+
+アプリを作成時のひな形作成した後、Google Play ServicesライブラリをAndroid
+ライブラリとして指定することで使用が可能となります。
+#@warn Google API必要だっけ？要確認
+//image[sensor-01-play_service-05][Google Play Servicesのインストール 5]{
+//}
+
+これでGoogle Play Servicesライブラリの導入は完了です。
+
+
+== GPSの取得の流れ
+
+GPSを利用した位置情報取得にもフレームワークが用意されているのでそれを使います。
+使用するクラスは以下の通りです。
+
+ * LocationClient
+ * Location
+
+使い方としては、LocationClientを生成しておきます。LocationClientへの接続が成功
+すると、位置情報はバックグラウンドで取得され、LocationClient#getLastLocationに
+現在の位置情報が非同期に更新されるので、この値を使用することができます。
+
+Google Play Servicesを使わずにGPSやWiFiを使って位置情報の取得も可能ですが、
+GPSやWiFiのON/OFFを検出したり、GPSとWiFiのステータスを管理しなければならず、
+かなり面倒なのが実際です。Google Play ServicesのLocationClientを使うこと
+「一番良い位置情報をクレ」ということができ、GPS/WiFiの区別を実際には意識する
+ことはありません。
+
+LocationClientの取得は以下のようになります。
+//list[gps_client][LocationClientの取得]{
+@Override
+protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.activity_main);
+    
+    // Google Play Serviceが有効かどうかチェックを行う
+    final int result = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
+    if (result != ConnectionResult.SUCCESS) {
+        Toast.makeText(this, "Google Play service is not available (status=" + result + ")", Toast.LENGTH_LONG).show();
+        finish();
+    }
+
+    // LocationClientの取得
+    mLocationClient = new LocationClient(this, this, this);        
+} 
+//}
+ 
+LocationClientを使用する場合には、2つのコールバックを引数に取るので、リスナーをActivityに設定しておきます。
+//list[gps_listener][リスナーの設定]{
+public class MainActivity extends Activity implements ConnectionCallbacks, OnConnectionFailedListener
+//}
+
+設定されるリスナーは3つで、OnConnectionFailedListenerは接続に失敗した時に呼ばれます。
+//list[gps_connectfail][接続失敗時のイベントコールバック]{
+@Override
+public void onConnectionFailed(ConnectionResult arg0) {
+  // TODO Auto-generated method stub
+}
+//}
+
+ConnectionCallbacksは接続時と切断時に呼ばれます。
+//list[gps_connect][接続時・切断時のイベントコールバック]{
+@Override
+public void onConnected(Bundle arg0) {
+  // TODO Auto-generated method stub
+}
+
+@Override
+public void onDisconnected() {
+  // TODO Auto-generated method stub 
+}
+//}
+
+実際に使用する場合の実装は、LocationAPIへの接続が必要になります。
+
+ * onCreate()もしくはonResume()でLocationClientを取得
+ * onResume()でLocationClient#connect()でGoogle Play Servicesへ接続
+ * onPause()でLocationClient#disconnect()でGoogle Play Servicesと切断
+ * 位置情報はLocationClient#getLastLocation()で取得
+
+また、気をつける点としてLocationClient#connect()は非同期関数で、onConnected()
+コールバックが呼ばれてからでないとLocationClient#getLastLocation()を呼ぶことが
+できません。
+
+以上をまとめると、このような実装になります。
+//list[gps_sample][GPSを使うコード]{
+public class MainActivity extends Activity implements ConnectionCallbacks, OnConnectionFailedListener {
+
+    private LocationClient mLocationClient;
+    
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        
+        // Google Play ServiceKが実装されているか確認
+        final int result = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
+        if (result != ConnectionResult.SUCCESS) {
+            Toast.makeText(this, "Google Play service is not available (status=" + result + ")", Toast.LENGTH_LONG).show();
+            finish();
+        }
+
+        mLocationClient = new LocationClient(this, this, this);        
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Google Play Servicesへの接続
+        mLocationClient.connect();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        // Google Play Servicesとの切断
+        if (mLocationClient != null) {
+          mLocationClient.disconnect();
+        }
+    }
+
+    @Override
+    public void onConnectionFailed(ConnectionResult result) {
+        // Google Play Servicesへの接続に失敗した
+        Toast.makeText(this, "onConnectionFailed", Toast.LENGTH_LONG).show();
+        Log.d("ERROR", result.toString());
+    }
+
+    @Override
+    public void onConnected(Bundle connectionHint) {
+        Toast.makeText(this, "Connected", Toast.LENGTH_LONG).show();
+
+        // 位置情報の取得
+        Location loc = mLocationClient.getLastLocation();
+        Log.d("LOCATION", "LAT: " + loc.getLatitude());
+        Log.d("LOCATION", "LON: " + loc.getLongitude());
+    }
+
+    @Override
+    public void onDisconnected() {
+        Toast.makeText(this, "Disconnected", Toast.LENGTH_LONG).show();
+    }
+}
+//}
+
+しかしまだこれでは動作しません。GPSを使うにはパーミッションが必要なのと、
+Google Play Servicesライブラリを使うことを記述する必要があります。
+
+AndroidManifest.xmlにGoogle Play Servicesを使うための宣言をを追加します。
+Google Play Servicesの宣言は<application>エレメントの内側に追加してください。
+//list[play_permission][Google Play Serviceの使用宣言]{
+    <meta-data android:name="com.google.android.gms.version"
+       android:value="@integer/google_play_services_version" />
+//}
+
+AndroidManifest.xmlにGPSのパーミッションを追加します。
+//list[gps_permission][GPSのパーミッション]{
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+//}
+
+位置情報が取得した例として、アプリで表示させると下記のようになります。
+//image[sensor-01-location][位置情報取得]{
+//}
+
+
+
+
+
+
+
 #@# ですます調
 #@# 1人称は使わない方向：筆者
