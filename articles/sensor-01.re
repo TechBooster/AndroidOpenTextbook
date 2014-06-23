@@ -324,9 +324,33 @@ y軸の加速度が重力加速度の約9.8に近い値になっています。�
 
 //footnote[sensor_category][https://source.android.com/devices/sensors/index.html]
 
+== センサーのバッチモード
 
+センサーは非常に便利ですが、使うと消費電力が大きいのがデメリットです。そこでAndroid
+では、センサーのデータを複数回分貯めこんでおき、バッチ処理で通知する仕組みがあります@<fn>{sensor_batch}。
 
-#@#----------------------- ここまで書いた
+バッチ処理が実行されるまでは、センサーは低消費電力な状態を維持できるので電池の消費を
+抑えることができます。このバッチ処理の間隔は設定ができるます。
+
+バッチモードは、スクリーンがオフの状態やシステムがスリープ中でも動作するため、
+フィットネスや位置情報の追跡や監視などに有効な手段となります。
+
+//footnote[sensor_batch][https://source.android.com/devices/sensors/batching.html]
+
+=== バッチモードの使用
+
+バッチモードを使用するには、LocationManager#registerListenerメソッドで指定します。
+通常のセンサーのメソッドにバッチ処理時間が引数で増えています。下記の例はバッチ処理として
+10000μ秒 = 10msに設定した場合です。
+//list[sensor_batch][バッチモード設定]{
+boolean status = mSensorManager.registerListener(this, mAcceleration, SensorManager.SENSOR_DELAY_NORMAL, 10000);
+//}
+ただし、バッチ処理が可能かどうかはセンサーの対応によるので、対応している場合のみ
+返り値にtrueが返ります。
+
+=== バッチ処理のデータを受け取る
+
+=== バッチ処理の動作
 
 
 == GPSセンサー概要
@@ -335,7 +359,7 @@ y軸の加速度が重力加速度の約9.8に近い値になっています。�
 の略で、アメリカが上げた軍事用衛星の複数からの電波を受信することで、現在位置を正確
 に知ることができます。正確にはセンサーというよりはGPS受信機になります。日本で受信
 可能な衛星の数は6〜10個程度ですが、位置情報は3つ以上の衛星の電波を捕捉するすること
-で3次元測位が可能となります。。
+で3次元測位が可能となります。
 
 GPSは受信精度が高ければ、正確な位置を10m程度の誤差で測位できますが、いくつかの弱点もあり
 ますので留意して下さい。
@@ -367,6 +391,7 @@ GPSを利用して位置情報を取得しますが、これは通常のセン�
 //image[sensor-01-play_service-02][Google Play Servicesのインストール 2]{
 //}
 
+#@# TODO: パスをWindowsの場合について書く
 "Browse"から@<b>{google-play-services_lib}を選択し、@<b>{Copy projects into workspaceにチェック}
 を入れて"Finish"ボタンを押します。
 //image[sensor-01-play_service-03][Google Play Servicesのインストール 3]{
@@ -464,6 +489,8 @@ public void onDisconnected() {
 public class MainActivity extends Activity implements ConnectionCallbacks, OnConnectionFailedListener {
 
     private LocationClient mLocationClient;
+    private Location mLoc;
+
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -508,7 +535,7 @@ public class MainActivity extends Activity implements ConnectionCallbacks, OnCon
         Toast.makeText(this, "Connected", Toast.LENGTH_LONG).show();
 
         // 位置情報の取得
-        Location loc = mLocationClient.getLastLocation();
+        mLoc = mLocationClient.getLastLocation();
         Log.d("LOCATION", "LAT: " + loc.getLatitude());
         Log.d("LOCATION", "LON: " + loc.getLongitude());
     }
@@ -521,7 +548,7 @@ public class MainActivity extends Activity implements ConnectionCallbacks, OnCon
 //}
 
 しかしまだこれでは動作しません。GPSを使うにはパーミッションが必要なのと、
-Google Play Servicesライブラリを使うことを記述する必要があります。
+Google Play Servicesライブラリを使うことを宣言する必要があります。
 
 AndroidManifest.xmlにGoogle Play Servicesを使うための宣言をを追加します。
 Google Play Servicesの宣言は<application>エレメントの内側に追加してください。
@@ -539,7 +566,32 @@ AndroidManifest.xmlにGPSのパーミッションを追加します。
 //image[sensor-01-location][位置情報取得]{
 //}
 
+さて、これだけだといわゆる緯度経度の数値しか見えないので、イマイチ正しいかどうかわかりません。
+ちょっと工夫して、位置をMapで表示するようにしてみます。
 
+ボタンを配置して、リスナーをセットします。ボタンがクリックされたらIntentでGoogle Mapsを
+起動します。その時に"geo:"のスキーマに緯度経度を設定します。
+//list[gps_map][Google Mapで位置を確認]{
+mMapBtn.setOnClickListener(new View.OnClickListener() {
+    @Override
+    public void onClick(View v) {
+        // IntentでGoogle Mapを呼び出す
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("geo:" + mLoc.getLatitude() + "," + mLoc.getLongitude()));
+        startActivity(intent);
+    }
+});
+//}
+
+=== ジオフェンシング（位置情報による範囲指定）
+
+ジオフェンシングはある位置の周辺へのIN/OUTを監視する機能です。これらは主に"自宅"や
+"職場"を登録しておき、そこに着いたかどうかを判定したり、位置を利用するゲームなどへ
+の応用が可能です。
+
+Androidのジオフェンシングの特徴は以下です
+
+ * ジオフェンスの範囲を追加・削除可能
+ * 
 
 
 
