@@ -16,7 +16,7 @@ Androidでは多くのセンサー情報が取得できますが、実際のハ�
 //footnote[sensor_ref][http://developer.android.com/reference/android/hardware/Sensor.html]
 
 == 搭載されるセンサーの種類
-リファレンスによると、現在のAPI-Level19で使用可能なセンサーの一覧は以下のようになります。
+リファレンスによると、現在のAPI Level 19で使用可能なセンサーの一覧は以下のようになります。
 //image[sensor-01-list][センサー一覧]{
 //}
 
@@ -37,19 +37,19 @@ Androidでは多くのセンサー情報が取得できますが、実際のハ�
 
 まずはSensorManagerをシステムから取得します。
 //list[sensormanager][センサーマネージャの取得]{
-  private SensorManager mSensorManager;
-    ...
-  mSensorManager = (SensorManager)getSystemService(Context.SENSOR_SERVICE);
+private SensorManager mSensorManager;
+  ...
+mSensorManager = (SensorManager)getSystemService(Context.SENSOR_SERVICE);
 //}
 
 例として、Acceleration（加速度センサー）を取得します。
 //list[type][センサーの取得]{
-  mAcceleration = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+mAcceleration = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
 //}
 
 次にセンサーを有効にします。
 //list[register][センサーの有効化]{
-  mSensorManager.registarListener(this, mAcceleration, Sensor.SENSOR_DELAY_NORMAL);
+mSensorManager.registarListener(this, mAcceleration, Sensor.SENSOR_DELAY_NORMAL);
 //}
 
 これで、該当するActivityにSensorEventListenerが設定されていれば、イベントリスナー
@@ -57,15 +57,15 @@ Androidでは多くのセンサー情報が取得できますが、実際のハ�
 
 リスナーは2つ用意します。
 //list[listener][イベントコールバック]{
-  @Override
-  public final void onAccuracyChanged(Sensor sensor, int accuracy) {
-      // TODO
-  }
+@Override
+public final void onAccuracyChanged(Sensor sensor, int accuracy) {
+    // TODO
+}
 
-  @Override
-  public final void onSensorChanged(SensorEvent event) {
-      // TODO
-  }
+@Override
+public final void onSensorChanged(SensorEvent event) {
+    // TODO
+}
 //}
 
 基本的な流れは以上になりますが、実際に使用する場合の実装はだいたい以下のようになります。
@@ -189,6 +189,12 @@ y軸の加速度が重力加速度の約9.8に近い値になっています。�
 //image[sensor-01-accel][加速度センサーの取得]{
 //}
 
+=== 傾きセンサーの取得
+
+API Level 8移行では傾きセンサー(TYPE_ORIENTATION)は非推奨となっており、
+代わりにSensorManager#getOrientationメソッドの仕様が推奨されています。
+
+#@# TODO: 傾きセンサー
 
 === 複数のセンサーを取得する場合
 
@@ -215,6 +221,11 @@ y軸の加速度が重力加速度の約9.8に近い値になっています。�
       }
   }
 //}
+
+複数のセンサーを使用する例として、位置情報を利用したARアプリなどがあります。
+GPSで位置情報を取得し、その場所でどっちの方向を見ているか（地磁気センサー）、
+そしてどんな仰角で端末を掲げているか（傾きセンサー）というのを組み合わせる
+ことで、特定の位置に「何かが見える」などの実装が可能です。
 
 == センサーのハードウェア情報の取得
 
@@ -333,7 +344,9 @@ y軸の加速度が重力加速度の約9.8に近い値になっています。�
 抑えることができます。このバッチ処理の間隔は設定ができるます。
 
 バッチモードは、スクリーンがオフの状態やシステムがスリープ中でも動作するため、
-フィットネスや位置情報の追跡や監視などに有効な手段となります。
+フィットネスや位置情報の追跡や監視などに有効な手段となります。Android 4.4からは
+歩行検出センサーと、歩数計センサーが使用可能になっており、特にこの辺りのセンサー
+を使用する場合に有効な手段となります。
 
 //footnote[sensor_batch][https://source.android.com/devices/sensors/batching.html]
 
@@ -341,16 +354,19 @@ y軸の加速度が重力加速度の約9.8に近い値になっています。�
 
 バッチモードを使用するには、LocationManager#registerListenerメソッドで指定します。
 通常のセンサーのメソッドにバッチ処理時間が引数で増えています。下記の例はバッチ処理として
-10000μ秒 = 10msに設定した場合です。
+1000 * 1000 * 10 μs = 10sに設定した場合です。
+
 //list[sensor_batch][バッチモード設定]{
-boolean status = mSensorManager.registerListener(this, mAcceleration, SensorManager.SENSOR_DELAY_NORMAL, 10000);
+private Sensor mStepDetector;
+...
+boolean status = mSensorManager.registerListener(this, mStepDetector, SensorManager.SENSOR_DELAY_NORMAL, 10000);
 //}
 ただし、バッチ処理が可能かどうかはセンサーの対応によるので、対応している場合のみ
-返り値にtrueが返ります。
+返り値statusにtrueが返ります。
 
-=== バッチ処理のデータを受け取る
-
-=== バッチ処理の動作
+注意点としては、バッチモードで使用されるデータバッファのFIFO(First in First Out)
+はすべてのアプリで共通になるため、他のアプリで使用されてしまうと自分のアプリで思った
+ように動かない。という場合があります。
 
 
 == GPSセンサー概要
@@ -582,16 +598,6 @@ mMapBtn.setOnClickListener(new View.OnClickListener() {
 });
 //}
 
-=== ジオフェンシング（位置情報による範囲指定）
-
-ジオフェンシングはある位置の周辺へのIN/OUTを監視する機能です。これらは主に"自宅"や
-"職場"を登録しておき、そこに着いたかどうかを判定したり、位置を利用するゲームなどへ
-の応用が可能です。
-
-Androidのジオフェンシングの特徴は以下です
-
- * ジオフェンスの範囲を追加・削除可能
- * 
 
 
 
