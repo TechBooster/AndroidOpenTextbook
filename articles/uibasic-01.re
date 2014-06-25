@@ -115,11 +115,13 @@ Graphical Layout を開くと、Androidの画面が大きくあらわれます�
 
 の4つのテキストフィールドがあり、それぞれ「Text Fields」フォルダの中から選んで配置しますが、それぞれの「Input Type」が異なるものを選んでくるのが最適です。
 
-【017 - 020】
-▲それぞれの特徴にあったText Fieldsを選ぶ
 
-【021】
-▲Input Typeの値が、E-mailでは「textEmailAddress」になっている
+【017】
+▲E-mailでは、Input Typeの値が「textEmailAddress」になっている
+
+
+【018 - 021】
+▲それぞれの特徴にあったText Fieldsを選ぶ
 
 こうすることで、Android OSが最適なIME（日本語入力）キーボードを自動で表示することができます。
 たとえば、「Plain Text」のときは通常の日本語入力キーボードですが、「E-mail」にしたときは英数字キーボードで、しかも「@」も表示されているのがわかります。
@@ -135,7 +137,7 @@ Input Typeで表示させるキーボードを切り分けることによって�
 そうするためには、「Form Widgets」の中の「RadioGroup」を選ぶべきです。「RadioButton」を選んでしまうと、それぞれが単独で選べることになってしまいますので、注意しましょう。
 
 【022】
-▲ラジオボタンが単独で選ぶことができる状態。こうならないようにしよう
+▲ラジオボタンをそれぞれ単独で選ぶことができる状態。こうならないようにしよう
 
 ===== 3. 「登録する」というボタン
 
@@ -155,4 +157,81 @@ Input Typeで表示させるキーボードを切り分けることによって�
 【024】
 ▲ボタンの横幅を調整する
 
-ここまで完成したら、次の節ではXMLでインターフェイスを作っていきましょう。
+ここまで完成したら、次の節ではXMLでインターフェイスを作っていきます。
+
+
+== XMLを使ってパーツを作れるようになる
+
+Graphical Layoutではドラッグアンドドロップでだれでもレイアウトを作ることができます。しかし、細かいレイアウトの設定は、XMLでしていかなければなりません。
+
+この節では、XMLを使ってよく使うパーツを作れるようになりましょう。
+
+=== XMLレイアウトがどんなものかを知る
+
+まず、XMLレイアウトがどんなものかを知るために、あらかじめ配置されているXMLをカスタマイズしていきます。
+
+新規Androidプロジェクトを作成します。
+そして、立ち上がった「fragment_main.xml」を開きます。Graphical Layoutを見ると、「Hello world!」が表示されています。
+
+
+//image[201]{
+//}
+
+下のタブを「fragment_main.xml」に切り替えてみましょう。
+
+ここに書かれているのが、XMLレイアウトです。
+
+
+//image[202][XMLレイアウトが書かれている]{
+//}
+
+テキストが表示されている部分のXMLは、次のようになっています。
+
+//list[201][テキストが表示されている部分のXML]{
+<TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/hello_world" />
+//}
+
+==== テキストの文字列を変更する
+
+4行目の「android:text=””」の中で、表示する文字列を指定しています。ここでは、@stringといって他のファイルを参照するように指定されていますが、いったん無視して、好きなテキストに変えてみます。
+
+//list[202][4行目を追加した]{
+<TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="XMLレイアウトの基礎" />
+//}
+
+確認方法は、AVDでも実機でもどちらでもかまいません。簡易的な確認であれば、Graphical Layoutでもできます。
+
+//image[203][出力結果。Graphical Layoutで確認した場合]{
+//}
+
+先ほど「Hello world!」だったテキストが、入力したものに変わっていることが確認できます。
+
+==== テキストの色や大きさを変更する
+
+では次に、テキストの色や大きさを変更してみましょう。
+先ほどの@<list>[202]に、次の2行を追加します。
+
+//list[203][5〜6行目を追加した]{
+<TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="XMLレイアウトの基礎"
+        android:textColor="#ff0000"
+        android:textSize="22sp" />
+//}
+
+「android:textColor」がテキストの色を指定するプロパティで、「#ff0000（赤色）」を指定しました。
+「android:textSize」はテキストの大きさを指定するプロパティで、「22sp」を指定しました。
+これらを追加することによって、どのような表示になるかはだいたい想像がつきますよね。
+
+
+//image[204][出力結果。テキストが赤色になり、大きくなった]{
+//}
+
+テキストが赤色になり、大きさが大きくなったのが確認できます。
