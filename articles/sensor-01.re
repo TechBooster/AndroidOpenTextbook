@@ -201,9 +201,19 @@ API Level 8移行では傾きセンサー(TYPE_ORIENTATION)は非推奨となっ
 複数のセンサーを利用したい場合はどうなるでしょうか。その場合は
 センサーを複数設定することで可能です。
 
-//list[multi][複数のセンサーを使用]{
+//list[multi-cretae][複数のセンサーを使用 onCreate()]{
   mAcceleration = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
   mProximity = mSensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY);
+//}
+
+//list[multi-resume][複数のセンサーを使用 onResume]{
+@Override
+protected void onResume() {
+    super.onResume();
+    // センサーを有効にする
+    mSensorManager.registerListener(this, mAcceleration, SensorManager.SENSOR_DELAY_NORMAL);
+    mSensorManager.registerListener(this, mProximity, SensorManager.SENSOR_DELAY_NORMAL);
+}
 //}
 
 ただし、取得するデータを処理する場合は、下記のように場合分けして処理する必要があります。
@@ -226,6 +236,91 @@ API Level 8移行では傾きセンサー(TYPE_ORIENTATION)は非推奨となっ
 GPSで位置情報を取得し、その場所でどっちの方向を見ているか（地磁気センサー）、
 そしてどんな仰角で端末を掲げているか（傾きセンサー）というのを組み合わせる
 ことで、特定の位置に「何かが見える」などの実装が可能です。
+
+== 各センサーの紹介
+
+API-Level 19で規定されているセンサーをざっとですが整理してみます。
+
+=== 加速度センサー (Acceleration sensor)
+
+x軸、y軸、z軸のそれぞれの加速度を表します。単位は(m/s2^)
+#@# TODO 図を入れる
+
+=== 周囲温度センサー (Temperature Sensor)
+
+端末の周囲の温度を表します単位は(℃)
+
+=== 地磁気センサー (Geomagnetic field sensor)
+
+x軸、y軸、z軸方向の磁気の強さを表します。単位は(μT)
+
+=== ジャイロスコープ (Gyroscope)
+
+x軸、y軸、z軸の回転の速度、角速度を表します。単位は(rad/s)
+#@# TODO 図を入れる
+
+=== 照度センサー (Light)
+
+周囲の明るさを表します。単位は(lx)
+
+=== 近接センサー (Proximity Sensor)
+
+端末の前面との距離を表します。単位は(cm)。
+ただし"near"と"far"の2値しか返さない端末もあります。
+
+=== 気圧センサー (Pressure)
+
+周囲の気圧を表します。単位は(hPa)
+
+=== 相対湿度センサー (Humidity Sensor)
+
+周囲の湿度を表します。単位は(%)
+
+=== 回転ベクトルセンサー（地磁気影響を除外） (Game Rotation Vector Sensor)
+
+回転ベクトルセンサーから地磁気の影響を除外したものを表します。ゲームなどに利用します。
+
+=== 地磁気回転ベクトルセンサー (Geomagnetic Rotation Vector Sensor)
+
+回転ベクトルセンサーとほぼ同じものですが、ジャイロスコープの代わりに地磁気センサーを使用しています。
+回転ベクトルセンサーよりも精度は落ちますが低消費電力です。バックグラウンドでの動作に使われます。
+
+=== 重力センサー (Gravity sensor)
+
+重力加速度を表します。単位は(m/s^2)
+
+=== 回転ベクトルセンサー (Rotation Vector Sensor)
+
+=== ジャイロスコープ（生データ） (Uncalibrated Gyroscope)
+
+x軸、y軸、z軸の回転の速度、角速度を温度ドリフトなどを補正しない、生データを表します。単位は(rad/s)
+
+=== 地磁気センサー（生データ）(Uncalibrated Magnetometer)
+
+x軸、y軸、z軸方向の磁気の強さをキャリブレーション無しの生データを表します。単位は(μT)
+
+=== 加速度センサー（重力を除外） (Linear acceleration sensor)
+
+x軸、y軸、z軸のそれぞれの加速度を重力加速度を差し引いて表します。単位は(m/s2^)
+
+=== 動き検知 (Significant Motion Sensor)
+
+端末を持ったユーザが動いたことを検知します。例えば、歩く、自転車、座る、車で移動など。
+このセンサーはワンショットのトリガ起動なので、"TriggerEventListener"を使用します。
+
+=== 歩数計 (Step Counter Sensor)
+
+端末がリブート起動してからの歩数を表します。
+
+=== 歩行検知 (Step Detecter Sensor)
+
+端末を持ったユーザが歩行中であることを検出します。
+
+=== 傾きセンサー (Orientation Sensor)
+
+端末の傾きを検出します。単位は(度)
+
+
 
 == センサーのハードウェア情報の取得
 
