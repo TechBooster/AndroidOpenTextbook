@@ -16,7 +16,7 @@ Androidでは多くのセンサー情報が取得できますが、実際のハ�
 //footnote[sensor_ref][http://developer.android.com/reference/android/hardware/Sensor.html]
 
 == 搭載されるセンサーの種類
-リファレンスによると、現在のAPI-Level19で使用可能なセンサーの一覧は以下のようになります。
+リファレンスによると、現在のAPI Level 19で使用可能なセンサーの一覧は以下のようになります。
 //image[sensor-01-list][センサー一覧]{
 //}
 
@@ -37,19 +37,19 @@ Androidでは多くのセンサー情報が取得できますが、実際のハ�
 
 まずはSensorManagerをシステムから取得します。
 //list[sensormanager][センサーマネージャの取得]{
-  private SensorManager mSensorManager;
-    ...
-  mSensorManager = (SensorManager)getSystemService(Context.SENSOR_SERVICE);
+private SensorManager mSensorManager;
+  ...
+mSensorManager = (SensorManager)getSystemService(Context.SENSOR_SERVICE);
 //}
 
 例として、Acceleration（加速度センサー）を取得します。
 //list[type][センサーの取得]{
-  mAcceleration = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+mAcceleration = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
 //}
 
 次にセンサーを有効にします。
 //list[register][センサーの有効化]{
-  mSensorManager.registarListener(this, mAcceleration, Sensor.SENSOR_DELAY_NORMAL);
+mSensorManager.registarListener(this, mAcceleration, Sensor.SENSOR_DELAY_NORMAL);
 //}
 
 これで、該当するActivityにSensorEventListenerが設定されていれば、イベントリスナー
@@ -57,15 +57,15 @@ Androidでは多くのセンサー情報が取得できますが、実際のハ�
 
 リスナーは2つ用意します。
 //list[listener][イベントコールバック]{
-  @Override
-  public final void onAccuracyChanged(Sensor sensor, int accuracy) {
-      // TODO
-  }
+@Override
+public final void onAccuracyChanged(Sensor sensor, int accuracy) {
+    // TODO
+}
 
-  @Override
-  public final void onSensorChanged(SensorEvent event) {
-      // TODO
-  }
+@Override
+public final void onSensorChanged(SensorEvent event) {
+    // TODO
+}
 //}
 
 基本的な流れは以上になりますが、実際に使用する場合の実装はだいたい以下のようになります。
@@ -189,6 +189,12 @@ y軸の加速度が重力加速度の約9.8に近い値になっています。�
 //image[sensor-01-accel][加速度センサーの取得]{
 //}
 
+=== 傾きセンサーの取得
+
+API Level 8移行では傾きセンサー(TYPE_ORIENTATION)は非推奨となっており、
+代わりにSensorManager#getOrientationメソッドの仕様が推奨されています。
+
+#@# TODO: 傾きセンサー
 
 === 複数のセンサーを取得する場合
 
@@ -215,6 +221,11 @@ y軸の加速度が重力加速度の約9.8に近い値になっています。�
       }
   }
 //}
+
+複数のセンサーを使用する例として、位置情報を利用したARアプリなどがあります。
+GPSで位置情報を取得し、その場所でどっちの方向を見ているか（地磁気センサー）、
+そしてどんな仰角で端末を掲げているか（傾きセンサー）というのを組み合わせる
+ことで、特定の位置に「何かが見える」などの実装が可能です。
 
 == センサーのハードウェア情報の取得
 
@@ -324,27 +335,57 @@ y軸の加速度が重力加速度の約9.8に近い値になっています。�
 
 //footnote[sensor_category][https://source.android.com/devices/sensors/index.html]
 
+== センサーのバッチモード
+
+センサーは非常に便利ですが、使うと消費電力が大きいのがデメリットです。そこでAndroid
+では、センサーのデータを複数回分貯めこんでおき、バッチ処理で通知する仕組みがあります@<fn>{sensor_batch}。
+
+バッチ処理が実行されるまでは、センサーは低消費電力な状態を維持できるので電池の消費を
+抑えることができます。このバッチ処理の間隔は設定ができるます。
+
+バッチモードは、スクリーンがオフの状態やシステムがスリープ中でも動作するため、
+フィットネスや位置情報の追跡や監視などに有効な手段となります。Android 4.4からは
+歩行検出センサーと、歩数計センサーが使用可能になっており、特にこの辺りのセンサー
+を使用する場合に有効な手段となります。
+
+//footnote[sensor_batch][https://source.android.com/devices/sensors/batching.html]
+
+=== バッチモードの使用
+
+バッチモードを使用するには、LocationManager#registerListenerメソッドで指定します。
+通常のセンサーのメソッドにバッチ処理時間が引数で増えています。下記の例はバッチ処理として
+1000 * 1000 * 10 μs = 10sに設定した場合です。
+
+//list[sensor_batch][バッチモード設定]{
+private Sensor mStepDetector;
+...
+boolean status = mSensorManager.registerListener(this, mStepDetector, SensorManager.SENSOR_DELAY_NORMAL, 10000);
+//}
+ただし、バッチ処理が可能かどうかはセンサーの対応によるので、対応している場合のみ
+返り値statusにtrueが返ります。
+
+注意点としては、バッチモードで使用されるデータバッファのFIFO(First in First Out)
+はすべてのアプリで共通になるため、他のアプリで使用されてしまうと自分のアプリで思った
+ように動かない。という場合があります。
 
 
-#@#----------------------- ここまで書いた
+== GPSセンサー概要
 
-
-== GPSの概要
-
-センサーとして重要なデバイスとしてGPSがあります。GPSは"Global Positioning System"
-の略で、アメリカが上げた軍事用衛星のうち、複数からの電波を受信することで、現在位置を正確
-に知ることができます。位置情報は3つ以上の衛星の電波を捕捉するすることで3次元測位が可能と
-なります。日本で受信可能な衛星の数は6〜10個程度です。
+重要なデバイスとしてGPSセンサーがあります。GPSは"Global Positioning System"
+の略で、アメリカが上げた軍事用衛星の複数からの電波を受信することで、現在位置を正確
+に知ることができます。正確にはセンサーというよりはGPS受信機になります。日本で受信
+可能な衛星の数は6〜10個程度ですが、位置情報は3つ以上の衛星の電波を捕捉するすること
+で3次元測位が可能となります。
 
 GPSは受信精度が高ければ、正確な位置を10m程度の誤差で測位できますが、いくつかの弱点もあり
 ますので留意して下さい。
 
- * 高層ビルの間など空がひらけていない場合、十分な衛星を補足できない、あるいはマルチパス
+ * 高層ビルの間など空がひらけていない場合、十分な衛星を捕捉できない、あるいはマルチパス
  の影響を受けるため、都心部ではむしろ位置精度が落ちることがある
- * 衛星の補足と位置検出には、60秒以上の時間が掛かる場合がある
+ * 衛星の捕捉と位置検出には、60秒以上の時間が掛かる場合がある
 
 #@# コラム的な感じにする？
-なお、日本では独自GPS衛星として「みちびき」@<fn[[mitibiki]の打ち上げに成功し、今後4機
+なお、日本では独自GPS衛星として「みちびき」@<fn>{mitibiki}の打ち上げに成功し、今後4機
 での本格運用が計画されています。これは「準天頂衛星システム」といい、従来のGPSを補完する
 ため、常に1機は日本上空にあって、マルチパスの影響を受けず正確な位置を測位することが可能に
 なります。
@@ -366,6 +407,7 @@ GPSを利用して位置情報を取得しますが、これは通常のセン�
 //image[sensor-01-play_service-02][Google Play Servicesのインストール 2]{
 //}
 
+#@# TODO: パスをWindowsの場合について書く
 "Browse"から@<b>{google-play-services_lib}を選択し、@<b>{Copy projects into workspaceにチェック}
 を入れて"Finish"ボタンを押します。
 //image[sensor-01-play_service-03][Google Play Servicesのインストール 3]{
@@ -463,6 +505,8 @@ public void onDisconnected() {
 public class MainActivity extends Activity implements ConnectionCallbacks, OnConnectionFailedListener {
 
     private LocationClient mLocationClient;
+    private Location mLoc;
+
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -507,7 +551,7 @@ public class MainActivity extends Activity implements ConnectionCallbacks, OnCon
         Toast.makeText(this, "Connected", Toast.LENGTH_LONG).show();
 
         // 位置情報の取得
-        Location loc = mLocationClient.getLastLocation();
+        mLoc = mLocationClient.getLastLocation();
         Log.d("LOCATION", "LAT: " + loc.getLatitude());
         Log.d("LOCATION", "LON: " + loc.getLongitude());
     }
@@ -520,7 +564,7 @@ public class MainActivity extends Activity implements ConnectionCallbacks, OnCon
 //}
 
 しかしまだこれでは動作しません。GPSを使うにはパーミッションが必要なのと、
-Google Play Servicesライブラリを使うことを記述する必要があります。
+Google Play Servicesライブラリを使うことを宣言する必要があります。
 
 AndroidManifest.xmlにGoogle Play Servicesを使うための宣言をを追加します。
 Google Play Servicesの宣言は<application>エレメントの内側に追加してください。
@@ -538,6 +582,21 @@ AndroidManifest.xmlにGPSのパーミッションを追加します。
 //image[sensor-01-location][位置情報取得]{
 //}
 
+さて、これだけだといわゆる緯度経度の数値しか見えないので、イマイチ正しいかどうかわかりません。
+ちょっと工夫して、位置をMapで表示するようにしてみます。
+
+ボタンを配置して、リスナーをセットします。ボタンがクリックされたらIntentでGoogle Mapsを
+起動します。その時に"geo:"のスキーマに緯度経度を設定します。
+//list[gps_map][Google Mapで位置を確認]{
+mMapBtn.setOnClickListener(new View.OnClickListener() {
+    @Override
+    public void onClick(View v) {
+        // IntentでGoogle Mapを呼び出す
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("geo:" + mLoc.getLatitude() + "," + mLoc.getLongitude()));
+        startActivity(intent);
+    }
+});
+//}
 
 
 
