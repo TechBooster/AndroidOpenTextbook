@@ -299,16 +299,192 @@ SeekBar シークバーを表示する
 
 ==== ボタン
 
+ボタンを表示するときには、次のようなXMLを書きます。
 
-==== テキスト
+//list[button1-1]{
+<Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Button" />
+//}
+
+//image[button1-1]{
+//}
+
+デザインのカスタマイズを何もしていない、デフォルトの状態のこのボタンは、タップすると色が変わり、「タップされた」という状態をユーザーにフィードバックしています。
+
+//image[button1-1-pressed-4][Android 4.3までは青くなる]{
+//}
+//image[button1-1-pressed-kitkat][Android 4.4では少し色が薄くなる]{
+//}
+
+@<list>[button1-1]の4行目の「android:text」という属性が、ボタン内に表示するテキストです。
+
+@<list>[button1-1]の2行目の「android:layout_width」と3行目の「android:layout_height」は、ボタンだけではなくどの要素にも共通して必要な属性です。
+それぞれの要素が、横方向（layout_width）または縦方向（layout_height）に対してどれぐらいの領域を占めるかという設定です。
+これらには「wrap_content」と「match_parent」というふたつの値が存在します。
+
+//table[]{
+値       説明
+wrap_content    要素を占める領域は、その要素がもっているサイズのみにとどまる
+match_parent    要素を占める領域は、縦または横の画面サイズいっぱいまで広がる
+//}
+
+言葉に書くとむずかしいですね。
+実際にどうなるかを設定して確認してみましょう。
+
+===== wrap_content
+
+wrap_contentを設定した場合、要素を占める領域は、その要素がもっているサイズのみにとどまります。つまり、「Button」という文字が設定されているボタンであれば、「Button」という文字のまわりに一定の余白がとられ、それらをひっくるめたものが要素の領域となります。
+
+//image[button1-2]{
+//}
+
+確認のため、ボタン内に表示するテキストを変更してみます。
+
+//list[button1-2]{
+<Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="登録して送信する" />
+//}
+
+ボタン全体の横幅が、テキストの文字数にあわせて伸びました。
+このように、要素がもっているサイズにあわせたいときは、「wrap_content」を設定します。
+
+wrap_contentを設定した要素をどんどん並べていくと、横へ横へと配置されていきます。
+
+//list[button1-3]{
+<Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="キャンセル" />
+//}
+<Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="登録して送信する" />
+//}
+
+//image[button1-3]{
+//}
+
+画面サイズにおさまらなくなった場合は、改行されます。
+
+//image[button1-4]{
+//}
+
+もちろんボタンだけではなく、テキスト（TextView）や、このあとに出てくる画像（ImageView）などもいっしょに横に並べて配置することもできます。
+
+===== match_parent
+
+@<list>[button1-1]では、android:layout_widthもandroid:layout_heightも、両方とも「wrap_content」が設定されていました。
+2行目のandroid:layout_widthを「match_parent」に変更してみます。
+
+//list[button2-1]{
+<Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Button" />
+//}
+
+//image[button2-1]{
+//}
+
+横方向に、画面サイズいっぱいまで広げる設定をしましたので、ボタンは@<image>[button2]のように横幅いっぱいまで広がります。
+
+では今度は、@<list>[button2-2]のように、android:layout_widthを「wrap_content」に戻し、android:layout_heightを「match_parent」に設定してみましょう。
+
+//list[button2-2]{
+<Button
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:text="Button" />
+//}
+
+//image[button2-2]{
+//}
+
+今度は縦方向に、画面サイズいっぱいまで広がりました。
+
+実際のアプリケーションでは、ボタンをこのように縦方向の画面サイズいっぱいまで広げるようなレイアウトはほとんどありませんが、他の要素では必要になることもありますので、覚えておきましょう。
 
 
 ==== 画像
 
+画像を表示するときには、次のようなXMLを書きます。
+
+//list[img1-1]{
+<ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_launcher" />
+//}
+
+//image[img1-1][drawable-xhdpiフォルダにあるic_launcher.pngを表示した]{
+//}
+
+//image[img1-2][resフォルダ内のdrawableフォルダ]{
+//}
+
+@<list>[img1-1]の4行目の「android:src」は、resフォルダの「drawable-xxxxx」フォルダ内に入っている画像リソースのファイル名を設定する属性です。
+
+画像の拡張子は、pngです。
+
+ic_launcher.pngは、resフォルダの「drawable-mdpi」「drawable-hdpi」「drawable-xhdpi」という3つのフォルダの中に1つずつ入っています（@<image>[img1-3]）。内容は同じですが、それぞれの画面解像度に合ったサイズのものが入っています。
+
+//image[img1-3][各drawableフォルダにはそれぞれの画面解像度にあった大きさの画像リソースが入っている]{
+//}
+
+「android:src」の指定では、「@drawable」をつけて、<b>drawableというフォルダ内を参照</b>します。しかしここでは「@drawable-xhdpi/ic_launcher」のように画面解像度は書きません。
+
+//image[img1-4][参照フォルダに画面解像度は入れない]{
+//}
+
+端末ごとにどの画面解像度なのかは一意に決まっていますので、「@drawable/ic_launcher」と書くだけで、Android側で自動で判別し、該当する画像リソースを取得します。
 
 
 ==== テキストフィールド
 
+画像を表示するときには、次のようなXMLを書きます。
+
+//list[textfield1-1]{
+<EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+//}
+
+これだけで、最低限の入力エリアを作成することができます。
+
+//image[textfield1-1]{
+//}
+
+@<list>[textfield1-1]では横幅いっぱいに配置していますが、@<list>[textfield1-2]のように「android:ems」を追加し、文字数によって横幅を指定することもできます。
+
+//list[textfield1-2]{
+<EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10" />
+//}
+
+この場合は10文字分の横幅になります。
+また、「android:inputType」を追加し、いろいろな入力制限を設定することもできます。
+
+たとえば、「android:inputType=”textPassword”」を追加すると、前節にも出てきたパスワード入力用のテキストフィールドになります。
+
+//list[textfield1-3]{
+<EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType=”textPassword” />
+//}
+
+//image[textfield1-3]{
+//}
+
+「android:inputType」については、場合に応じて必要な入力制限を設定するようにしましょう。
 
 === valuesフォルダを活用しよう
 
@@ -317,3 +493,37 @@ SeekBar シークバーを表示する
 ==== dimen
 ==== color
 ==== style
+
+
+== レイアウトを作成する
+
+=== RelativeLayout
+
+
+=== LinearLayout
+
+
+=== FrameLayout
+
+
+== 実際にデザインを作るときにどうする？
+
+=== キャンバスサイズ
+=== テキストの大きさの目安
+=== どういうふうにエンジニアさんに渡せばいいのか？
+=== 画像パーツの切り出しと名前の付け方
+=== 画像を切り出さずに渡す場合
+
+
+==ボタンのカスタマイズと装飾
+
+
+=== ボタンの背景
+==== 画像リソースを使う場合
+
+==== コードで書く場合
+layer-listとかここ
+
+
+=== 状態の変化を設定する
+statefulとかここ
