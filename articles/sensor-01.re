@@ -163,7 +163,7 @@ public class SensorActivity extends Activity implements SensorEventListener {
 加速度なので、そのままx,y,xのそれぞれの加速度が取得できます。これを
 コードで取得するには以下のように上記のコードに追加すると以下のようになります。
 
-//list[sensorchange][センサー値変化イベントリスナー]{
+//list[sensorchange][センサー値変化イベントコールバック]{
   @Override
   public final void onSensorChanged(SensorEvent event) {
       // センサーの値が変化した場合に呼ばれる
@@ -218,7 +218,7 @@ protected void onResume() {
 
 ただし、取得するデータを処理する場合は、下記のように場合分けして処理する必要があります。
 
-//list[multi-listener][複数センサー利用時のイベントリスナー]{
+//list[multi-listener][複数センサー利用時のイベントコールバック]{
   @Override
   public void onSensorChanged(SensorEvent event) {
       // 値が変化したセンサーが加速度センサーだった場合
@@ -284,7 +284,7 @@ protected void onResume() {
 
 //footnote[orientation_ref][http://developer.android.com/reference/android/hardware/SensorManager.html]
 
-//list[orientation-changed][傾きを求める]{
+//list[orientation-changed][傾きを求めるイベントコールバック]{
 @Override
 public void onSensorChanged(SensorEvent event) {
     // 信頼性の低いデータは捨てる
@@ -350,12 +350,18 @@ x軸、y軸、z軸のそれぞれの加速度を表します。単位は(m/s^2)
 
 === 地磁気センサー (Geomagnetic field sensor)
 
-x軸、y軸、z軸方向の磁気の強さを表します。単位は(μT)
+x軸、y軸、z軸方向の磁気の強さを表します。単位は(μT)。磁気の強さから方位を測定できます。
+
+=== 地磁気センサー（生データ）(Uncalibrated Magnetometer)
+
+x軸、y軸、z軸方向の磁気の強さをキャリブレーション無しの生データを表します。単位は(μT)
 
 === ジャイロスコープ (Gyroscope)
 
 x軸、y軸、z軸の回転の速度、角速度を表します。単位は(rad/s)
-#@# TODO 図を入れる
+例えば時計の秒針の角速度は、60秒で一回転(360度)なので、6度/秒です。rad = 度 × π/180となります。
+//image[sensor-01-gyro][角速度]{
+//}
 
 === 照度センサー (Light)
 
@@ -365,6 +371,7 @@ x軸、y軸、z軸の回転の速度、角速度を表します。単位は(rad/
 
 端末の前面との距離を表します。単位は(cm)。
 ただし"near"と"far"の2値しか返さない端末もあります。
+その場合は"near"が最小値となり"far"が最大値となります。
 
 === 気圧センサー (Pressure)
 
@@ -373,6 +380,10 @@ x軸、y軸、z軸の回転の速度、角速度を表します。単位は(rad/
 === 相対湿度センサー (Humidity Sensor)
 
 周囲の湿度を表します。単位は(%)
+
+=== 回転ベクトルセンサー (Rotation Vector Sensor)
+
+傾きセンサーよりも精度が高く傾きを取得できます。
 
 === 回転ベクトルセンサー（地磁気影響を除外） (Game Rotation Vector Sensor)
 
@@ -387,17 +398,9 @@ x軸、y軸、z軸の回転の速度、角速度を表します。単位は(rad/
 
 重力加速度を表します。単位は(m/s^2)
 
-=== 回転ベクトルセンサー (Rotation Vector Sensor)
-
-傾きセンサーよりも精度が高く傾きを取得できます。
-
 === ジャイロスコープ（生データ） (Uncalibrated Gyroscope)
 
 x軸、y軸、z軸の回転の速度、角速度を温度ドリフトなどを補正しない、生データを表します。単位は(rad/s)
-
-=== 地磁気センサー（生データ）(Uncalibrated Magnetometer)
-
-x軸、y軸、z軸方向の磁気の強さをキャリブレーション無しの生データを表します。単位は(μT)
 
 === 加速度センサー（重力を除外） (Linear acceleration sensor)
 
@@ -601,9 +604,9 @@ GPSを利用して位置情報を取得しますが、これは通常のセン�
 //image[sensor-01-play_service-02][Google Play Servicesのインストール 2]{
 //}
 
-#@# TODO: パスをWindowsの場合について書く
 "Browse"から@<b>{google-play-services_lib}を選択し、@<b>{Copy projects into workspaceにチェック}
-を入れて"Finish"ボタンを押します。
+を入れて"Finish"ボタンを押します。パスはAndroid SDKを
+インストールした"$(ANDORID_SDK)/extras/google/google_play_services"になります。
 //image[sensor-01-play_service-03][Google Play Servicesのインストール 3]{
 //}
 
