@@ -37,20 +37,57 @@ Androidを搭載した端末の多くは携帯電話です。様々な場所に�
 できるだけ通信料を減らす、通信回数を減らす、一度まとめてに通信するといった事を心がけると、電池消費にも優しいアプリを作ることができます。
 
 === メインスレッドと非同期スレッド
-一般的にネットワーク通信は時間のかかる処理です。
-加えてMobileのネットワークとなると、理論値では300Mbpsを越えるネットワークでも、環境によっては数百bpsしかでません。
-
-
 AndroidにはUIスレッドという特別なスレッドがあります。
 このUIスレッドの役割は、UIコンポーネントの表示やユーザーの入力値などのやりとりなど、UIにまつわる部分です。
-このUIスレッドの特徴として、スレッド上での処理が長引くとANR(Application Not Responding) と呼ばれるダイアログが表示されるようになります。
+このUIスレッドの特徴として、スレッド上での処理が長引くとANR(Application Not Responding) という状態に陥り、以下のようなダイアログが表示されるようになります。
 
 //image[anr][ANR]{
 //}
 
+このダイアログが表示され、ユーザーがOKボタンを押すとアプリケーションは終了してしまいます。
+
+一般的にネットワーク通信は時間のかかる処理です。
+理論値で100Mbpsを越えるネットワークでも環境によっては数百bpsしかでないため、小さいデータのやりとりであっても時間がかかるものだと考えるべきです。
+ANRに陥らないためには、UIスレッド以外でネットワーク処理を行う必要があります。
+
+Javaで新しいスレッドを作ってその中で処理を行うには、ThreadクラスとRunnableクラスを使うのが一般的ですが、AndroidにはAsyncTaskというクラスが用意されています。
+
+//list[implemention_of_async_task][簡単なAsyncTaskの実装方法]{
+public class NetworkTask extends AsyncTask<String, Integer, String> {
+
+  @Override
+  protected void onProgressUpdate(Integer... values) {
+    super.onProgressUpdate(values);
+  	// UIスレッドで実行されるブロック
+  }
+
+  @Override
+  protected String doInBackground(String... params) {
+    // 別スレッドで実行されるブロック
+    return null;
+  }
+
+  @Override
+  protected void onPostExecute(String s) {
+    super.onPostExecute(s);
+    // UIスレッドで実行されるブロック
+  }
+
+}
+//}
+
+AsyncTaskを使うには、一般的にAsyncTaskを継承したクラスを宣言します。
+継承する際にGenericsに3つのクラスを指定することで
+ * どのクラスをパラメータとして受け取って
+ * どのクラスを進捗に渡すか
+ * どのクラスを戻り値として返す
+
+
 == ソケットプログラミング
 SocketServerとSocketClient
 スレッド制御
+
+
 
 == HttpURLConnection
 GET / POST
@@ -63,9 +100,10 @@ InputStream / OutputStream
 == メッセージキューとか
 
 == ライブラリを使ったネットワーク通信
-Volley https://android.googlesource.com/platform/frameworks/volley/
-okhttp https://github.com/square/okhttp
-Picasso https://github.com/square/picasso
+
+ * Volley https://android.googlesource.com/platform/frameworks/volley/
+ * okhttp https://github.com/square/okhttp
+ * Picasso https://github.com/square/picasso
 
 
 
