@@ -45,8 +45,15 @@ public class MenuFragment extends Fragment {
 
     void initMenuAdapter() {
         samples.clear();
-        samples.add(new SampleData("Hello OpenGL ES", Chapter01_01.class));
-        samples.add(new SampleData("三角形を描画する", Chapter01_02.class));
+
+        int chapterNumber = 1;
+        {
+            int sampleNumber = 1;
+            samples.add(new SampleData(String.format("%d-%d %s", chapterNumber, sampleNumber++, "Hello OpenGL ES"), Chapter01_01.class));
+            samples.add(new SampleData(String.format("%d-%d %s", chapterNumber, sampleNumber++, "三角形を描画する"), Chapter01_02.class));
+
+            ++chapterNumber;
+        }
 
         adapter = new BaseAdapter() {
             @Override

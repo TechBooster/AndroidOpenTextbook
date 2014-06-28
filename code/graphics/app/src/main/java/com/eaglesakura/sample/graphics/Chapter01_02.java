@@ -19,7 +19,11 @@ import javax.microedition.khronos.opengles.GL10;
  * <p/>
  * 画面に三角形を描画する
  * <p/>
+ * TRY 端末の縦横を切り替えてみる
+ * <p/>
  * TRY 三角形の大きさや位置を変更する
+ * <p/>
+ * TRY Viewportを変更する
  */
 public class Chapter01_02 extends Chapter01_01 {
     /**
@@ -82,5 +86,6 @@ public class Chapter01_02 extends Chapter01_01 {
         GLES20.glClear(GL10.GL_COLOR_BUFFER_BIT);
 
 
+        // TODO 三角形描画
     }
 }
