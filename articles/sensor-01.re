@@ -44,12 +44,12 @@ mSensorManager = (SensorManager)getSystemService(Context.SENSOR_SERVICE);
 
 例として、Acceleration（加速度センサー）を取得します。
 //list[type][センサーの取得]{
-mAcceleration = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+Sensor acceleration = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
 //}
 
 次にセンサーを有効にします。
 //list[register][センサーの有効化]{
-mSensorManager.registarListener(this, mAcceleration, Sensor.SENSOR_DELAY_NORMAL);
+mSensorManager.registarListener(this, acceleration, Sensor.SENSOR_DELAY_NORMAL);
 //}
 
 これで、該当するActivityにSensorEventListenerが設定されていれば、イベントリスナー
@@ -70,13 +70,13 @@ public final void onSensorChanged(SensorEvent event) {
 
 基本的な流れは以上になりますが、実際に使用する場合の実装はだいたい以下のようになります。
 
- * onCreate()もしくはonResume()でSensorManagerを取得
- * onResume()でSensorManager#registerListner()で有効化
- * onPause()でSensorManager#unregisterListener()で無効化
+ * onCreateもしくはonResumeでSensorManagerを取得
+ * onResumeでSensorManager#getDeafauletSensorでセンサーを取得し、SensorManager#registerListnerで有効化
+ * onPauseでSensorManager#unregisterListenerで無効化
 
 センサーの有効化と無効化があるのは、必要な時のみセンサー情報を使用するようにするためです。
 センサー情報をずっと使用すると電池を消費してしまうためです。そのため、たいていのアプリで
-は、onResume()でセンサーの取得を有効化し、onPause()で無効化するパターンとなります。も
+は、onResumeでセンサーの取得を有効化し、onPauseで無効化するパターンとなります。も
 ちろん、これが絶対ではなくServiceでバックグラウンドで取得し続けるなどの使用方法もあるので
 アプリに応じて、電池の消費量をできるだけ抑えるように設定することになります。
 
@@ -92,9 +92,8 @@ public class SensorActivity extends Activity implements SensorEventListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
 
-        // センサーマネージャの取得と使用するセンサーの設定
+        // センサーマネージャの取得
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-        mAcceleration = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         mSensor[0] = (TextView) findViewById(R.id.sensor_0_text);
         mSensor[1] = (TextView) findViewById(R.id.sensor_1_text);
         mSensor[2] = (TextView) findViewById(R.id.sensor_2_text);    
@@ -103,8 +102,11 @@ public class SensorActivity extends Activity implements SensorEventListener {
     @Override
     protected void onResume() {
         super.onResume();
+
+        // 使用するセンサーの設定
+        Sensor acceleration = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         // センサーを有効にする
-        mSensorManager.registerListener(this, mAcceleration, SensorManager.SENSOR_DELAY_NORMAL);
+        mSensorManager.registerListener(this, acceleration, SensorManager.SENSOR_DELAY_NORMAL);
     }
 
     @Override
@@ -189,30 +191,28 @@ y軸の加速度が重力加速度の約9.8に近い値になっています。�
 //image[sensor-01-accel][加速度センサーの取得]{
 //}
 
-=== 傾きセンサーの取得
-
-API Level 8移行では傾きセンサー(TYPE_ORIENTATION)は非推奨となっており、
-代わりにSensorManager#getOrientationメソッドの仕様が推奨されています。
-
-#@# TODO: 傾きセンサー
-
 === 複数のセンサーを取得する場合
 
-複数のセンサーを利用したい場合はどうなるでしょうか。その場合は
-センサーを複数設定することで可能です。
-
-//list[multi-cretae][複数のセンサーを使用 onCreate()]{
-  mAcceleration = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-  mProximity = mSensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY);
-//}
+複数のセンサーを利用したい場合はどうなるでしょうか。その場合はセンサーを複数設定する
+ことで可能です。以下の例は"TYPE_ALL"で一旦すべてのセンサーをリストで取得し、リスト
+から使用するものだけを選択して登録しています。
 
 //list[multi-resume][複数のセンサーを使用 onResume]{
 @Override
 protected void onResume() {
     super.onResume();
-    // センサーを有効にする
-    mSensorManager.registerListener(this, mAcceleration, SensorManager.SENSOR_DELAY_NORMAL);
-    mSensorManager.registerListener(this, mProximity, SensorManager.SENSOR_DELAY_NORMAL);
+    // センサの取得
+    List<Sensor> sensors = mSensorManager.getSensorList(Sensor.TYPE_ALL);
+    // センサマネージャへリスナーを登録
+    for (Sensor sensor : sensors) {
+        if (sensor.getType() == Sensor.TYPE_PROXIMITY) {
+            mSensorManager.registerListener(this, sensor, SensorManager.SENSOR_DELAY_UI);
+        }
+
+        if (sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
+            mSensorManager.registerListener(this, sensor, SensorManager.SENSOR_DELAY_UI);
+        }
+    }
 }
 //}
 
@@ -232,10 +232,107 @@ protected void onResume() {
   }
 //}
 
-複数のセンサーを使用する例として、位置情報を利用したARアプリなどがあります。
-GPSで位置情報を取得し、その場所でどっちの方向を見ているか（地磁気センサー）、
-そしてどんな仰角で端末を掲げているか（傾きセンサー）というのを組み合わせる
-ことで、特定の位置に「何かが見える」などの実装が可能です。
+複数のセンサーを使用する例として、次に説明する傾きセンサーで方位や傾きを
+利用することで、端末の中のオブジェクトを様々な角度から見られるようにしたり、
+さらに位置情報とカメラを組みわせて、特定の場所にオブジェクトを出現させるような
+ARアプリの作成ができるようになります。
+
+=== 傾きセンサーの取得
+
+API Level 8以降では傾きセンサー(TYPE_ORIENTATION)は非推奨となっており、
+代わりにSensorManager#getOrientationメソッドの仕様が推奨されています。
+
+傾きは、方位角と傾斜角、回転角で表されます。傾きの求め方は"地磁気センサー"と
+"加速度センサー"から計算して求めます。
+
+
+傾きは端末の縦横が変わると変わってしまうので、縦固定しておきます。
+AndroidManifest.xmlに"portrait"を追記します。
+//list[orientation-manifest][縦固定にする]{
+<activity android:name=".orientationSensorActivity"
+          android:label="@string/app_name"
+          android:screenOrientation="portrait">
+//}
+
+あとは定石通り、センサーマネージャの登録を行いますが、センサーの登録として
+"TYPE_ACCELEROMETER"と"TYPE_MAGNETIC_FIELD"を使用します。onPauseでの登録破棄
+も忘れないようにしてください。
+
+//list[orientation-sensormanager][センサーの登録]{
+@Override
+protected void onResume() {
+    super.onResume();
+
+    // センサの取得
+    List<Sensor> sensors = mSensorManager.getSensorList(Sensor.TYPE_ALL);
+
+    // センサマネージャへリスナーを登録
+    for (Sensor sensor : sensors) {
+        if (sensor.getType() == Sensor.TYPE_MAGNETIC_FIELD) {
+            mSensorManager.registerListener(this, sensor, SensorManager.SENSOR_DELAY_UI);
+        }
+
+        if (sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
+            mSensorManager.registerListener(this, sensor, SensorManager.SENSOR_DELAY_UI);
+        }
+    }
+}
+//}
+
+センサーの取得はonSensorCahngedで行います。この計算の詳細は省きますが
+リファレンス@<fn>{orientation_ref}のSensorManager#getRotationMatrixを参照してください。
+
+//footnote[orientation_ref][http://developer.android.com/reference/android/hardware/SensorManager.html]
+
+//list[orientation-changed][傾きを求める]{
+@Override
+public void onSensorChanged(SensorEvent event) {
+    // 信頼性の低いデータは捨てる
+    if (event.accuracy == SensorManager.SENSOR_STATUS_UNRELIABLE)
+        return;
+
+    // 地磁気センサー、加速度センサーの値を取得
+    switch (event.sensor.getType()) {
+        case Sensor.TYPE_MAGNETIC_FIELD:
+            mGeomagnetic = event.values.clone();
+            break;
+        case Sensor.TYPE_ACCELEROMETER:
+            mAcceleration = event.values.clone();
+            break;
+    }
+
+    // 両方のデータが揃ったら計算を行う
+    if (mGeomagnetic != null && mAcceleration != null) {
+
+        SensorManager.getRotationMatrix(inR, I, mAcceleration, mGeomagnetic);
+
+        // Activityの表示が縦固定の場合。横向きになる場合、修正が必要
+        SensorManager.remapCoordinateSystem(inR, SensorManager.AXIS_X, SensorManager.AXIS_Z, outR);
+        SensorManager.getOrientation(outR, mOrientation);
+
+        //  radianToDegree(mOrientation[0])  Z軸方向, 方位角
+        //  radianToDegree(mOrientation[1])  X軸方向, 傾斜角
+        //  radianToDegree(mOrientation[2])  Y軸方向, 回転角
+        
+        mSensor[0].setText(String.valueOf(radianToDegree(mOrientation[0])));
+        mSensor[1].setText(String.valueOf(radianToDegree(mOrientation[1])));
+        mSensor[2].setText(String.valueOf(radianToDegree(mOrientation[2])));
+    }
+}
+//}
+
+これで求められる値は
+
+ * Z軸方向, 方位角 : 地球上で北を0度とする方位
+ * X軸方向, 傾斜角 : 地球中心からの仰角
+ * Y軸方向, 回転角 : 地球の南北に対する回転角
+
+言葉で説明するのはわかりづらいので、ぜひ動かしてみてください。センサーの大半は動かして
+学習することで理解できます。
+
+//image[sensor-01-axis_globe][傾きセンサー]{
+//}
+
 
 == 各センサーの紹介
 
@@ -243,8 +340,9 @@ API-Level 19で規定されているセンサーをざっとですが整理し�
 
 === 加速度センサー (Acceleration sensor)
 
-x軸、y軸、z軸のそれぞれの加速度を表します。単位は(m/s2^)
-#@# TODO 図を入れる
+x軸、y軸、z軸のそれぞれの加速度を表します。単位は(m/s^2)
+//image[sensor-01-axis_device][加速度センサーの軸]{
+//}
 
 === 周囲温度センサー (Temperature Sensor)
 
@@ -291,6 +389,8 @@ x軸、y軸、z軸の回転の速度、角速度を表します。単位は(rad/
 
 === 回転ベクトルセンサー (Rotation Vector Sensor)
 
+傾きセンサーよりも精度が高く傾きを取得できます。
+
 === ジャイロスコープ（生データ） (Uncalibrated Gyroscope)
 
 x軸、y軸、z軸の回転の速度、角速度を温度ドリフトなどを補正しない、生データを表します。単位は(rad/s)
@@ -318,8 +418,7 @@ x軸、y軸、z軸のそれぞれの加速度を重力加速度を差し引い�
 
 === 傾きセンサー (Orientation Sensor)
 
-端末の傾きを検出します。単位は(度)
-
+端末の傾きを検出します。方位角と傾斜角と回転角を表します。
 
 
 == センサーのハードウェア情報の取得
