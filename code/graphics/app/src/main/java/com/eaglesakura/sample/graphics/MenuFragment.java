@@ -11,6 +11,8 @@ import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.eaglesakura.sample.graphics.util.SampleUtil;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -111,6 +113,13 @@ public class MenuFragment extends Fragment {
                 }
             }
         });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        SampleUtil.setDebugText(getActivity(), null);
     }
 
     class SampleData {

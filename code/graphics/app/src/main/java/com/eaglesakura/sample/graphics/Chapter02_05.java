@@ -3,6 +3,7 @@ package com.eaglesakura.sample.graphics;
 import android.opengl.Matrix;
 
 import com.eaglesakura.sample.graphics.util.ES20Util;
+import com.eaglesakura.sample.graphics.util.SampleUtil;
 import com.eaglesakura.sample.graphics.util.Vector3;
 
 import javax.microedition.khronos.egl.EGLConfig;
@@ -164,7 +165,7 @@ public class Chapter02_05 extends Chapter01_01 {
         float cameraUpZ = 0;
 
         // 画角
-        float fov = 45.0f;
+        float fovY = 45.0f;
         // アスペクト比
         float aspect = screenWidth / screenHeight;
 
@@ -188,11 +189,17 @@ public class Chapter02_05 extends Chapter01_01 {
         {
             // projection行列を生成する
             float[] matrix = ES20Util.createMatrixIdentity();
-            Matrix.perspectiveM(matrix, 0, fov, aspect, nearClip, farClip);
+            Matrix.perspectiveM(matrix, 0, fovY, aspect, nearClip, farClip);
 
             // アップロード
             glUniformMatrix4fv(unif_projection, 1, false, matrix, 0);
         }
+
+        // デバッグ用メッセージを表示する
+        SampleUtil.setDebugText(getActivity(), String.format("camera\npos(%.2f, %.2f, %.2f)\nlook(%.2f, %.2f, %.2f)\nfovy(%.1f) aspect(%.2f)",
+                cameraPos.x, cameraPos.y, cameraPos.z,
+                cameraLookX, cameraLookY, cameraLookZ,
+                fovY, aspect));
     }
 
     /**
@@ -226,5 +233,6 @@ public class Chapter02_05 extends Chapter01_01 {
 
         glVertexAttribPointer(attr_pos, 2, GL_FLOAT, false, 0, ES20Util.wrap(position));
         glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+
     }
 }

@@ -1,6 +1,7 @@
 package com.eaglesakura.sample.graphics;
 
 import com.eaglesakura.sample.graphics.util.ES20Util;
+import com.eaglesakura.sample.graphics.util.SampleUtil;
 
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
@@ -133,5 +134,8 @@ public class Chapter02_01 extends Chapter01_01 {
 
         glVertexAttribPointer(attr_pos, 2, GL_FLOAT, false, 0, ES20Util.wrap(position));
         glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+
+        // デバッグ用メッセージを表示する
+        SampleUtil.setDebugText(getActivity(), String.format("translate(%.2f, %.2f)", translateX, translateY));
     }
 }

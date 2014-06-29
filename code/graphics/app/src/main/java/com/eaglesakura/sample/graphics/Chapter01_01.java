@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import java.util.Random;
 
@@ -32,6 +33,10 @@ public class Chapter01_01 extends Fragment implements GLSurfaceView.Renderer {
         glSurfaceView = new GLSurfaceView(getActivity());
         glSurfaceView.setEGLContextClientVersion(2);
         glSurfaceView.setRenderer(this);
+
+        // SurfaceViewを使う場合のおまじない
+        // ※ これはWindowSystemの都合で、詳細は割愛
+        glSurfaceView.setZOrderOnTop(false);
 
         return glSurfaceView;
     }
