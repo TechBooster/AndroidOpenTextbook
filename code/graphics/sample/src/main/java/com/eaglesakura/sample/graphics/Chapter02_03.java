@@ -23,7 +23,7 @@ import static android.opengl.GLES20.glVertexAttribPointer;
 import static android.opengl.GLES20.glViewport;
 
 /**
- * Chapter 02-01
+ * Chapter 02-03
  * <p/>
  * 四角形を行列で拡大縮小させる
  */

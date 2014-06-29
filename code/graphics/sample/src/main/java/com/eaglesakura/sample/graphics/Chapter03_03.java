@@ -14,7 +14,7 @@ import static android.opengl.GLES20.*;
  * <p/>
  * インデックスバッファの描画を行う
  * <p/>
- * TRY ES20Util.wrapを最小限になるように修正してみよう
+ * TRY ES20Util.wrapの呼び出し回数を最小限になるように修正してみよう
  */
 public class Chapter03_03 extends Chapter03_02 {
 
