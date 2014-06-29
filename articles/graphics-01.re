@@ -148,11 +148,14 @@ Androidでは"EGL"という細やかな制御を行えるAPIと、"GLSurfaceView
 //listnum[][Chapter01_02.java]{
 
 public class Chapter01_02 extends Chapter01_01 {
+====================================================== [1] ここから
     /**
      * プログラムオブジェクト
      */
     protected int program = 0;
+====================================================== [1] ここまで
 
+====================================================== [2] ここから
     /**
      * attr_pos
      */
@@ -162,6 +165,7 @@ public class Chapter01_02 extends Chapter01_01 {
      * ポリゴン色
      */
     protected int unif_color;
+====================================================== [2] ここまで
 
     /**
      * Surfaceが生成されたタイミングの処理
@@ -169,6 +173,7 @@ public class Chapter01_02 extends Chapter01_01 {
     @Override
     public void onSurfaceCreated(GL10 gl, EGLConfig config) {
         {
+====================================================== [3] ここから
             final String vertexShaderSource =
                             "attribute mediump vec4 attr_pos;" +
                             "void main() {" +
@@ -180,16 +185,20 @@ public class Chapter01_02 extends Chapter01_01 {
                             "void main() {" +
                             "   gl_FragColor = unif_color;" +
                             "}";
+====================================================== [3] ここまで
 
+====================================================== [4] ここから
             final int vertexShader = ES20Util.compileShader(GL_VERTEX_SHADER, vertexShaderSource);
             final int fragmentShader = ES20Util.compileShader(GL_FRAGMENT_SHADER, fragmentShaderSource);
+====================================================== [4] ここまで
 
-
+====================================================== [5] ここから
             // linkShaderの中でvertex/fragmentの各シェーダーがDeleteされていることに注意する
             this.program = ES20Util.linkShader(vertexShader, fragmentShader);
+====================================================== [5] ここまで
         }
-
-        // attributeを取得する
+====================================================== [6] ここから
+        // locationを取得する
         {
             attr_pos = glGetAttribLocation(program, "attr_pos");
             assert attr_pos >= 0;
@@ -197,29 +206,39 @@ public class Chapter01_02 extends Chapter01_01 {
             unif_color = glGetUniformLocation(program, "unif_color");
             assert unif_color >= 0;
         }
+====================================================== [6] ここまで
 
+====================================================== [7] ここから
         glUseProgram(program);
+====================================================== [7] ここまで
+
         ES20Util.assertGL();
     }
 
+====================================================== [8] ここから
     @Override
     public void onSurfaceChanged(GL10 gl, int width, int height) {
         glViewport(0, 0, width, height);
     }
+====================================================== [8] ここまで
 
     @Override
     public void onDrawFrame(GL10 gl) {
         glClearColor(0.0f, 1.0f, 1.0f, 1.0f);
         glClear(GL10.GL_COLOR_BUFFER_BIT);
 
+====================================================== [9] ここから
         // attr_posを有効にする
         glEnableVertexAttribArray(attr_pos);
+====================================================== [9] ここまで
 
+====================================================== [10] ここから
         // ポリゴン色をアップロードする
         // 色はRGBAでアップロードする
         glUniform4f(unif_color, 1.0f, 0.0f, 0.0f, 1.0f);
+====================================================== [10] ここまで
 
-
+====================================================== [11] ここから
         // 画面中央へ描画する
         final float[] position = {
                 // v0
@@ -231,7 +250,11 @@ public class Chapter01_02 extends Chapter01_01 {
 
 
         glVertexAttribPointer(attr_pos, 2, GL_FLOAT, false, 0, ES20Util.wrap(position));
+====================================================== [11] ここまで
+
+====================================================== [12] ここから
         glDrawArrays(GL_TRIANGLES, 0, 3);
+====================================================== [12] ここまで
     }
 }
 
@@ -257,18 +280,11 @@ Androidでは"EGL"という細やかな制御を行えるAPIと、"GLSurfaceView
 public class Chapter01_03 extends Chapter01_02 {
     @Override
     public void onDrawFrame(GL10 gl) {
-        GLES20.glClearColor(0.0f, 1.0f, 1.0f, 1.0f);
-        GLES20.glClear(GL10.GL_COLOR_BUFFER_BIT);
-
-        // attr_posを有効にする
-        GLES20.glEnableVertexAttribArray(attr_pos);
-
-        // ポリゴン色をアップロードする
-        // 色はRGBAでアップロードする
-        GLES20.glUniform4f(unif_color, 1.0f, 0.0f, 0.0f, 1.0f);
-
+        中略...
 
         {
+
+====================================================== [1] ここから
             final float[] position = {
                     // triangle 0
                     // v0(left top)
@@ -290,10 +306,12 @@ public class Chapter01_03 extends Chapter01_02 {
 
             GLES20.glVertexAttribPointer(attr_pos, 2, GLES20.GL_FLOAT, false, 0, ES20Util.wrap(position));
             GLES20.glDrawArrays(GLES20.GL_TRIANGLES, 0, 6);
+====================================================== [1] ここまで
         }
 
 
         {
+====================================================== [2] ここから
             final float[] position = {
                     // v0(left top)
                     0.25f, 0.75f,
@@ -308,10 +326,12 @@ public class Chapter01_03 extends Chapter01_02 {
 
             GLES20.glVertexAttribPointer(attr_pos, 2, GLES20.GL_FLOAT, false, 0, ES20Util.wrap(position));
             GLES20.glDrawArrays(GLES20.GL_TRIANGLE_STRIP, 0, 4);
+====================================================== [2] ここまで
         }
 
 
         {
+====================================================== [3] ここから
             final float[] position = {
                     // v0(right top)
                     -0.25f, -0.25f,
@@ -326,6 +346,7 @@ public class Chapter01_03 extends Chapter01_02 {
 
             GLES20.glVertexAttribPointer(attr_pos, 2, GLES20.GL_FLOAT, false, 0, ES20Util.wrap(position));
             GLES20.glDrawArrays(GLES20.GL_TRIANGLE_FAN, 0, 4);
+====================================================== [3] ここまで
         }
     }
 }
@@ -342,16 +363,10 @@ public class Chapter01_03 extends Chapter01_02 {
 
 //listnum[][Chapter01_04.java]{
 public class Chapter01_04 extends Chapter01_01 {
-    /**
-     * プログラムオブジェクト
-     */
-    protected int program = 0;
 
-    /**
-     * 頂点座標
-     */
-    protected int attr_pos;
+    中略...
 
+====================================================== [1] ここから
     /**
      * UV座標
      */
@@ -361,15 +376,19 @@ public class Chapter01_04 extends Chapter01_01 {
      * テクスチャUniform
      */
     protected int unif_texture;
+====================================================== [1] ここまで
 
+====================================================== [2] ここから
     /**
      * テクスチャオブジェクト
      */
     protected int texture;
+====================================================== [2] ここまで
 
     @Override
     public void onSurfaceCreated(GL10 gl, EGLConfig config) {
         {
+====================================================== [3] ここから
             final String vertexShaderSource =
                             "attribute mediump vec4 attr_pos;" +
                             "attribute mediump vec2 attr_uv;" +
@@ -385,6 +404,7 @@ public class Chapter01_04 extends Chapter01_01 {
                             "void main() {" +
                             "   gl_FragColor = texture2D(unif_texture, vary_uv);" +
                             "}";
+====================================================== [3] ここまで
 
             // コンパイルとリンクを行う
             this.program = ES20Util.compileAndLinkShader(vertexShaderSource, fragmentShaderSource);
@@ -404,20 +424,24 @@ public class Chapter01_04 extends Chapter01_01 {
         {
             Bitmap bitmap = ES20Util.decodeBitmapFromAssets(getActivity(), "sample512x512.png");
 
+====================================================== [4] ここから
             int[] textureId = {0};
             glGenTextures(1, textureId, 0);
             this.texture = textureId[0];
             assert this.texture != 0;
+====================================================== [4] ここまで
 
+====================================================== [5] ここから
             glBindTexture(GL_TEXTURE_2D, texture);
-            GLUtils.texImage2D(GL_TEXTURE_2D, 0, bitmap, 0); // テクスチャをバインド
             {
+                GLUtils.texImage2D(GL_TEXTURE_2D, 0, bitmap, 0); // テクスチャをバインド
                 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
                 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
                 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
                 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
             }
             glBindTexture(GL_TEXTURE_2D, 0); // テクスチャをアンバインド
+====================================================== [5] ここまで
 
             ES20Util.assertGL();
         }
@@ -426,10 +450,7 @@ public class Chapter01_04 extends Chapter01_01 {
         ES20Util.assertGL();
     }
 
-    @Override
-    public void onSurfaceChanged(GL10 gl, int width, int height) {
-        glViewport(0, 0, width, height);
-    }
+    中略...
 
     @Override
     public void onDrawFrame(GL10 gl) {
@@ -440,10 +461,12 @@ public class Chapter01_04 extends Chapter01_01 {
         glEnableVertexAttribArray(attr_pos);
         glEnableVertexAttribArray(attr_uv);
 
+====================================================== [6] ここから
         // 使用するテクスチャをバインドする
         // unif_textureへテクスチャを設定する
         glBindTexture(GL_TEXTURE_2D, texture);
         glUniform1i(unif_texture, 0);
+====================================================== [6] ここまで
 
         {
             final float[] position = {
@@ -456,6 +479,7 @@ public class Chapter01_04 extends Chapter01_01 {
                     // v3(right bottom)
                     0.75f, -0.75f,};
 
+====================================================== [7] ここから
             final float[] uv = {
                     // v0(left top)
                     0, 0,
@@ -469,6 +493,7 @@ public class Chapter01_04 extends Chapter01_01 {
 
             glVertexAttribPointer(attr_pos, 2, GL_FLOAT, false, 0, ES20Util.wrap(position));
             glVertexAttribPointer(attr_uv, 2, GL_FLOAT, false, 0, ES20Util.wrap(uv));
+====================================================== [7] ここまで
             glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
         }
     }
