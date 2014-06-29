@@ -2,33 +2,15 @@ package com.eaglesakura.sample.graphics;
 
 import com.eaglesakura.sample.graphics.util.ES20Util;
 
-import java.nio.FloatBuffer;
-
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
-import static android.opengl.GLES20.GL_ARRAY_BUFFER;
-import static android.opengl.GLES20.GL_ELEMENT_ARRAY_BUFFER;
-import static android.opengl.GLES20.GL_FLOAT;
-import static android.opengl.GLES20.GL_STATIC_DRAW;
-import static android.opengl.GLES20.GL_TEXTURE_2D;
-import static android.opengl.GLES20.GL_TRIANGLES;
-import static android.opengl.GLES20.GL_UNSIGNED_SHORT;
-import static android.opengl.GLES20.glBindBuffer;
-import static android.opengl.GLES20.glBindTexture;
-import static android.opengl.GLES20.glBufferData;
-import static android.opengl.GLES20.glDrawElements;
-import static android.opengl.GLES20.glEnableVertexAttribArray;
-import static android.opengl.GLES20.glGenBuffers;
-import static android.opengl.GLES20.glUniform1i;
-import static android.opengl.GLES20.glVertexAttribPointer;
+import static android.opengl.GLES20.*;
 
 /**
  * Chapter 03-04
  * <p/>
  * バッファオブジェクトを使用して描画する
- * <p/>
- * TRY ES20Util.wrapを最小限になるように修正してみよう
  */
 public class Chapter03_04 extends Chapter03_02 {
 
