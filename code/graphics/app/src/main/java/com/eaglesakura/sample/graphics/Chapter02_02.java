@@ -1,18 +1,34 @@
 package com.eaglesakura.sample.graphics;
 
+import android.opengl.Matrix;
+
 import com.eaglesakura.sample.graphics.util.ES20Util;
 
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
-import static android.opengl.GLES20.*;
+import static android.opengl.GLES20.GL_FLOAT;
+import static android.opengl.GLES20.GL_FRAGMENT_SHADER;
+import static android.opengl.GLES20.GL_TRIANGLE_STRIP;
+import static android.opengl.GLES20.GL_VERTEX_SHADER;
+import static android.opengl.GLES20.glClear;
+import static android.opengl.GLES20.glClearColor;
+import static android.opengl.GLES20.glDrawArrays;
+import static android.opengl.GLES20.glEnableVertexAttribArray;
+import static android.opengl.GLES20.glGetAttribLocation;
+import static android.opengl.GLES20.glGetUniformLocation;
+import static android.opengl.GLES20.glUniform4f;
+import static android.opengl.GLES20.glUniformMatrix4fv;
+import static android.opengl.GLES20.glUseProgram;
+import static android.opengl.GLES20.glVertexAttribPointer;
+import static android.opengl.GLES20.glViewport;
 
 /**
  * Chapter 02-01
  * <p/>
- * 四角形を平行移動させる
+ * 四角形を行列で平行移動させる
  */
-public class Chapter02_01 extends Chapter01_01 {
+public class Chapter02_02 extends Chapter01_01 {
     /**
      * プログラムオブジェクト
      */
@@ -24,10 +40,10 @@ public class Chapter02_01 extends Chapter01_01 {
     protected int attr_pos;
 
     /**
-     * 平行移動
+     * 頂点に適用する行列
      * unif_matrix
      */
-    protected int unif_translate;
+    protected int unif_matrix;
 
     /**
      * ポリゴン色
@@ -52,10 +68,10 @@ public class Chapter02_01 extends Chapter01_01 {
         {
             final String vertexShaderSource =
                     "" +
-                            "uniform mediump vec4 unif_matrix;" +
+                            "uniform mediump mat4 unif_matrix;" +
                             "attribute mediump vec4 attr_pos;" +
                             "void main() {" +
-                            "   gl_Position = attr_pos + unif_matrix;" +
+                            "   gl_Position = unif_matrix * attr_pos;" +
                             "}";
 
             final String fragmentShaderSource =
@@ -80,8 +96,8 @@ public class Chapter02_01 extends Chapter01_01 {
             unif_color = glGetUniformLocation(program, "unif_color");
             assert unif_color >= 0;
 
-            unif_translate = glGetUniformLocation(program, "unif_matrix");
-            assert unif_translate >= 0;
+            unif_matrix = glGetUniformLocation(program, "unif_matrix");
+            assert unif_matrix >= 0;
         }
 
         glUseProgram(program);
@@ -110,7 +126,10 @@ public class Chapter02_01 extends Chapter01_01 {
 
         // 平行移動を行う
         {
-            glUniform4f(unif_translate, translateX, translateY, 0, 0);
+            float[] matrix = ES20Util.createMatrixIdentity();
+            matrix[4 * 3 + 0] = translateX;
+            matrix[4 * 3 + 1] = translateY;
+            glUniformMatrix4fv(unif_matrix, 1, false, matrix, 0);
 
             translateX += 0.01f;
             translateY += 0.005f;

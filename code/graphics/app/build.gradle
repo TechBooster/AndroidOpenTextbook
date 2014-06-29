@@ -1,13 +1,13 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 19
+    compileSdkVersion 15
     buildToolsVersion "19.1.0"
 
     defaultConfig {
         applicationId "com.eaglesakura.sample.graphics"
         minSdkVersion 15
-        targetSdkVersion 19
+        targetSdkVersion 15
         versionCode 3103
         versionName "3.3"
     }
