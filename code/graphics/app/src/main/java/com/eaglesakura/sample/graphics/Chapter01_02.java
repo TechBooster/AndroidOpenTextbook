@@ -33,17 +33,17 @@ public class Chapter01_02 extends Chapter01_01 {
     /**
      * プログラムオブジェクト
      */
-    int program = 0;
+    protected int program = 0;
 
     /**
      * attr_pos
      */
-    int attr_pos;
+    protected int attr_pos;
 
     /**
      * ポリゴン色
      */
-    int unif_color;
+    protected int unif_color;
 
     /**
      * Surfaceが生成されたタイミングの処理
@@ -119,6 +119,5 @@ public class Chapter01_02 extends Chapter01_01 {
 
         GLES20.glVertexAttribPointer(attr_pos, 2, GLES20.GL_FLOAT, false, 0, ES20Util.wrap(position));
         GLES20.glDrawArrays(GLES20.GL_TRIANGLES, 0, 3);
-
     }
 }

@@ -51,6 +51,7 @@ public class MenuFragment extends Fragment {
             int sampleNumber = 1;
             samples.add(new SampleData(String.format("%d-%d %s", chapterNumber, sampleNumber++, "Hello OpenGL ES"), Chapter01_01.class));
             samples.add(new SampleData(String.format("%d-%d %s", chapterNumber, sampleNumber++, "三角形を描画する"), Chapter01_02.class));
+            samples.add(new SampleData(String.format("%d-%d %s", chapterNumber, sampleNumber++, "四角形を描画する"), Chapter01_03.class));
 
             ++chapterNumber;
         }
