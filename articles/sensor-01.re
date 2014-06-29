@@ -306,13 +306,13 @@ public void onSensorChanged(SensorEvent event) {
 
         SensorManager.getRotationMatrix(inR, I, mAcceleration, mGeomagnetic);
 
-        // Activityの表示が縦固定の場合。横向きになる場合、修正が必要
+        // Activityの表示が縦固定で、端末表面が自分を向いてる場合
         SensorManager.remapCoordinateSystem(inR, SensorManager.AXIS_X, SensorManager.AXIS_Z, outR);
         SensorManager.getOrientation(outR, mOrientation);
 
-        //  radianToDegree(mOrientation[0])  Z軸方向, 方位角
-        //  radianToDegree(mOrientation[1])  X軸方向, 傾斜角
-        //  radianToDegree(mOrientation[2])  Y軸方向, 回転角
+        //  radianToDegree(mOrientation[0])  Z軸方向, Azimuth
+        //  radianToDegree(mOrientation[1])  X軸方向, Pitch
+        //  radianToDegree(mOrientation[2])  Y軸方向, Roll
         
         mSensor[0].setText(String.valueOf(radianToDegree(mOrientation[0])));
         mSensor[1].setText(String.valueOf(radianToDegree(mOrientation[1])));
@@ -323,14 +323,14 @@ public void onSensorChanged(SensorEvent event) {
 
 これで求められる値は
 
- * Z軸方向, 方位角 : 地球上で北を0度とする方位
- * X軸方向, 傾斜角 : 地球中心からの仰角
- * Y軸方向, 回転角 : 地球の南北に対する回転角
+ * Z軸方向, 方位角 : 北を0度とする方位
+ * X軸方向, 傾斜角 : 端末の縦方向の仰角
+ * Y軸方向, 回転角 : 端末の横方向の傾き
 
 言葉で説明するのはわかりづらいので、ぜひ動かしてみてください。センサーの大半は動かして
 学習することで理解できます。
 
-//image[sensor-01-axis_globe][傾きセンサー]{
+//image[sensor-01-orientation][傾きセンサー]{
 //}
 
 
@@ -610,13 +610,12 @@ GPSを利用して位置情報を取得しますが、これは通常のセン�
 //image[sensor-01-play_service-03][Google Play Servicesのインストール 3]{
 //}
 
-正常にビルドしてエラーが無いことを確認しておきましょう。
+ビルドしてエラーが無いことを確認しておきましょう。
 //image[sensor-01-play_service-04][Google Play Servicesのインストール 4]{
 //}
 
 アプリを作成時のひな形作成した後、Google Play ServicesライブラリをAndroid
 ライブラリとして指定することで使用が可能となります。
-#@warn Google API必要だっけ？要確認
 //image[sensor-01-play_service-05][Google Play Servicesのインストール 5]{
 //}
 
@@ -688,13 +687,13 @@ public void onDisconnected() {
 
 実際に使用する場合の実装は、LocationAPIへの接続が必要になります。
 
- * onCreate()もしくはonResume()でLocationClientを取得
- * onResume()でLocationClient#connect()でGoogle Play Servicesへ接続
- * onPause()でLocationClient#disconnect()でGoogle Play Servicesと切断
- * 位置情報はLocationClient#getLastLocation()で取得
+ * onCreate()もしくはonResumeでLocationClientを取得
+ * onResume()でLocationClient#connectでGoogle Play Servicesへ接続
+ * onPause()でLocationClient#disconnectでGoogle Play Servicesと切断
+ * 位置情報はLocationClient#getLastLocationで取得
 
-また、気をつける点としてLocationClient#connect()は非同期関数で、onConnected()
-コールバックが呼ばれてからでないとLocationClient#getLastLocation()を呼ぶことが
+また、気をつける点としてLocationClient#connectは非同期関数で、onConnected
+コールバックが呼ばれてからでないとLocationClient#getLastLocationを呼ぶことが
 できません。
 
 以上をまとめると、このような実装になります。
@@ -792,13 +791,5 @@ mMapBtn.setOnClickListener(new View.OnClickListener() {
         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("geo:" + mLoc.getLatitude() + "," + mLoc.getLongitude()));
         startActivity(intent);
     }
-});
+})
 //}
-
-
-
-
-
-
-#@# ですます調
-#@# 1人称は使わない方向：筆者
