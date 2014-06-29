@@ -6,48 +6,37 @@ import com.eaglesakura.sample.graphics.util.ES20Util;
 import com.eaglesakura.sample.graphics.util.SampleUtil;
 import com.eaglesakura.sample.graphics.util.Vector3;
 
+import java.nio.ByteBuffer;
+import java.nio.FloatBuffer;
+
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
-import static android.opengl.GLES20.GL_FLOAT;
-import static android.opengl.GLES20.GL_FRAGMENT_SHADER;
-import static android.opengl.GLES20.GL_TRIANGLE_STRIP;
-import static android.opengl.GLES20.GL_VERTEX_SHADER;
-import static android.opengl.GLES20.glClear;
-import static android.opengl.GLES20.glClearColor;
-import static android.opengl.GLES20.glDrawArrays;
-import static android.opengl.GLES20.glEnableVertexAttribArray;
-import static android.opengl.GLES20.glGetAttribLocation;
-import static android.opengl.GLES20.glGetUniformLocation;
-import static android.opengl.GLES20.glUniform4f;
-import static android.opengl.GLES20.glUniformMatrix4fv;
-import static android.opengl.GLES20.glUseProgram;
-import static android.opengl.GLES20.glVertexAttribPointer;
-import static android.opengl.GLES20.glViewport;
+import static android.opengl.GLES20.*;
 
 /**
- * Chapter 02-05
+ * Chapter 03-01
  * <p/>
- * カメラで遠景から見たポリゴンを描画する
- * <p/>
- * TRY ポリゴンにテクスチャを貼り付けてみよう
- * <p/>
- * CHALLENGE シェーダーに記述する行列を１つだけにしてみよう(ヒント：Matrix.multiplyMM)
+ * 立方体を描画する
  */
-public class Chapter02_05 extends Chapter01_01 {
+public class Chapter03_01 extends Chapter01_01 {
     /**
      * プログラムオブジェクト
      */
     protected int program = 0;
 
     /**
-     * attr_pos
+     * 頂点座標
      */
     protected int attr_pos;
 
     /**
+     * UV座標
+     */
+    protected int attr_uv;
+
+    /**
      * 頂点に適用するワールド行列
-     * unif_matrix
      */
     protected int unif_world;
 
@@ -62,10 +51,16 @@ public class Chapter02_05 extends Chapter01_01 {
      */
     protected int unif_projection;
 
+
     /**
-     * ポリゴン色
+     * テクスチャUniform
      */
-    protected int unif_color;
+    protected int unif_texture;
+
+    /**
+     * テクスチャオブジェクト
+     */
+    protected int texture;
 
     /**
      * カメラ位置
@@ -100,14 +95,19 @@ public class Chapter02_05 extends Chapter01_01 {
                             "uniform mediump mat4 unif_look;" +
                             "uniform mediump mat4 unif_projection;" +
                             "attribute mediump vec4 attr_pos;" +
+                            "attribute mediump vec2 attr_uv;" +
+                            "varying mediump vec2 vary_uv;" +
                             "void main() {" +
                             "   gl_Position = unif_projection * unif_look * unif_world * attr_pos;" +
+                            "   vary_uv = attr_uv;" +
                             "}";
 
             final String fragmentShaderSource =
-                    "uniform lowp vec4 unif_color;" +
+                    "" +
+                            "uniform sampler2D unif_texture;" +
+                            "varying mediump vec2 vary_uv;" +
                             "void main() {" +
-                            "   gl_FragColor = unif_color;" +
+                            "   gl_FragColor = texture2D(unif_texture, vary_uv);" +
                             "}";
 
             // コンパイルとリンクを行う
@@ -119,9 +119,6 @@ public class Chapter02_05 extends Chapter01_01 {
             attr_pos = glGetAttribLocation(program, "attr_pos");
             assert attr_pos >= 0;
 
-            unif_color = glGetUniformLocation(program, "unif_color");
-            assert unif_color >= 0;
-
             unif_world = glGetUniformLocation(program, "unif_world");
             assert unif_world >= 0;
 
@@ -130,7 +127,16 @@ public class Chapter02_05 extends Chapter01_01 {
 
             unif_projection = glGetUniformLocation(program, "unif_projection");
             assert unif_projection >= 0;
+
+            attr_uv = glGetAttribLocation(program, "attr_uv");
+            assert attr_uv >= 0;
+
+            unif_texture = glGetUniformLocation(program, "attr_uv");
+            assert attr_uv >= 0;
         }
+
+        texture = ES20Util.loadTextureFromAssets(getActivity(), "sample512x512.png");
+        assert texture != 0;
 
         glUseProgram(program);
         ES20Util.assertGL();
@@ -148,7 +154,7 @@ public class Chapter02_05 extends Chapter01_01 {
      */
     private void setupWorld() {
         float[] matrix = ES20Util.createMatrixIdentity();
-        Matrix.setRotateM(matrix, 0, rotate, 0, 0, 1.0f);
+        Matrix.setRotateM(matrix, 0, rotate, 1.0f, 1.0f, 1.0f);
         glUniformMatrix4fv(unif_world, 1, false, matrix, 0);
 
         rotate += 1;
@@ -216,27 +222,54 @@ public class Chapter02_05 extends Chapter01_01 {
 
         // attr_posを有効にする
         glEnableVertexAttribArray(attr_pos);
-
-        // ポリゴン色をアップロードする
-        // 色はRGBAでアップロードする
-        glUniform4f(unif_color, 1.0f, 0.0f, 0.0f, 1.0f);
+        glEnableVertexAttribArray(attr_uv);
 
         // 各行列の設定を行う
         setupWorld();
         setupCamera();
 
-        final float[] position = {
-                // v0(left top)
-                -0.75f, 0.75f,
-                // v1(left bottom)
-                -0.75f, -0.75f,
-                // v2(right top)
-                0.75f, 0.75f,
-                // v3(right bottom)
-                0.75f, -0.75f,};
+        glBindTexture(GL_TEXTURE_2D, texture);
+        glUniform1i(unif_texture, 0);
 
-        glVertexAttribPointer(attr_pos, 2, GL_FLOAT, false, 0, ES20Util.wrap(position));
-        glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+        {
+            // キューブを構築する
+            final float LEFT = -1.0f;
+            final float RIGHT = 1.0f;
+            final float FRONT = -1.0f;
+            final float BACK = 1.0f;
+            final float TOP = 1.0f;
+            final float BOTTOM = -1.0f;
+
+            final float[] cubeVertices = {
+                    // 上下面
+                    LEFT, BOTTOM, FRONT, 0, 0, RIGHT, BOTTOM, FRONT, 1, 0, LEFT, BOTTOM, BACK, 0, 1, //
+                    LEFT, BOTTOM, BACK, 1, 0, RIGHT, BOTTOM, FRONT, 0, 1, RIGHT, BOTTOM, BACK, 1, 1, //
+                    //
+                    LEFT, TOP, FRONT, 0, 0, LEFT, TOP, BACK, 1, 0, RIGHT, TOP, FRONT, 0, 1, //
+                    LEFT, TOP, BACK, 1, 0, RIGHT, TOP, BACK, 0, 1, RIGHT, TOP, FRONT, 1, 1, //
+
+                    //左右面
+                    RIGHT, TOP, FRONT, 0, 0, RIGHT, TOP, BACK, 1, 0, RIGHT, BOTTOM, FRONT, 0, 1, //
+                    RIGHT, TOP, BACK, 1, 0, RIGHT, BOTTOM, BACK, 0, 1, RIGHT, BOTTOM, FRONT, 1, 1, //
+                    //
+                    LEFT, TOP, FRONT, 0, 0, LEFT, BOTTOM, FRONT, 1, 0, LEFT, TOP, BACK, 0, 1, //
+                    LEFT, TOP, BACK, 1, 0, LEFT, BOTTOM, FRONT, 0, 1, LEFT, BOTTOM, BACK, 1, 1, //
+
+                    // 前後面
+                    LEFT, TOP, BACK, 0, 0, LEFT, BOTTOM, BACK, 1, 0, RIGHT, TOP, BACK, 0, 1, //
+                    RIGHT, TOP, BACK, 1, 0, LEFT, BOTTOM, BACK, 0, 1, RIGHT, BOTTOM, BACK, 1, 1, //
+                    //
+                    LEFT, TOP, FRONT, 0, 0, RIGHT, TOP, FRONT, 1, 0, LEFT, BOTTOM, FRONT, 0, 1, //
+                    RIGHT, TOP, FRONT, 1, 0, RIGHT, BOTTOM, FRONT, 0, 1, LEFT, BOTTOM, FRONT, 1, 1, //
+            };
+
+            FloatBuffer buffer = ES20Util.wrap(cubeVertices);
+            glVertexAttribPointer(attr_pos, 3, GL_FLOAT, false, 4 * 3 + 4 * 2, buffer);
+            glVertexAttribPointer(attr_uv, 2, GL_FLOAT, false, 4 * 3 + 4 * 2, buffer.position(3)); // 注意:positionメソッドはbyte単位ではなく要素単位で指定する
+            glDrawArrays(GL_TRIANGLES, 0, 36);
+
+            ES20Util.assertGL();
+        }
 
     }
 }

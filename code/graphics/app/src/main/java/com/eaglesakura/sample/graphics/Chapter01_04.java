@@ -1,8 +1,6 @@
 package com.eaglesakura.sample.graphics;
 
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.opengl.GLES20;
 import android.opengl.GLUtils;
 
 import static android.opengl.GLES20.*;

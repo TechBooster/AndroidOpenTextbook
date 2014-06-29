@@ -70,6 +70,13 @@ public class MenuFragment extends Fragment {
             ++chapterNumber;
         }
 
+        {
+            int sampleNumber = 1;
+            samples.add(new SampleData(String.format("%d-%d %s", chapterNumber, sampleNumber++, "立方体を描画する"), Chapter03_01.class));
+
+            ++chapterNumber;
+        }
+
         adapter = new BaseAdapter() {
             @Override
             public int getCount() {
