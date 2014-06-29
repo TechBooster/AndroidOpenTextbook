@@ -32,9 +32,9 @@ import static android.opengl.GLES20.glVertexAttribPointer;
 import static android.opengl.GLES20.glViewport;
 
 /**
- * Chapter 03-01
+ * Chapter 03-02
  * <p/>
- * 立方体を描画する
+ * 深度バッファを有効化する
  */
 public class Chapter03_02 extends Chapter03_01 {
     @Override

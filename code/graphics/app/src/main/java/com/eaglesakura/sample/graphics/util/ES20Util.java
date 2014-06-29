@@ -11,6 +11,7 @@ import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
+import java.nio.ShortBuffer;
 
 import static android.opengl.GLES20.GL_CLAMP_TO_EDGE;
 import static android.opengl.GLES20.GL_COMPILE_STATUS;
@@ -121,6 +122,13 @@ public class ES20Util {
      */
     public static FloatBuffer wrap(float[] buffer) {
         return (FloatBuffer) ByteBuffer.allocateDirect(buffer.length * 4).order(ByteOrder.nativeOrder()).asFloatBuffer().put(buffer).position(0);
+    }
+
+    /**
+     * 配列バッファをOpenGL ESで使用できるBufferオブジェクトにラップする
+     */
+    public static ShortBuffer wrap(short[] buffer) {
+        return (ShortBuffer) ByteBuffer.allocateDirect(buffer.length * 2).order(ByteOrder.nativeOrder()).asShortBuffer().put(buffer).position(0);
     }
 
     /**

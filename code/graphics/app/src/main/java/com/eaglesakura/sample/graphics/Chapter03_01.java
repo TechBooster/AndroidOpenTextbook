@@ -152,7 +152,7 @@ public class Chapter03_01 extends Chapter01_01 {
     /**
      * ワールド行列設定
      */
-    private void setupWorld() {
+    protected void setupWorld() {
         float[] matrix = ES20Util.createMatrixIdentity();
         Matrix.setRotateM(matrix, 0, rotate, 1.0f, 1.0f, 1.0f);
         glUniformMatrix4fv(unif_world, 1, false, matrix, 0);
@@ -163,7 +163,7 @@ public class Chapter03_01 extends Chapter01_01 {
     /**
      * カメラ情報のセットアップを行う
      */
-    private void setupCamera() {
+    protected void setupCamera() {
         // カメラ注視
         float cameraLookX = 0;
         float cameraLookY = 0;
@@ -278,6 +278,5 @@ public class Chapter03_01 extends Chapter01_01 {
 
             ES20Util.assertGL();
         }
-
     }
 }
