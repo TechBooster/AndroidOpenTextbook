@@ -13,6 +13,8 @@ import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
 /**
+ * Chapter 01-04
+ * <p/>
  * テクスチャサンプル
  * <p/>
  * TRY テクスチャの「ネガ」を描画してみよう
@@ -89,11 +91,14 @@ public class Chapter01_04 extends Chapter01_01 {
             assert this.texture != 0;
 
             glBindTexture(GL_TEXTURE_2D, texture);
-            GLUtils.texImage2D(GL_TEXTURE_2D, 0, bitmap, 0);
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+            GLUtils.texImage2D(GL_TEXTURE_2D, 0, bitmap, 0); // テクスチャをバインド
+            {
+                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+            }
+            glBindTexture(GL_TEXTURE_2D, 0); // テクスチャをアンバインド
 
             ES20Util.assertGL();
         }
@@ -116,7 +121,9 @@ public class Chapter01_04 extends Chapter01_01 {
         glEnableVertexAttribArray(attr_pos);
         glEnableVertexAttribArray(attr_uv);
 
+        // 使用するテクスチャをバインドする
         // unif_textureへテクスチャを設定する
+        glBindTexture(GL_TEXTURE_2D, texture);
         glUniform1i(unif_texture, 0);
 
         {
@@ -139,6 +146,7 @@ public class Chapter01_04 extends Chapter01_01 {
                     1, 0,
                     // v3(right bottom)
                     1, 1,};
+
 
             glVertexAttribPointer(attr_pos, 2, GL_FLOAT, false, 0, ES20Util.wrap(position));
             glVertexAttribPointer(attr_uv, 2, GL_FLOAT, false, 0, ES20Util.wrap(uv));

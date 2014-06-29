@@ -1,30 +1,18 @@
 package com.eaglesakura.sample.graphics;
 
-import static android.opengl.GLES20.*;
-
 import com.eaglesakura.sample.graphics.util.ES20Util;
 
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
+import static android.opengl.GLES20.*;
+
 /**
- * Chapter 01-02
+ * Chapter 02-01
  * <p/>
- * 画面に三角形を描画する。
- * <p/>
- * このサンプル以降、"import static android.opengl.GLES20.*;"を記述することで"GLES20."を省略している。
- * <p/>
- * TRY 端末の縦横を切り替えてみる
- * <p/>
- * TRY 三角形の色を変えてみる
- * <p/>
- * TRY 三角形の大きさや位置を変更する
- * <p/>
- * TRY Viewportを変更する
- * <p/>
- * CHALLENGE "glUniform4f"やassertの部分を変更せずに、シェーダーだけで任意の色のポリゴンを表示させてみよう
+ * 四角形を平行移動させる
  */
-public class Chapter01_02 extends Chapter01_01 {
+public class Chapter02_01 extends Chapter01_01 {
     /**
      * プログラムオブジェクト
      */
@@ -36,9 +24,25 @@ public class Chapter01_02 extends Chapter01_01 {
     protected int attr_pos;
 
     /**
+     * 平行移動
+     * unif_translate
+     */
+    protected int unif_translate;
+
+    /**
      * ポリゴン色
      */
     protected int unif_color;
+
+    /**
+     * X方向の平行移動量
+     */
+    protected float translateX;
+
+    /**
+     * Y方向の平行移動量
+     */
+    protected float translateY;
 
     /**
      * Surfaceが生成されたタイミングの処理
@@ -48,9 +52,10 @@ public class Chapter01_02 extends Chapter01_01 {
         {
             final String vertexShaderSource =
                     "" +
+                            "uniform mediump vec4 unif_translate;" +
                             "attribute mediump vec4 attr_pos;" +
                             "void main() {" +
-                            "   gl_Position = attr_pos;" +
+                            "   gl_Position = attr_pos + unif_translate;" +
                             "}";
 
             final String fragmentShaderSource =
@@ -74,6 +79,9 @@ public class Chapter01_02 extends Chapter01_01 {
 
             unif_color = glGetUniformLocation(program, "unif_color");
             assert unif_color >= 0;
+
+            unif_translate = glGetUniformLocation(program, "unif_translate");
+            assert unif_translate >= 0;
         }
 
         glUseProgram(program);
@@ -100,18 +108,34 @@ public class Chapter01_02 extends Chapter01_01 {
         // 色はRGBAでアップロードする
         glUniform4f(unif_color, 1.0f, 0.0f, 0.0f, 1.0f);
 
+        // 平行移動を行う
+        {
+            glUniform4f(unif_translate, translateX, translateY, 0, 0);
 
-        // 画面中央へ描画する
+            translateX += 0.01f;
+            translateY += 0.005f;
+
+            // 適当なところで元に戻す
+            if (translateX > 1) {
+                translateX = 0;
+            }
+            if (translateY > 1) {
+                translateY = 0;
+            }
+        }
+
+
         final float[] position = {
-                // v0
-                0.0f, 1.0f,
-                // v1
-                1.0f, -1.0f,
-                // v2
-                -1.0f, -1.0f};
-
+                // v0(left top)
+                -0.75f, 0.75f,
+                // v1(left bottom)
+                -0.75f, -0.75f,
+                // v2(right top)
+                0.75f, 0.75f,
+                // v3(right bottom)
+                0.75f, -0.75f,};
 
         glVertexAttribPointer(attr_pos, 2, GL_FLOAT, false, 0, ES20Util.wrap(position));
-        glDrawArrays(GL_TRIANGLES, 0, 3);
+        glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
     }
 }

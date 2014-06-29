@@ -57,6 +57,13 @@ public class MenuFragment extends Fragment {
             ++chapterNumber;
         }
 
+        {
+            int sampleNumber = 1;
+            samples.add(new SampleData(String.format("%d-%d %s", chapterNumber, sampleNumber++, "ポリゴンを平行移動させる"), Chapter02_01.class));
+
+            ++chapterNumber;
+        }
+
         adapter = new BaseAdapter() {
             @Override
             public int getCount() {

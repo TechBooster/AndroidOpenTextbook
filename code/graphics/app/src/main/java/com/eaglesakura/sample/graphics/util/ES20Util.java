@@ -5,6 +5,8 @@ package com.eaglesakura.sample.graphics.util;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
+import android.opengl.GLUtils;
 
 import static android.opengl.GLES20.*;
 
@@ -97,10 +99,6 @@ public class ES20Util {
 
     /**
      * assetsディレクトリからBitmapを読み込む
-     *
-     * @param context
-     * @param fileName
-     * @return
      */
     public static Bitmap decodeBitmapFromAssets(Context context, String fileName) {
         InputStream is = null;
@@ -119,5 +117,28 @@ public class ES20Util {
                 }
             }
         }
+    }
+
+    /**
+     * assetsディレクトリからテクスチャを読み込む
+     */
+    public static int loadTextureFromAssets(Context context, String fileName) {
+        Bitmap bitmap = decodeBitmapFromAssets(context, "sample512x512.png");
+
+        int[] textureId = {0};
+        glGenTextures(1, textureId, 0);
+        int texture = textureId[0];
+        assert texture != 0;
+
+        glBindTexture(GL_TEXTURE_2D, texture);
+        GLUtils.texImage2D(GL_TEXTURE_2D, 0, bitmap, 0);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+
+        ES20Util.assertGL();
+
+        return texture;
     }
 }
