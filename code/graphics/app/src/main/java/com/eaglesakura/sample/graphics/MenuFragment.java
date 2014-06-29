@@ -61,6 +61,8 @@ public class MenuFragment extends Fragment {
             int sampleNumber = 1;
             samples.add(new SampleData(String.format("%d-%d %s", chapterNumber, sampleNumber++, "ポリゴンを平行移動させる"), Chapter02_01.class));
             samples.add(new SampleData(String.format("%d-%d %s", chapterNumber, sampleNumber++, "ポリゴンを行列で平行移動させる"), Chapter02_02.class));
+            samples.add(new SampleData(String.format("%d-%d %s", chapterNumber, sampleNumber++, "ポリゴンを行列で拡大縮小させる"), Chapter02_03.class));
+            samples.add(new SampleData(String.format("%d-%d %s", chapterNumber, sampleNumber++, "ポリゴンを行列で回転させる"), Chapter02_04.class));
 
             ++chapterNumber;
         }
