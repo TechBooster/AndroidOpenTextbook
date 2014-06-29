@@ -11,3 +11,7 @@
 == GPUとOSとEGL
 
 == EGLを使用して初期化する
+
+== GPU狂想曲
+
+== AndroidにおけるOpenGL ESの今後 ver "Android L"
