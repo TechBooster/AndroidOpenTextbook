@@ -3,6 +3,7 @@ package com.eaglesakura.sample.graphics;
 import android.opengl.Matrix;
 
 import com.eaglesakura.sample.graphics.util.ES20Util;
+import com.eaglesakura.sample.graphics.util.Vector3;
 
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
@@ -26,9 +27,9 @@ import static android.opengl.GLES20.glViewport;
 /**
  * Chapter 02-01
  * <p/>
- * 四角形を行列で回転させる
+ * 四角形を行列で平行移動させる
  */
-public class Chapter02_04 extends Chapter01_01 {
+public class Chapter02_05 extends Chapter01_01 {
     /**
      * プログラムオブジェクト
      */
@@ -40,10 +41,21 @@ public class Chapter02_04 extends Chapter01_01 {
     protected int attr_pos;
 
     /**
-     * 頂点に適用する行列
+     * 頂点に適用するワールド行列
      * unif_matrix
      */
-    protected int unif_matrix;
+    protected int unif_world;
+
+
+    /**
+     * look at行列
+     */
+    protected int unif_look;
+
+    /**
+     * 射影行列
+     */
+    protected int unif_projection;
 
     /**
      * ポリゴン色
@@ -51,9 +63,25 @@ public class Chapter02_04 extends Chapter01_01 {
     protected int unif_color;
 
     /**
+     * カメラ位置
+     * 初期位置は適当に決める
+     */
+    protected Vector3 cameraPos = new Vector3(10, 3, 10);
+
+    /**
      * 回転量
      */
     protected float rotate;
+
+    /**
+     * スクリーン幅
+     */
+    protected float screenWidth;
+
+    /**
+     * スクリーン高
+     */
+    protected float screenHeight;
 
     /**
      * Surfaceが生成されたタイミングの処理
@@ -63,10 +91,12 @@ public class Chapter02_04 extends Chapter01_01 {
         {
             final String vertexShaderSource =
                     "" +
-                            "uniform mediump mat4 unif_matrix;" +
+                            "uniform mediump mat4 unif_world;" +
+                            "uniform mediump mat4 unif_look;" +
+                            "uniform mediump mat4 unif_projection;" +
                             "attribute mediump vec4 attr_pos;" +
                             "void main() {" +
-                            "   gl_Position = unif_matrix * attr_pos;" +
+                            "   gl_Position = unif_projection * unif_look * unif_world * attr_pos;" +
                             "}";
 
             final String fragmentShaderSource =
@@ -87,8 +117,14 @@ public class Chapter02_04 extends Chapter01_01 {
             unif_color = glGetUniformLocation(program, "unif_color");
             assert unif_color >= 0;
 
-            unif_matrix = glGetUniformLocation(program, "unif_matrix");
-            assert unif_matrix >= 0;
+            unif_world = glGetUniformLocation(program, "unif_world");
+            assert unif_world >= 0;
+
+            unif_look = glGetUniformLocation(program, "unif_look");
+            assert unif_look >= 0;
+
+            unif_projection = glGetUniformLocation(program, "unif_projection");
+            assert unif_projection >= 0;
         }
 
         glUseProgram(program);
@@ -98,6 +134,65 @@ public class Chapter02_04 extends Chapter01_01 {
     @Override
     public void onSurfaceChanged(GL10 gl, int width, int height) {
         glViewport(0, 0, width, height);
+        this.screenWidth = width;
+        this.screenHeight = height;
+    }
+
+    /**
+     * ワールド行列設定
+     */
+    private void setupWorld() {
+        float[] matrix = ES20Util.createMatrixIdentity();
+        Matrix.setRotateM(matrix, 0, rotate, 0, 0, 1.0f);
+        glUniformMatrix4fv(unif_world, 1, false, matrix, 0);
+
+        rotate += 1;
+    }
+
+    /**
+     * カメラ情報のセットアップを行う
+     */
+    private void setupCamera() {
+        // カメラ注視
+        float cameraLookX = 0;
+        float cameraLookY = 0;
+        float cameraLookZ = 0;
+
+        // カメラ天地
+        float cameraUpX = 0;
+        float cameraUpY = 1;
+        float cameraUpZ = 0;
+
+        // 画角
+        float fov = 45.0f;
+        // アスペクト比
+        float aspect = screenWidth / screenHeight;
+
+        // ニアクリップ/ファークリップ
+        float nearClip = 1.0f;
+        float farClip = 100.0f;
+
+        {
+            // look行列を生成する
+            float[] matrix = ES20Util.createMatrixIdentity();
+            Matrix.setLookAtM(matrix, 0, cameraPos.x, cameraPos.y, cameraPos.z, cameraLookX, cameraLookY, cameraLookZ, cameraUpX, cameraUpY, cameraUpZ);
+
+            // アップロード
+            glUniformMatrix4fv(unif_look, 1, false, matrix, 0);
+
+            // カメラを移動する
+            cameraPos.x -= 0.01f;
+            cameraPos.z -= 0.005f;
+        }
+
+        {
+            // projection行列を生成する
+            float[] matrix = ES20Util.createMatrixIdentity();
+            Matrix.perspectiveM(matrix, 0, fov, aspect, nearClip, farClip);
+
+            // アップロード
+            glUniformMatrix4fv(unif_projection, 1, false, matrix, 0);
+        }
     }
 
     /**
@@ -115,15 +210,9 @@ public class Chapter02_04 extends Chapter01_01 {
         // 色はRGBAでアップロードする
         glUniform4f(unif_color, 1.0f, 0.0f, 0.0f, 1.0f);
 
-        // 平行移動を行う
-        {
-            float[] matrix = ES20Util.createMatrixIdentity();
-            Matrix.setRotateM(matrix, 0, rotate, 0, 0, 1.0f);
-            glUniformMatrix4fv(unif_matrix, 1, false, matrix, 0);
-
-            rotate += 1;
-        }
-
+        // 各行列の設定を行う
+        setupWorld();
+        setupCamera();
 
         final float[] position = {
                 // v0(left top)

@@ -68,7 +68,8 @@ public class Chapter01_04 extends Chapter01_01 {
                             "   gl_FragColor = texture2D(unif_texture, vary_uv);" +
                             "}";
 
-            program = ES20Util.compileAndLinkShader(vertexShaderSource, fragmentShaderSource);
+            // コンパイルとリンクを行う
+            this.program = ES20Util.compileAndLinkShader(vertexShaderSource, fragmentShaderSource);
         }
 
         // locationを取り出す

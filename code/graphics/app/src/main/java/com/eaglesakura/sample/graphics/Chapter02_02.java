@@ -80,12 +80,8 @@ public class Chapter02_02 extends Chapter01_01 {
                             "   gl_FragColor = unif_color;" +
                             "}";
 
-            final int vertexShader = ES20Util.compileShader(GL_VERTEX_SHADER, vertexShaderSource);
-            final int fragmentShader = ES20Util.compileShader(GL_FRAGMENT_SHADER, fragmentShaderSource);
-
-
-            // linkShaderの中でvertex/fragmentの各シェーダーがDeleteされていることに注意する
-            this.program = ES20Util.linkShader(vertexShader, fragmentShader);
+            // コンパイルとリンクを行う
+            this.program = ES20Util.compileAndLinkShader(vertexShaderSource, fragmentShaderSource);
         }
 
         // attributeを取得する
