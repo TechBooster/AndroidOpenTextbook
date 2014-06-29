@@ -75,6 +75,7 @@ public class MenuFragment extends Fragment {
             samples.add(new SampleData(String.format("%d-%d %s", chapterNumber, sampleNumber++, "立方体を描画する"), Chapter03_01.class));
             samples.add(new SampleData(String.format("%d-%d %s", chapterNumber, sampleNumber++, "深度を正しく扱う"), Chapter03_02.class));
             samples.add(new SampleData(String.format("%d-%d %s", chapterNumber, sampleNumber++, "インデックスバッファで描画する"), Chapter03_03.class));
+            samples.add(new SampleData(String.format("%d-%d %s", chapterNumber, sampleNumber++, "バッファオブジェクトを使用する"), Chapter03_04.class));
 
             ++chapterNumber;
         }

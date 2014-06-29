@@ -10,9 +10,9 @@ import javax.microedition.khronos.opengles.GL10;
 import static android.opengl.GLES20.*;
 
 /**
- * Chapter 03-02
+ * Chapter 03-03
  * <p/>
- * 深度バッファを有効化する
+ * インデックスバッファの描画を行う
  * <p/>
  * TRY ES20Util.wrapを最小限になるように修正してみよう
  */
