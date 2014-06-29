@@ -213,12 +213,20 @@ public class Chapter03_01 extends Chapter01_01 {
     }
 
     /**
+     * サーフェイスの塗りつぶし処理
+     */
+    protected void clearSurface() {
+        glClearColor(0.0f, 1.0f, 1.0f, 1.0f);
+        glClear(GL10.GL_COLOR_BUFFER_BIT);
+    }
+
+    /**
      * 毎描画時の処理
      */
     @Override
     public void onDrawFrame(GL10 gl) {
-        glClearColor(0.0f, 1.0f, 1.0f, 1.0f);
-        glClear(GL10.GL_COLOR_BUFFER_BIT);
+        // サーフェイスを単色で塗りつぶす
+        clearSurface();
 
         // attr_posを有効にする
         glEnableVertexAttribArray(attr_pos);
