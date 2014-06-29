@@ -2,6 +2,10 @@ package com.eaglesakura.sample.graphics.util;
 
 import android.opengl.GLES20;
 
+import java.nio.Buffer;
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
+
 /**
  * ES2.0以上で使用できるUtil系メソッドの集合
  */
@@ -60,5 +64,12 @@ public class ES20Util {
         assertGL();
 
         return program;
+    }
+
+    /**
+     * 配列バッファをOpenGL ESで使用できるBufferオブジェクトにラップする
+     */
+    public static Buffer wrap(float[] buffer) {
+        return ByteBuffer.allocateDirect(buffer.length * 4).order(ByteOrder.nativeOrder()).asFloatBuffer().put(buffer).position(0);
     }
 }

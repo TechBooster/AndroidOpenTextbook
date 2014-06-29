@@ -21,9 +21,13 @@ import javax.microedition.khronos.opengles.GL10;
  * <p/>
  * TRY 端末の縦横を切り替えてみる
  * <p/>
+ * TRY 三角形の色を変えてみる
+ * <p/>
  * TRY 三角形の大きさや位置を変更する
  * <p/>
  * TRY Viewportを変更する
+ * <p/>
+ * CHALLENGE "glUniform4f"やassertの部分を変更せずに、シェーダーだけで任意の色のポリゴンを表示させてみよう
  */
 public class Chapter01_02 extends Chapter01_01 {
     /**
@@ -35,6 +39,11 @@ public class Chapter01_02 extends Chapter01_01 {
      * attr_pos
      */
     int attr_pos;
+
+    /**
+     * ポリゴン色
+     */
+    int unif_color;
 
     /**
      * Surfaceが生成されたタイミングの処理
@@ -66,6 +75,9 @@ public class Chapter01_02 extends Chapter01_01 {
         {
             attr_pos = GLES20.glGetAttribLocation(program, "attr_pos");
             assert attr_pos >= 0;
+
+            unif_color = GLES20.glGetUniformLocation(program, "unif_color");
+            assert unif_color >= 0;
         }
 
         GLES20.glUseProgram(program);
@@ -87,5 +99,26 @@ public class Chapter01_02 extends Chapter01_01 {
 
 
         // TODO 三角形描画
+        // attr_posを有効にする
+        GLES20.glEnableVertexAttribArray(attr_pos);
+
+        // ポリゴン色をアップロードする
+        // 色はRGBAでアップロードする
+        GLES20.glUniform4f(unif_color, 1.0f, 0.0f, 0.0f, 1.0f);
+
+
+        // 画面中央へ描画する
+        final float[] position = {
+                // v0
+                0.0f, 1.0f,
+                // v1
+                1.0f, -1.0f,
+                // v2
+                -1.0f, -1.0f};
+
+
+        GLES20.glVertexAttribPointer(attr_pos, 2, GLES20.GL_FLOAT, false, 0, ES20Util.wrap(position));
+        GLES20.glDrawArrays(GLES20.GL_TRIANGLES, 0, 3);
+
     }
 }
