@@ -22,8 +22,8 @@ ADTを立ち上げ、新たにAndroidプロジェクトを作成します。
 
 上のタブで「fragment_main.xml」を選び、下のタブが「Graphical Layout」になっていることを確認します。
 
-
-【001】（「fragment_main.xml」と「Graphical Layout」に矢印を入れたい）
+//image[001.png][]{
+//}
 
 === Graphical Layout の見方を確認しよう
 
@@ -48,9 +48,11 @@ Graphical Layout を開くと、Androidの画面が大きくあらわれます�
 
 (A)のパレットから好きなパーツを選んで、(B)のプレビュー領域にドラッグアンドドロップをしてみましょう。
 
-　　 
-【002（ドラッグ中） - 003（ドラッグ完了）】
-▲(A)パレットの「Form Widgets」の中から「Button」を選んでドラッグアンドドロップし、Buttonを配置した
+//image[002.png][ドラッグ中]{
+//}
+//image[003.png][ドラッグ完了]{
+//}
+(A)パレットの「Form Widgets」の中から「Button」を選んでドラッグアンドドロップし、Buttonを配置した
 
 ボタンが配置されました。
 
@@ -62,20 +64,20 @@ Graphical Layout を開くと、Androidの画面が大きくあらわれます�
 プレビュー画面のボタンを選択した状態で、プロパティパネルを見ると、ボタンのプロパティがたくさん出ています。
 
 
-【004】
-▲ボタンのプロパティ
+//image[004.png][ボタンのプロパティ]{
+//}
 
 この中にある「Text」という項目が、ボタンのラベルになっていますので、右の列の「Button」と書かれてあるところをダブルクリックし、「送信」に変えてみましょう。
 （Textは2ヶ所ありますが、どちらも同じです）
 
-【005】
-▲ボタンのラベルを「送信」に変えた
+//image[005.png][ボタンのラベルを「送信」に変えた]{
+//}
 
 そうすると、プレビューエリアのボタンのラベルも変わりました。
 
 
-【006】
-▲プレビューエリアのボタンのラベルも「送信」に変わった
+//image[006.png][プレビューエリアのボタンのラベルも「送信」に変わった]{
+//}
 
 このように、プロパティパネルにある値をいろいろと変えていくことで、パーツのカスタマイズができます。
 
@@ -83,8 +85,24 @@ Graphical Layout を開くと、Androidの画面が大きくあらわれます�
 
 パーツは、パレットエリアに、カテゴリごとにフォルダ分けされています。他のフォルダの中も見てみましょう。
 
-
-【007 - 015】
+//image[007.png][]{
+//}
+//image[008.png][]{
+//}
+//image[009.png][]{
+//}
+//image[010.png][]{
+//}
+//image[011.png][]{
+//}
+//image[012.png][]{
+//}
+//image[013.png][]{
+//}
+//image[014.png][]{
+//}
+//image[015.png][]{
+//}
 
 パレットの中に入っているパーツは、配置するだけで、アプリ内でそのまま使えるものもあります。たとえば、テキストや画像などは何かを表示するだけのものですので、配置するだけでその役目を果たします。
 しかし多くの場合はそうではなく、たとえば、テキストを入力してボタンを押したらどうなるか、というところをプログラミングしなければ、アプリとして成立しません。
@@ -98,7 +116,9 @@ Graphical Layout を開くと、Androidの画面が大きくあらわれます�
 === 実習1：Graphical Layoutを使って、次のインターフェイスを作成してみよう
 
 
-【016】
+//image[016.png][]{
+//}
+
 
 ==== 解説
 
@@ -116,13 +136,20 @@ Graphical Layout を開くと、Androidの画面が大きくあらわれます�
 
 の4つのテキストフィールドがあり、それぞれ「Text Fields」フォルダの中から選んで配置しますが、それぞれの「Input Type」が異なるものを選んでくるのが最適です。
 
+//image[017.png][E-mailでは、Input Typeの値が「textEmailAddress」になっている]{
+//}
 
-【017】
-▲E-mailでは、Input Typeの値が「textEmailAddress」になっている
+//image[018.png][]{
+//}
 
+//image[019.png][]{
+//}
 
-【018 - 021】
-▲それぞれの特徴にあったText Fieldsを選ぶ
+//image[020.png][]{
+//}
+
+//image[021.png][それぞれの特徴にあったText Fieldsを選ぶ]{
+//}
 
 こうすることで、Android OSが最適なIME（日本語入力）キーボードを自動で表示することができます。
 たとえば、「Plain Text」のときは通常の日本語入力キーボードですが、「E-mail」にしたときは英数字キーボードで、しかも「@」も表示されているのがわかります。
@@ -137,8 +164,8 @@ Input Typeで表示させるキーボードを切り分けることによって�
 
 そうするためには、「Form Widgets」の中の「RadioGroup」を選ぶべきです。「RadioButton」を選んでしまうと、それぞれが単独で選べることになってしまいますので、注意しましょう。
 
-【022】
-▲ラジオボタンをそれぞれ単独で選ぶことができる状態。こうならないようにしよう
+//image[022.png][ラジオボタンをそれぞれ単独で選ぶことができる状態。こうならないようにしよう]{
+//}
 
 ===== 3. 「登録する」というボタン
 
@@ -146,8 +173,8 @@ Input Typeで表示させるキーボードを切り分けることによって�
 
 
 
-【023】
-▲ボタンの横幅が、「登録する」の4文字分しかない
+//image[023.png][ボタンの横幅が、「登録する」の4文字分しかない]{
+//}
 
 これでは、小さくて押しづらくなってしまいます。
 このボタンは、すべての項目を入力したあとの「入力完了」という意味も含めて押すものですので、横幅いっぱいに大きく配置しましょう。
@@ -155,8 +182,8 @@ Input Typeで表示させるキーボードを切り分けることによって�
 まずはボタンを配置し、「登録する」というラベルに変更したあとに、マウスをうまく使って横幅いっぱいに伸ばします。
 
 
-【024】
-▲ボタンの横幅を調整する
+//image[024.png][ボタンの横幅を調整する]{
+//}
 
 ここまで完成したら、次の節ではXMLでインターフェイスを作っていきます。
 
@@ -255,7 +282,7 @@ XMLは、次のような要素で構成されています。
 
 要素名は、よく使うものとして次のようなものがあります。
 
-//table[よく使う要素名]{
+//table[よく使う要素名][]{
 Button  ボタンを表示する
 TextView        テキストを表示する
 ImageView       画像を表示する
@@ -301,22 +328,22 @@ SeekBar シークバーを表示する
 
 ボタンを表示するときには、次のようなXMLを書きます。
 
-//list[button1-1]{
+//list[button1-1][]{
 <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Button" />
 //}
 
-//image[button1-1][ボタン表示]{
-//}
+#@# //image[button1-1][ボタン表示]{
+#@# //}
 
 デザインのカスタマイズを何もしていない、デフォルトの状態のこのボタンは、タップすると色が変わり、「タップされた」という状態をユーザーにフィードバックしています。
 
-//image[button1-1-pressed-4][Android 4.3までは青くなる]{
-//}
-//image[button1-1-pressed-kitkat][Android 4.4では少し色が薄くなる]{
-//}
+#@# //image[button1-1-pressed-4][Android 4.3までは青くなる]{
+#@# //}
+#@# //image[button1-1-pressed-kitkat][Android 4.4では少し色が薄くなる]{
+#@# //}
 
 @<list>[button1-1]の4行目の「android:text」という属性が、ボタン内に表示するテキストです。
 
@@ -324,7 +351,7 @@ SeekBar シークバーを表示する
 それぞれの要素が、横方向（layout_width）または縦方向（layout_height）に対してどれぐらいの領域を占めるかという設定です。
 これらには「wrap_content」と「match_parent」というふたつの値が存在します。
 
-//table[]{
+//table[][]{
 値       説明
 wrap_content    要素を占める領域は、その要素がもっているサイズのみにとどまる
 match_parent    要素を占める領域は、縦または横の画面サイズいっぱいまで広がる
@@ -337,12 +364,12 @@ match_parent    要素を占める領域は、縦または横の画面サイズ�
 
 wrap_contentを設定した場合、要素を占める領域は、その要素がもっているサイズのみにとどまります。つまり、「Button」という文字が設定されているボタンであれば、「Button」という文字のまわりに一定の余白がとられ、それらをひっくるめたものが要素の領域となります。
 
-//image[button1-2][要素を幅としたボタン]{
-//}
+#@# //image[button1-2][要素を幅としたボタン]{
+#@# //}
 
 確認のため、ボタン内に表示するテキストを変更してみます。
 
-//list[button1-2]{
+//list[button1-2][]{
 <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -354,7 +381,7 @@ wrap_contentを設定した場合、要素を占める領域は、その要素�
 
 wrap_contentを設定した要素をどんどん並べていくと、横へ横へと配置されていきます。
 
-//list[button1-3]{
+//list[button1-3][]{
 <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -366,13 +393,13 @@ wrap_contentを設定した要素をどんどん並べていくと、横へ横�
         android:text="登録して送信する" />
 //}
 
-//image[button1-3][no title]{
-//}
+#@# #@# //image[button1-3][no title]{
+#@# //}
 
 画面サイズにおさまらなくなった場合は、改行されます。
 
-//image[button1-4][no title]{
-//}
+#@# //image[button1-4][no title]{
+#@# //}
 
 もちろんボタンだけではなく、テキスト（TextView）や、このあとに出てくる画像（ImageView）などもいっしょに横に並べて配置することもできます。
 
@@ -381,17 +408,19 @@ wrap_contentを設定した要素をどんどん並べていくと、横へ横�
 @<list>[button1-1]では、android:layout_widthもandroid:layout_heightも、両方とも「wrap_content」が設定されていました。
 2行目のandroid:layout_widthを「match_parent」に変更してみます。
 
-//list[button2-1]{
+//list[button2-1][]{
 <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Button" />
 //}
 
-//image[button2-1][no title]{
-//}
+#@# //image[button2-1][no title]{
+#@# //}
 
-横方向に、画面サイズいっぱいまで広げる設定をしましたので、ボタンは@<image>[button2]のように横幅いっぱいまで広がります。
+横方向に、画面サイズいっぱいまで広げる設定をしましたので、ボタンは
+#@# @<image>[button2]
+のように横幅いっぱいまで広がります。
 
 では今度は、@<list>[button2-2]のように、android:layout_widthを「wrap_content」に戻し、android:layout_heightを「match_parent」に設定してみましょう。
 
@@ -402,8 +431,8 @@ wrap_contentを設定した要素をどんどん並べていくと、横へ横�
         android:text="Button" />
 //}
 
-//image[button2-2][no title]{
-//}
+#@# //image[button2-2][no title]{
+#@# //}
 
 今度は縦方向に、画面サイズいっぱいまで広がりました。
 
@@ -414,32 +443,34 @@ wrap_contentを設定した要素をどんどん並べていくと、横へ横�
 
 画像を表示するときには、次のようなXMLを書きます。
 
-//list[img1-1]{
+//list[img1-1][]{
 <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_launcher" />
 //}
 
-//image[img1-1][drawable-xhdpiフォルダにあるic_launcher.pngを表示した]{
-//}
+#@# //image[img1-1][drawable-xhdpiフォルダにあるic_launcher.pngを表示した]{
+#@# //}
 
-//image[img1-2][resフォルダ内のdrawableフォルダ]{
-//}
+#@# //image[img1-2][resフォルダ内のdrawableフォルダ]{
+#@# //}
 
 @<list>[img1-1]の4行目の「android:src」は、resフォルダの「drawable-xxxxx」フォルダ内に入っている画像リソースのファイル名を設定する属性です。
 
 画像の拡張子は、pngです。
 
-ic_launcher.pngは、resフォルダの「drawable-mdpi」「drawable-hdpi」「drawable-xhdpi」という3つのフォルダの中に1つずつ入っています（@<image>[img1-3]）。内容は同じですが、それぞれの画面解像度に合ったサイズのものが入っています。
+ic_launcher.pngは、resフォルダの「drawable-mdpi」「drawable-hdpi」「drawable-xhdpi」という3つのフォルダの中に1つずつ入っています（
+#@# @<image>[img1-3]
+）。内容は同じですが、それぞれの画面解像度に合ったサイズのものが入っています。
 
-//image[img1-3][各drawableフォルダにはそれぞれの画面解像度にあった大きさの画像リソースが入っている]{
-//}
+#@# //image[img1-3][各drawableフォルダにはそれぞれの画面解像度にあった大きさの画像リソースが入っている]{
+#@# //}
 
 「android:src」の指定では、「@drawable」をつけて、<b>drawableというフォルダ内を参照</b>します。しかしここでは「@drawable-xhdpi/ic_launcher」のように画面解像度は書きません。
 
-//image[img1-4][参照フォルダに画面解像度は入れない]{
-//}
+#@# //image[img1-4][参照フォルダに画面解像度は入れない]{
+#@# //}
 
 端末ごとにどの画面解像度なのかは一意に決まっていますので、「@drawable/ic_launcher」と書くだけで、Android側で自動で判別し、該当する画像リソースを取得します。
 
@@ -448,7 +479,7 @@ ic_launcher.pngは、resフォルダの「drawable-mdpi」「drawable-hdpi」「
 
 画像を表示するときには、次のようなXMLを書きます。
 
-//list[textfield1-1]{
+//list[textfield1-1][]{
 <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
@@ -456,12 +487,12 @@ ic_launcher.pngは、resフォルダの「drawable-mdpi」「drawable-hdpi」「
 
 これだけで、最低限の入力エリアを作成することができます。
 
-//image[textfield1-1][no title]{
-//}
+#@# //image[textfield1-1][no title]{
+#@# //}
 
 @<list>[textfield1-1]では横幅いっぱいに配置していますが、@<list>[textfield1-2]のように「android:ems」を追加し、文字数によって横幅を指定することもできます。
 
-//list[textfield1-2]{
+//list[textfield1-2][]{
 <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -473,7 +504,7 @@ ic_launcher.pngは、resフォルダの「drawable-mdpi」「drawable-hdpi」「
 
 たとえば、「android:inputType=”textPassword”」を追加すると、前節にも出てきたパスワード入力用のテキストフィールドになります。
 
-//list[textfield1-3]{
+//list[textfield1-3][]{
 <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -481,8 +512,8 @@ ic_launcher.pngは、resフォルダの「drawable-mdpi」「drawable-hdpi」「
         android:inputType=”textPassword” />
 //}
 
-//image[textfield1-3][no title]{
-//}
+#@# //image[textfield1-3][no title]{
+#@# //}
 
 「android:inputType」については、場合に応じて必要な入力制限を設定するようにしましょう。
 
