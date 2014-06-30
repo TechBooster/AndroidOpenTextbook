@@ -175,7 +175,7 @@ Graphical Layoutではドラッグアンドドロップでだれでもレイア�
 そして、立ち上がった「fragment_main.xml」を開きます。Graphical Layoutを見ると、「Hello world!」が表示されています。
 
 
-//image[201]{
+//image[201][Graphical Layoutを見る]{
 //}
 
 下のタブを「fragment_main.xml」に切り替えてみましょう。
@@ -308,7 +308,7 @@ SeekBar シークバーを表示する
         android:text="Button" />
 //}
 
-//image[button1-1]{
+//image[button1-1][ボタン表示]{
 //}
 
 デザインのカスタマイズを何もしていない、デフォルトの状態のこのボタンは、タップすると色が変わり、「タップされた」という状態をユーザーにフィードバックしています。
@@ -337,7 +337,7 @@ match_parent    要素を占める領域は、縦または横の画面サイズ�
 
 wrap_contentを設定した場合、要素を占める領域は、その要素がもっているサイズのみにとどまります。つまり、「Button」という文字が設定されているボタンであれば、「Button」という文字のまわりに一定の余白がとられ、それらをひっくるめたものが要素の領域となります。
 
-//image[button1-2]{
+//image[button1-2][要素を幅としたボタン]{
 //}
 
 確認のため、ボタン内に表示するテキストを変更してみます。
@@ -366,12 +366,12 @@ wrap_contentを設定した要素をどんどん並べていくと、横へ横�
         android:text="登録して送信する" />
 //}
 
-//image[button1-3]{
+//image[button1-3][no title]{
 //}
 
 画面サイズにおさまらなくなった場合は、改行されます。
 
-//image[button1-4]{
+//image[button1-4][no title]{
 //}
 
 もちろんボタンだけではなく、テキスト（TextView）や、このあとに出てくる画像（ImageView）などもいっしょに横に並べて配置することもできます。
@@ -388,7 +388,7 @@ wrap_contentを設定した要素をどんどん並べていくと、横へ横�
         android:text="Button" />
 //}
 
-//image[button2-1]{
+//image[button2-1][no title]{
 //}
 
 横方向に、画面サイズいっぱいまで広げる設定をしましたので、ボタンは@<image>[button2]のように横幅いっぱいまで広がります。
@@ -402,7 +402,7 @@ wrap_contentを設定した要素をどんどん並べていくと、横へ横�
         android:text="Button" />
 //}
 
-//image[button2-2]{
+//image[button2-2][no title]{
 //}
 
 今度は縦方向に、画面サイズいっぱいまで広がりました。
@@ -456,7 +456,7 @@ ic_launcher.pngは、resフォルダの「drawable-mdpi」「drawable-hdpi」「
 
 これだけで、最低限の入力エリアを作成することができます。
 
-//image[textfield1-1]{
+//image[textfield1-1][no title]{
 //}
 
 @<list>[textfield1-1]では横幅いっぱいに配置していますが、@<list>[textfield1-2]のように「android:ems」を追加し、文字数によって横幅を指定することもできます。
@@ -481,7 +481,7 @@ ic_launcher.pngは、resフォルダの「drawable-mdpi」「drawable-hdpi」「
         android:inputType=”textPassword” />
 //}
 
-//image[textfield1-3]{
+//image[textfield1-3][no title]{
 //}
 
 「android:inputType」については、場合に応じて必要な入力制限を設定するようにしましょう。
