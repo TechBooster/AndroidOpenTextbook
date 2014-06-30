@@ -793,3 +793,79 @@ mMapBtn.setOnClickListener(new View.OnClickListener() {
     }
 })
 //}
+
+== GPS情報の更新
+
+上記の方法では、起動時の位置情報しか取得できません。これでは移動しながら位置情報を更新する
+用途には使いづらいので、都度更新するような方法で実装してみます。
+
+onConnectedまでは同じですが、その後に更新間隔をリクエストするようにします。
+
+ * LocationRequest#create で更新リクエストを生成
+ * LocationRequest#setInterval で更新間隔の目安をセット(ms)
+ * LocationRequest#setSmallestDisplacement で更新距離間隔をセット(m)
+ * LocationRequest#setPriority 更新のプライオリティをセット
+ * LocationClient#requestLocationUpdates LocationClientに更新リクエストをセット
+
+//list[gps_request][更新設定]{
+@Override
+public void onConnected(Bundle connectionHint) {
+    // 位置情報の更新リクエスト
+    LocationRequest req = LocationRequest.create();
+    req.setInterval(5000);
+    req.setSmallestDisplacement(1);
+    req.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+    mLocationClient.requestLocationUpdates(req, this);
+}
+//}
+
+プライオリティの設定は、端末の電池消費に影響します。例としてGalaxyNexusの場合
+は以下のようになるという実験結果があります@<fn>{gps_priority}。
+
+//image[sensor-01-priority][プライオリティと電池消費量]{
+//}
+
+ * PRIORITY_HIGH_ACCURACY : 屋外ではGPS、屋内ではWiFiやセル（基地局）を使用する。電池消費量が多くマップアプリ向け。
+ * PRIORITY_BALANCED_POWER_ACCURACY : GPSを使わない。WiFiやセルを使用する。ブロックレベル（約100m）の精度。
+ * PRIORITY_LOW_POWER : GPSを使わない。WiFiやセルを使用する。市レベル（約10km）の精度。
+ * PRIORITY_NO_POWER : 正確性はその時の状態に依存。
+
+微妙に資料と違いますが、公称と実験結果という差がありそうです。。。
+
+//footnote[gps_priority][Googl I/O 2013講演資料より @<href>{http://y-anz-m.blogspot.jp/2013/05/google-io-2013-android-beyond-blue-dot.html}]
+
+さて、このLocationClient#requestLocationListnerを使用する場合は、
+com.google.android.gms.location.LocationListenerをリスナーにセットし、
+コールバックを実装します。
+
+//list[gps_location][位置情報更新のコールバック]{
+@Override
+public void onLocationChanged(Location loc) {
+    Toast.makeText(this, "Get Location", Toast.LENGTH_SHORT).show();
+
+    Date date = new Date(loc.getTime());
+    SimpleDateFormat sdf = new SimpleDateFormat("MM/dd: HH:mm:ss");
+    mLocation[0].setText(String.valueOf(loc.getLatitude()));
+    mLocation[1].setText(String.valueOf(loc.getLongitude()));
+    mLocation[2].setText(String.valueOf(loc.getAltitude()));
+    mLocation[3].setText(String.valueOf(loc.getSpeed()));
+    mLocation[4].setText(sdf.format(date));
+    mLocation[5].setText(String.valueOf(loc.getAccuracy()));
+    mLocation[6].setText(String.valueOf(loc.getBearing()));
+}
+//}
+
+今回は取得したLocationオブジェクトからいくつかのデータを取り出しています。
+
+ * Latitude : 緯度（度）
+ * Longitude : 軽度（度）
+ * Altitude : 高度（m）
+ * Speed : 移動速度（m/s）
+ * Time : 所得時間（UTC）
+ * Accuracy : 精度（m）
+ * Bearing : 北からの時計回りの角度（度）無い場合は０
+
+このように、ざっくりと位置を確認したい場合は"LocationClient#getLastLocation"を使い、時間や位置の変化で更新を
+伴ない場合はLocationRequestを使用するというのが定石となります。
+
+= センサーまとめ
