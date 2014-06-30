@@ -13,7 +13,7 @@ Androidでは多くのセンサー情報が取得できますが、実際のハ�
 については、他のセンサーとは異なりGoogle Play Servicesで提供されるライブラリ
 を使用して取得します。まずはGPS以外のセンサーから説明していきます。
 
-//footnote[sensor_ref][http://developer.android.com/reference/android/hardware/Sensor.html]
+//footnote[sensor_ref][@<href>{http://developer.android.com/reference/android/hardware/Sensor.html}]
 
 == 搭載されるセンサーの種類
 リファレンスによると、現在のAPI Level 19で使用可能なセンサーの一覧は以下のようになります。
@@ -151,7 +151,7 @@ public class SensorActivity extends Activity implements SensorEventListener {
 センサーデータはvaluesに入っていますが、配列の数と意味は使用するセンサーによって
 異なります。使用するセンサーによるデータの意味はリファレンスを見て下さい@<fn>{sensor_motion}。
 
-//footnote[sensor_motion][http://developer.android.com/guide/topics/sensors/sensors_motion.html]
+//footnote[sensor_motion][@<href>{http://developer.android.com/guide/topics/sensors/sensors_motion.html}]
 
 今回の加速度の例では以下のようになります。valuesの配列サイズは"3"になります。
 また型はfloatなので注意して下さい。
@@ -282,7 +282,7 @@ protected void onResume() {
 センサーの取得はonSensorCahngedで行います。この計算の詳細は省きますが
 リファレンス@<fn>{orientation_ref}のSensorManager#getRotationMatrixを参照してください。
 
-//footnote[orientation_ref][http://developer.android.com/reference/android/hardware/SensorManager.html]
+//footnote[orientation_ref][@<href>{http://developer.android.com/reference/android/hardware/SensorManager.html}]
 
 //list[orientation-changed][傾きを求めるイベントコールバック]{
 @Override
@@ -530,7 +530,7 @@ x軸、y軸、z軸のそれぞれの加速度を重力加速度を差し引い�
 ただし、ここにある基本のセンサーでも搭載されていない機種があるので、基本だからといって
 センサー値が取得できるとは限りません。
 
-//footnote[sensor_category][https://source.android.com/devices/sensors/index.html]
+//footnote[sensor_category][@<href>{https://source.android.com/devices/sensors/index.html}]
 
 == センサーのバッチモード
 
@@ -545,7 +545,7 @@ x軸、y軸、z軸のそれぞれの加速度を重力加速度を差し引い�
 歩行検出センサーと、歩数計センサーが使用可能になっており、特にこの辺りのセンサー
 を使用する場合に有効な手段となります。
 
-//footnote[sensor_batch][https://source.android.com/devices/sensors/batching.html]
+//footnote[sensor_batch][@<href>{https://source.android.com/devices/sensors/batching.html}]
 
 === バッチモードの使用
 
@@ -587,7 +587,7 @@ GPSは受信精度が高ければ、正確な位置を10m程度の誤差で測�
 ため、常に1機は日本上空にあって、マルチパスの影響を受けず正確な位置を測位することが可能に
 なります。
 
-//footnote[mitibiki][http://www.jaxa.jp/projects/sat/qzss/index_j.html]
+//footnote[mitibiki][@<href>{http://www.jaxa.jp/projects/sat/qzss/index_j.html}]
 
 == GPSを利用した位置情報取得
 
@@ -774,12 +774,12 @@ AndroidManifest.xmlにGPSのパーミッションを追加します。
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
 //}
 
-位置情報が取得した例として、アプリで表示させると下記のようになります。
+位置情報を取得した例として、アプリで表示させると下記のようになります。
 //image[sensor-01-location][位置情報取得]{
 //}
 
-さて、これだけだといわゆる緯度経度の数値しか見えないので、イマイチ正しいかどうかわかりません。
-ちょっと工夫して、位置をMapで表示するようにしてみます。
+さて、これだけだといわゆる緯度経度の数値しか見えないので、イマイチ取得した
+位置が正しいかどうかわかりません。ちょっと工夫して、位置をMapで表示するようにしてみます。
 
 ボタンを配置して、リスナーをセットします。ボタンがクリックされたらIntentでGoogle Mapsを
 起動します。その時に"geo:"のスキーマに緯度経度を設定します。
@@ -793,6 +793,8 @@ mMapBtn.setOnClickListener(new View.OnClickListener() {
     }
 })
 //}
+
+#@# マップ表示
 
 == GPS情報の更新
 
@@ -836,7 +838,8 @@ public void onConnected(Bundle connectionHint) {
 
 さて、このLocationClient#requestLocationListnerを使用する場合は、
 com.google.android.gms.location.LocationListenerをリスナーにセットし、
-コールバックを実装します。
+コールバックを実装します。これで、更新タイミングでこのコールバックが呼ばれる
+ようになります。また、リクエストした更新はonPauseで解除しておきます。
 
 //list[gps_location][位置情報更新のコールバック]{
 @Override
@@ -853,6 +856,17 @@ public void onLocationChanged(Location loc) {
     mLocation[5].setText(String.valueOf(loc.getAccuracy()));
     mLocation[6].setText(String.valueOf(loc.getBearing()));
 }
+
+@Override
+protected void onPause() {
+    super.onPause();
+    if (mLocationClient != null) {
+        // LocationListenerを解除
+        mLocationClient.removeLocationUpdates(this);
+        // Google Play Servicesとの切断
+        mLocationClient.disconnect();
+    }
+}
 //}
 
 今回は取得したLocationオブジェクトからいくつかのデータを取り出しています。
@@ -866,6 +880,8 @@ public void onLocationChanged(Location loc) {
  * Bearing : 北からの時計回りの角度（度）無い場合は０
 
 このように、ざっくりと位置を確認したい場合は"LocationClient#getLastLocation"を使い、時間や位置の変化で更新を
-伴ない場合はLocationRequestを使用するというのが定石となります。
+伴ない場合は"LocationRequest#requestLocationUpdates"を使用するというのが定石となります。
 
-= センサーまとめ
+#@# データ表示
+
+== センサーまとめ
