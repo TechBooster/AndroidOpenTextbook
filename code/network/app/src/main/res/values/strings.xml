@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">network</string>
+    <string name="use_socket">Use socket</string>
+    <string name="use_http_url_connection">Use HttpURLConnection</string>
+    <string name="use_http_client">Use HttpClient</string>
+    <string name="title_activity_socket">SocketActivity</string>
+    <string name="socket">Socket</string>
+    <string name="http_url_connection">HttpURLConnection</string>
+    <string name="download">Download</string>
+    <string name="title_activity_http_urlconnection">HttpURLConnectionActivity</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+
+</resources>
