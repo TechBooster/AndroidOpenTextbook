@@ -22,7 +22,7 @@ ADTを立ち上げ、新たにAndroidプロジェクトを作成します。
 
 上のタブで「fragment_main.xml」を選び、下のタブが「Graphical Layout」になっていることを確認します。
 
-//image[001.png][]{
+//image[001][]{
 //}
 
 === Graphical Layout の見方を確認しよう
@@ -48,9 +48,9 @@ Graphical Layout を開くと、Androidの画面が大きくあらわれます�
 
 (A)のパレットから好きなパーツを選んで、(B)のプレビュー領域にドラッグアンドドロップをしてみましょう。
 
-//image[002.png][ドラッグ中]{
+//image[002][ドラッグ中]{
 //}
-//image[003.png][ドラッグ完了]{
+//image[003][ドラッグ完了]{
 //}
 (A)パレットの「Form Widgets」の中から「Button」を選んでドラッグアンドドロップし、Buttonを配置した
 
@@ -64,19 +64,19 @@ Graphical Layout を開くと、Androidの画面が大きくあらわれます�
 プレビュー画面のボタンを選択した状態で、プロパティパネルを見ると、ボタンのプロパティがたくさん出ています。
 
 
-//image[004.png][ボタンのプロパティ]{
+//image[004][ボタンのプロパティ]{
 //}
 
 この中にある「Text」という項目が、ボタンのラベルになっていますので、右の列の「Button」と書かれてあるところをダブルクリックし、「送信」に変えてみましょう。
 （Textは2ヶ所ありますが、どちらも同じです）
 
-//image[005.png][ボタンのラベルを「送信」に変えた]{
+//image[005][ボタンのラベルを「送信」に変えた]{
 //}
 
 そうすると、プレビューエリアのボタンのラベルも変わりました。
 
 
-//image[006.png][プレビューエリアのボタンのラベルも「送信」に変わった]{
+//image[006][プレビューエリアのボタンのラベルも「送信」に変わった]{
 //}
 
 このように、プロパティパネルにある値をいろいろと変えていくことで、パーツのカスタマイズができます。
@@ -85,23 +85,23 @@ Graphical Layout を開くと、Androidの画面が大きくあらわれます�
 
 パーツは、パレットエリアに、カテゴリごとにフォルダ分けされています。他のフォルダの中も見てみましょう。
 
-//image[007.png][]{
+//image[007][]{
 //}
-//image[008.png][]{
+//image[008][]{
 //}
-//image[009.png][]{
+//image[009][]{
 //}
-//image[010.png][]{
+//image[010][]{
 //}
-//image[011.png][]{
+//image[011][]{
 //}
-//image[012.png][]{
+//image[012][]{
 //}
-//image[013.png][]{
+//image[013][]{
 //}
-//image[014.png][]{
+//image[014][]{
 //}
-//image[015.png][]{
+//image[015][]{
 //}
 
 パレットの中に入っているパーツは、配置するだけで、アプリ内でそのまま使えるものもあります。たとえば、テキストや画像などは何かを表示するだけのものですので、配置するだけでその役目を果たします。
@@ -116,7 +116,7 @@ Graphical Layout を開くと、Androidの画面が大きくあらわれます�
 === 実習1：Graphical Layoutを使って、次のインターフェイスを作成してみよう
 
 
-//image[016.png][]{
+//image[016][]{
 //}
 
 
@@ -136,19 +136,19 @@ Graphical Layout を開くと、Androidの画面が大きくあらわれます�
 
 の4つのテキストフィールドがあり、それぞれ「Text Fields」フォルダの中から選んで配置しますが、それぞれの「Input Type」が異なるものを選んでくるのが最適です。
 
-//image[017.png][E-mailでは、Input Typeの値が「textEmailAddress」になっている]{
+//image[017][E-mailでは、Input Typeの値が「textEmailAddress」になっている]{
 //}
 
-//image[018.png][]{
+//image[018][]{
 //}
 
-//image[019.png][]{
+//image[019][]{
 //}
 
-//image[020.png][]{
+//image[020][]{
 //}
 
-//image[021.png][それぞれの特徴にあったText Fieldsを選ぶ]{
+//image[021][それぞれの特徴にあったText Fieldsを選ぶ]{
 //}
 
 こうすることで、Android OSが最適なIME（日本語入力）キーボードを自動で表示することができます。
@@ -164,8 +164,8 @@ Input Typeで表示させるキーボードを切り分けることによって�
 
 そうするためには、「Form Widgets」の中の「RadioGroup」を選ぶべきです。「RadioButton」を選んでしまうと、それぞれが単独で選べることになってしまいますので、注意しましょう。
 
-//image[022.png][ラジオボタンをそれぞれ単独で選ぶことができる状態。こうならないようにしよう]{
-//}
+#@# 存在しないの。みきなの //image[022][ラジオボタンをそれぞれ単独で選ぶことができる状態。こうならないようにしよう]{
+#@# //}
 
 ===== 3. 「登録する」というボタン
 
@@ -173,7 +173,7 @@ Input Typeで表示させるキーボードを切り分けることによって�
 
 
 
-//image[023.png][ボタンの横幅が、「登録する」の4文字分しかない]{
+//image[023][ボタンの横幅が、「登録する」の4文字分しかない]{
 //}
 
 これでは、小さくて押しづらくなってしまいます。
@@ -182,7 +182,7 @@ Input Typeで表示させるキーボードを切り分けることによって�
 まずはボタンを配置し、「登録する」というラベルに変更したあとに、マウスをうまく使って横幅いっぱいに伸ばします。
 
 
-//image[024.png][ボタンの横幅を調整する]{
+//image[024][ボタンの横幅を調整する]{
 //}
 
 ここまで完成したら、次の節ではXMLでインターフェイスを作っていきます。
@@ -386,14 +386,13 @@ wrap_contentを設定した要素をどんどん並べていくと、横へ横�
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="キャンセル" />
-//}
 <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="登録して送信する" />
 //}
 
-#@# #@# //image[button1-3][no title]{
+#@# //image[button1-3][no title]{
 #@# //}
 
 画面サイズにおさまらなくなった場合は、改行されます。
@@ -424,7 +423,7 @@ wrap_contentを設定した要素をどんどん並べていくと、横へ横�
 
 では今度は、@<list>[button2-2]のように、android:layout_widthを「wrap_content」に戻し、android:layout_heightを「match_parent」に設定してみましょう。
 
-//list[button2-2]{
+//list[button2-2][]{
 <Button
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
@@ -490,7 +489,7 @@ ic_launcher.pngは、resフォルダの「drawable-mdpi」「drawable-hdpi」「
 #@# //image[textfield1-1][no title]{
 #@# //}
 
-@<list>[textfield1-1]では横幅いっぱいに配置していますが、@<list>[textfield1-2]のように「android:ems」を追加し、文字数によって横幅を指定することもできます。
+<img>[textfield1-1]では横幅いっぱいに配置していますが、@<list>[textfield1-2]のように「android:ems」を追加し、文字数によって横幅を指定することもできます。
 
 //list[textfield1-2][]{
 <EditText

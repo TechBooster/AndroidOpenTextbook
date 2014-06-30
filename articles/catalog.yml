@@ -2,6 +2,7 @@ PREDEF:
 
 CHAPS:
     - sample.re
+    - uibasic-01.re
     - background01.re
     - sensor-01.re
     - network-01.re
