@@ -5,6 +5,9 @@ CHAPS:
     - background01.re
     - sensor-01.re
     - network-01.re
+    - graphics-01.re
+    - graphics-02.re
+    - graphics-03.re
     - webserver-01.re
     - multidevice-01.re
     - glossary.re
