@@ -175,7 +175,7 @@ Graphical Layoutではドラッグアンドドロップでだれでもレイア�
 そして、立ち上がった「fragment_main.xml」を開きます。Graphical Layoutを見ると、「Hello world!」が表示されています。
 
 
-//image[201]{
+//image[201][Graphical Layoutを見る]{
 //}
 
 下のタブを「fragment_main.xml」に切り替えてみましょう。
