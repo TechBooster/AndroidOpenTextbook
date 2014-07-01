@@ -83,7 +83,7 @@ try {
 4. 使い終わったリソースはcloseで閉じます。
 
 実行するとlogcatにレスポンスが出力されます。
-//list[response-of-socket-request][レスポンス]{
+//list[response-of-socket-request][Socketを使ったリクエストのレスポンス]{
 D/TEST    ( 1371): HTTP/1.1 200 OK
 D/TEST    ( 1371): Server: GitHub.com
 D/TEST    ( 1371): Content-Type: text/html; charset=utf-8
@@ -141,6 +141,8 @@ try {
   while ((length = inputStream.read(buffer)) != -1) {
     Log.d("TEST", new String(buffer, 0, length));
   }
+
+  // 5
   inputStream.close();
 } catch (MalformedURLException e) {
   throw new RuntimeException(e);
@@ -153,8 +155,9 @@ try {
 2. 接続する情報を追加します。今回はGETアクセスするので、RequestMethodにGETを指定しています。例えばヘッダーを追加したい場合はここでヘッダを追加します。
 3. サーバと接続します。
 4. レスポンスを取得します。
+5. 使い終わったリソースはcloseで閉じます
 
-//list[response-of-http-url-connection-request][HttpURLCOnnectionのレスポンス]{
+//list[response-of-http-url-connection-request][HttpURLConnectionを使ったリクエストのレスポンス]{
 D/TEST    ( 1412): <html>
 D/TEST    ( 1412): <!DOCTYPE html>
 D/TEST    ( 1412): <html lang="ja">
@@ -171,6 +174,59 @@ D/TEST    ( 1412): </html>
 == HttpClient (Apache Http)
 GET / POST
 InputStream / OutputStream
+
+AndroidではApacheのHttpClientも使うことができます。
+こちらも先ほどと同様のアクセスをしてみましょう。
+
+//list[basic-implementation-of-http-client][HttpClientの実装方法]{
+try {
+  // 1
+  HttpGet httpGet = new HttpGet("http://tomorrowkey.github.io");
+
+  // 2
+  HttpClient httpClient = new DefaultHttpClient();
+
+  // 3
+  HttpResponse httpResponse = httpClient.execute(httpGet);
+
+  // 4
+  InputStream inputStream = httpResponse.getEntity().getContent();
+  int length;
+  byte[] buffer = new byte[1024];
+  while ((length = inputStream.read(buffer)) != -1) {
+    Log.d("TEST", new String(buffer, 0, length));
+  }
+
+  // 5
+  inputStream.close();
+} catch (MalformedURLException e) {
+  throw new RuntimeException(e);
+} catch (IOException e) {
+  throw new RuntimeException(e);
+}
+//}
+
+1. リクエストオブジェクトを作ります。
+2. HttpClientのインスタンスを作ります。DefaultHttpClientを使っていますが、この他にAndroidHttpClientを使う方法もあります。
+3. リクエストを実行します。
+4. レスポンスを取得します。
+5. 使い終わったリソースはcloseで閉じます
+
+リクエストとレスポンスのオブジェクトが分かれている分分かりやすいです。
+
+//list[response-of-http-client-request][HttpClientを使ったリクエストのレスポンス]{
+D/TEST    ( 1489): <html>
+D/TEST    ( 1489): <!DOCTYPE html>
+D/TEST    ( 1489): <html lang="ja">
+D/TEST    ( 1489): <head>
+D/TEST    ( 1489): <title>tomorrowkey GitHub page</title>
+D/TEST    ( 1489): <meta charset="UTF-8" />
+D/TEST    ( 1489): </head>
+D/TEST    ( 1489): <body>
+D/TEST    ( 1489): <h1>Hello, tomorrow!!</h1>
+D/TEST    ( 1489): </body>
+D/TEST    ( 1489): </html>
+//}
 
 == メッセージキューとか
 
