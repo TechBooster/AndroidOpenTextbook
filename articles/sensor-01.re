@@ -795,6 +795,8 @@ mMapBtn.setOnClickListener(new View.OnClickListener() {
 //}
 
 #@# マップ表示
+//image[sensor-01-map][IntentでMap表示]
+//}
 
 == GPS情報の更新
 
@@ -883,5 +885,7 @@ protected void onPause() {
 伴ない場合は"LocationRequest#requestLocationUpdates"を使用するというのが定石となります。
 
 #@# データ表示
+//image[sensor-01-update][位置情報データ]
+//}
 
 == センサーまとめ
