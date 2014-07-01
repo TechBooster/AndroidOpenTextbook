@@ -105,7 +105,7 @@ public class Chapter01_01 extends Fragment implements GLSurfaceView.Renderer {
         Log.i(getClass().getSimpleName(), "onResume");
     }
 
-========================================================== [4] ここから
+====================================================== [4] ここから
     @Override
     public void onSurfaceCreated(GL10 gl, EGLConfig config) {
 
@@ -135,11 +135,76 @@ AndroidでOpenGL ESの描画を行うためには、@<em>{SurfaceHolder}か@<em>
 
 //footnote[現在のView][現在はNativeActivityというC/C++で直接扱え、かつウィンドウシステムと直結した仕組みを使用するケースも増えています]
 
-Androidでは"EGL"という細やかな制御を行えるAPIと、"GLSurfaceView"というそれらをラッピングした簡易的なAPIが用意されており、サンプルコードでは後者を利用して解説を行います。
+Androidでは"EGL"という細やかな制御を行えるAPIと、"GLSurfaceView"というそれらをラッピングした簡易的なAPIが用意されています。本書はOpenGL ESの基本的な部分を学ぶという内容であるため、GLSurfaceViewを使用し、初期化部分の詳細については言及しません。
 
-=== TRY: 画面を任意の色で描画する
+GLSurfaceViewは初期状態でOpenGL ES 1.1用に初期化を行います。今回はOpenGL ES 2.0を対象としますので、初期化バージョンを2へと切り替えます。
 
-=== TRY: 画面をランダムな色で描画する
+//list[][OpenGL ESのバージョンを指定する]{
+glSurfaceView.setEGLContextClientVersion(2);
+//}
+
+GLSurfaceViewは@<em>{GLSurfaceView.Renderer}インターフェースの適切なメソッドを適切なタイミングで呼び出してくれます。逆に言えば、このインターフェースをsetしない限りGLSurfaceViewは描画を行ってくれません。
+
+Chapter01_01クラスはFragmentを継承すると共に、GLSurfaceView.Rendererインターフェースの実装を行っています。
+
+GLSurfaceView.Rendererインターフェースで実装すべきメソッドは３つあり、それらについては後述します。
+
+最後に、SurfaceViewのZオーダーを変更します。これはAndroidのウィンドウシステムと密接に関わっており、他のViewとの位置関係を示します。ここでは"false"を指定することで他のViewよりも後ろに表示されるようにします。
+
+初期値は端末により異なるため、必ずtrue/falseの指定は行うようにしてください。
+
+//list[][SurfaceViewのZオーダーを指定する]{
+glSurfaceView.setZOrderOnTop(false);  
+//}
+
+Androidのライフサイクルに合わせ、GLSurfaceViewもライフサイクル処理を行わなければなりません。必要のある箇所は２つで、Activity#onPauseとActivity#onResumeです。呼び出すべきメソッドも同じ名前であり、[2][3]の部分で呼び出しを行っています。
+
+[4]の範囲にあるのが、GLSurfaceView.Rendererインターフェースで実装すべきメソッドです。
+
+GLSurfaceView自体はAndroidの最初期から存在するAPIということもあり、メソッドには全てGL11インターフェースが第１引数として渡されます。GL11インターフェースはOpenGL ES 1.1を使用するためのクラスです。ですが今回はOpenGL ES 2.0を使用するため、GL11インターフェースの出番はありません。
+
+onSurfaceCreatedは、GLSurfaceView用の描画メモリが確保されたタイミングで呼び出されます。後述する「画像の読み込み」等はここで行う必要があります。
+
+
+onSurfaceChangedは、onSurfaceCreatedの直後の他、Android端末の縦横を切り替えたタイミングやSurfaceViewの大きさが変わったタイミングで呼び出されます。
+
+前置きが長くなりましたが、いよいよ[5]がOpenGL ESの@<em>{コマンド}呼び出しです。OpenGL ESのAPIはコマンドと呼ばれ、C言語やJava言語等、様々な言語で実装されています。
+
+AndroidではJava言語とC/C++言語で呼び出すことができ、どちらもAPIはほぼ同じです。ですが、言語ごとの仕様に基づいた多少の差異があります。
+
+OpenGL ES 2.0のAPIは全て@<em>{GLES20}クラスのstaticメソッドとして実装されています。
+
+最初のサンプルは「画面を単色で塗りつぶす」というものです。単色で塗りつぶすためには、OpenGL ESにたいして「どんな色で塗りつぶすか」を伝えなければなりません。
+
+glClearColorコマンドはR(赤)、G(緑)、B(青)、A(透過)を引数に指定します。引数の順番はRGBAで、OpenGL ESのAPIで「色」を扱う場合は必ずこの順番となります。ここでの注意点は、色の範囲はPCやゲームの世界では一般的になっている0〜255の値ではなく、0.0〜1.0の浮動小数点で現さなければならないということです。
+
+//listnum[][画面の塗りつぶし色を指定]{
+GLES20.glClearColor(0.0f, 1.0f, 1.0f, 1.0f);
+//}
+
+画面を実際に塗りつぶすのがglClearコマンドです。このコマンドの引数には「OpenGL ESが管理するどのバッファをクリアするか」を指定します。
+
+バッファとは、OpenGL ESが持つキャンバスのようなものだと考えてください。実際に画面に反映される「色」を管理しているのがカラーバッファで、それを示す引数がGL_COLOR_BUFFER_BITです。
+
+//listnum[][画面を実際に塗りつぶす]{
+GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT);
+//}
+
+このコマンドを呼び出すことで、実際に画面の塗りつぶしが行われます。
+
+==== TRY: 画面を任意の色で描画する
+
+コマンドの引数を変更し、画面を任意の色で塗りつぶしてみましょう。
+
+==== TRY: 画面をランダムな色で描画する
+
+GLSurfaceViewは毎秒60回ほど、onDrawFrameメソッドを呼び出します。ですがずっと同じ色を描画していたら、「本当に60回も描画してるの？」と思うかもしれません。
+
+そこで、乱数を使用して描画する毎に画面の色を変更してみましょう。Javaでの乱数生成は、下記のメソッドを使用します。
+
+//list[][0.0〜1.0の乱数を生成する]{
+Math.random()
+//}
 
 == プリミティブの描画を行う
 
@@ -259,8 +324,6 @@ public class Chapter01_02 extends Chapter01_01 {
 }
 
 //}
-
-Androidでは"EGL"という細やかな制御を行えるAPIと、"GLSurfaceView"というそれらをラッピングした簡易的なAPIが用意されており、サンプルコードでは後者を利用して解説を行います。
 
 ==== TRY: 端末の縦横を切り替えてみよう
 
