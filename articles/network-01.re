@@ -47,11 +47,10 @@ HTTPサーバーにアクセスするにはすこし貧弱ですが、HTTP以外
 
 //list[basic_implemention_of_socket][Socketの実装方法]{
 try {
-  // 1
+  // リクエスト
   Socket socket = new Socket();
   socket.connect(new InetSocketAddress("tomorrowkey.github.io", 80));
 
-  // 2
   String request = "GET / HTTP/1.1\n" +
     "Host: tomorrowkey.github.io\n" +
     "\n\n";
@@ -59,7 +58,7 @@ try {
   outputStream.write(request.getBytes());
   outputStream.flush();
 
-  // 3
+  // レスポンス
   InputStream inputStream = socket.getInputStream();
   byte[] buffer = new byte[1024];
   int length;
@@ -67,7 +66,6 @@ try {
     Log.d("TEST", new String(buffer, 0, length));
   }
 
-  // 4
   outputStream.close();
   inputStream.close();
 } catch (UnknownHostException e) {
@@ -77,11 +75,72 @@ try {
 }
 //}
 
-1. Socketインスタンスを作り、アクセス先を指定します。接続先のホスト名とポート番号を指定します。今回はHTTPなので80番を指定します。
-2. リクエストの内容を作成して送信します。送信する際はSocketからOutputStreamを取得し、そのOutputStreamにwriteします。
-3. レスポンスを受信します。受信する際はSocketからInputStreamを取得し、そのInputStreamからreadします。
-4. 使い終わったリソースはcloseで閉じます。
+=== リクエスト
+まずはSocketインスタンスを生成します。
+//list[make-instance-of-socket][Socketインスタンスの生成]{
+Socket socket = new Socket();
+//}
 
+Socketインスタンスができたら、ホスト名とポート番号の接続先を指定します。
+今回はHTTPなので、ポート番号は80番になります。
+//list[set-host-and-port-number][ホスト名とポート番号の指定]{
+socket.connect(new InetSocketAddress("tomorrowkey.github.io", 80));
+//}
+
+Socketでリクエストする場合、OutputStreamに直接HTTPリクエストを書きます。
+//list[request-with-socket][リクエストの送信]{
+OutputStream outputStream = socket.getOutputStream();
+outputStream.write(request.getBytes());
+outputStream.flush();
+//}
+
+=== リクエストの組み立て
+
+Socketで通信を行う場合、プロトコルに従った通信内容を自分で組み立てる必要があります。
+今回はHTTP通信なので、HTTPのプロトコルに従ったリクエストを自分で組み立てます。
+
+Webサーバからページを取得する命令はGETです。
+一番単純なGETリクエストは以下のようになります。
+
+//list[get-request][GETリクエスト]{
+GET / HTTP/1.1
+Host: tomorrowkey.github.io
+
+//}
+
+1行目には大まかなリクエスト内容を送ります
+//table[the-first-line-of-get-request][GETリクエスト1行目]{
+-----------------------
+GET				ファイルを取得する
+/					"/"というファイルを取得する。"/"とリクエストすると、大抵のWebサーバでは"/index.html" と解釈されます。
+HTTP/1.1	HTTP/1.1というプロトコル（手続き方法）を使います
+//}
+
+2行目からはリクエストヘッダ（リクエスト時の付属情報）を送信します
+//table[the-second-line-of-get-request][GETリクエスト2行目]{
+-----------------------
+Host:									ヘッダのキーです
+tomorrowkey.github.io	Hostキーはリクエスト先のホスト名を指定します
+//}
+
+リクエストの最後に改行を2回送るとリクエスト完了となります。
+
+=== レスポンス
+
+socketからInputStreamを取得してHTTPレスポンスを取得します。
+
+//list[get-response-body-with-socket][レスポンスの取得]{
+InputStream inputStream = socket.getInputStream();
+byte[] buffer = new byte[1024];
+int length;
+while ((length = inputStream.read(buffer)) != -1) {
+  Log.d("TEST", new String(buffer, 0, length));
+}
+//}
+
+レスポンスの取得まで完了したらInputStreamとOutputStreamのcloseメソッドを呼んでStreamを閉じましょう。
+
+=== 実行結果
 実行するとlogcatにレスポンスが出力されます。
 //list[response-of-socket-request][Socketを使ったリクエストのレスポンス]{
 D/TEST    ( 1371): HTTP/1.1 200 OK
@@ -115,7 +174,9 @@ D/TEST    ( 1371): </body>
 D/TEST    ( 1371): </html>
 //}
 
-リクエストを自分で組み立てないといけないのでとても大変ですが、自分で組み立てることができるからこそ自由度がとても高いです。
+HTTPレスポンスのheaderとbody両方が出力されました。
+Socketで通信する場合は、この文字列をJavaのオブジェクトに変換する処理が必要です。
+リクエストを自分で組み立てないといけなかったり、レスポンスが生データのままなので大変ですが、とても自由度が高いです。
 
 == HttpURLConnection
 
