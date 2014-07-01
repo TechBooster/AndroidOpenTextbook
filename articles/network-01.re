@@ -42,6 +42,7 @@ Androidを搭載した端末の多くは携帯電話です。様々な場所に�
 
 == ソケットプログラミング
 Androidで一番低レベルなネットワーク通信方法はSocketを使ったやり方です。
+OSI参照モデルではトランスポート層以下が提供されます。
 HTTPサーバーにアクセスするにはすこし貧弱ですが、HTTP以外のサーバにアクセスすることができるため便利です。
 例えばhttp://tomorrowkey.github.io にアクセスしようとした場合、以下のようなプログラムになります。
 
@@ -175,7 +176,7 @@ D/TEST    ( 1371): </html>
 //}
 
 HTTPレスポンスのheaderとbody両方が出力されました。
-Socketで通信する場合は、この文字列をJavaのオブジェクトに変換する処理が必要です。
+Socketで通信する場合はこの文字列をJavaのオブジェクトに変換する処理が必要です。
 リクエストを自分で組み立てないといけなかったり、レスポンスが生データのままなので大変ですが、とても自由度が高いです。
 
 == HttpURLConnection
@@ -185,25 +186,22 @@ Socketではリクエストを自分で組み立てなければなりません�
 
 //list[basic-implemention-of-http-url-connection][HttpURLConnectionの実装方法]{
 try {
-  // 1
   URL url = new URL("http://tomorrowkey.github.io");
   HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-
-  // 2
   connection.setRequestMethod("GET");
-
-  // 3
+  connection.setRequestProperty("Host", "tomorrowkey.github.io");
   connection.connect();
 
-  // 4
-  InputStream inputStream = connection.getInputStream();
-  int length;
-  byte[] buffer = new byte[1024];
-  while ((length = inputStream.read(buffer)) != -1) {
-    Log.d("TEST", new String(buffer, 0, length));
-  }
+  int responseCode = connection.getResponseCode();
+  Log.d("TEST", "responseCode=" + responseCode);
+  String contentLength = connection.getHeaderField("Content-Length");
+  Log.d("TEST", "Content-Length=" + contentLength);
+  String contentType = connection.getHeaderField("Content-Type");
+  Log.d("TEST", "contentType=" + contentType);
 
-  // 5
+  InputStream inputStream = connection.getInputStream();
+  String body = readToEnd(inputStream);
+  Log.d("TEST", "body=" + body);
   inputStream.close();
 } catch (MalformedURLException e) {
   throw new RuntimeException(e);
@@ -212,25 +210,79 @@ try {
 }
 //}
 
-1. アクセス先を指定してURLインスタンスを作ります。HttpURLConnectionを作るにはurl.openConnection()を呼ぶ必要があります。さらにこの戻り値はURLConnectionなのでHttpURLConnectionにパースする必要があります。
-2. 接続する情報を追加します。今回はGETアクセスするので、RequestMethodにGETを指定しています。例えばヘッダーを追加したい場合はここでヘッダを追加します。
-3. サーバと接続します。
-4. レスポンスを取得します。
-5. 使い終わったリソースはcloseで閉じます
+### リクエスト
+
+アクセスするURLを使いURLオブジェクトを作ります。
+//list[make-a-instance-of-url][URLオブジェクトの生成]{
+URL url = new URL("http://tomorrowkey.github.io");
+//}
+
+openConnection()メソッドを使い、HttpURLConnectionを取得します。
+//list[get-http-url-connection][HTTPUrlConnectionの取得]{
+HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+//}
+注意しなければならないのが、URL.openConnection()の戻り値はURLConnectionなのでHttpURLConnectionにパースしなければならないということです。
+
+リクエストはファイルの取得なので、setRequestMethod()メソッドで"GET"を渡します。
+setRequestProperty()メソッドを使うことでリクエストヘッダーを設定することができます。
+Hostは設定しなくても自動的に追加させるのですが、あえて追加しました。
+//list[set-request-method][リクエストの設定]{
+connection.setRequestMethod("GET");
+connection.setRequestProperty("Host", "tomorrowkey.github.io");
+//}
+
+connectメソッドでサーバと接続します。
+//list[connect-to-the-server][サーバとの接続]{
+connection.connect();
+//}
+
+### レスポンス
+
+HTTPレスポンスをHttpURLConnectionで取得するには
+
+ステータスコードを取得する場合、getResponseCode()メソッドを呼びます
+//list[get-status-code-from-http-url-connection][ステータスコードの取得]{
+int responseCode = connection.getResponseCode();
+Log.d("TEST", "responseCode=" + responseCode);
+//}
+
+レスポンスヘッダを取得する場合、getHeaderField()メソッドを呼びます
+
+//list[get-headers-from-http-url-connection][レスポンスヘッダの取得]{
+String contentLength = connection.getHeaderField("Content-Length");
+Log.d("TEST", "Content-Length=" + contentLength);
+String contentType = connection.getHeaderField("Content-Type");
+Log.d("TEST", "contentType=" + contentType);
+//}
+
+レスポンスボディを取得する場合、getInputStream()メソッドを呼びます
+//list[get-body-from-http-url-connection][レスポンスボディの取得]{
+InputStream inputStream = connection.getInputStream();
+String body = readToEnd(inputStream);
+Log.d("TEST", "body=" + body);
+//}
+InputStreamから文字列に変換する処理はSocketと同じなので、メソッド化しました。
+
+### 実行結果
 
 //list[response-of-http-url-connection-request][HttpURLConnectionを使ったリクエストのレスポンス]{
-D/TEST    ( 1412): <html>
-D/TEST    ( 1412): <!DOCTYPE html>
-D/TEST    ( 1412): <html lang="ja">
-D/TEST    ( 1412): <head>
-D/TEST    ( 1412): <title>tomorrowkey GitHub page</title>
-D/TEST    ( 1412): <meta charset="UTF-8" />
-D/TEST    ( 1412): </head>
-D/TEST    ( 1412): <body>
-D/TEST    ( 1412): <h1>Hello, tomorrow!!</h1>
-D/TEST    ( 1412): </body>
-D/TEST    ( 1412): </html>
+D/TEST    ( 1231): responseCode=200
+D/TEST    ( 1231): Content-Length=null
+D/TEST    ( 1231): contentType=text/html; charset=utf-8
+D/TEST    ( 1231): body=<html>
+D/TEST    ( 1231): <!DOCTYPE html>
+D/TEST    ( 1231): <html lang="ja">
+D/TEST    ( 1231): <head>
+D/TEST    ( 1231): <title>tomorrowkey GitHub page</title>
+D/TEST    ( 1231): <meta charset="UTF-8" />
+D/TEST    ( 1231): </head>
+D/TEST    ( 1231): <body>
+D/TEST    ( 1231): <h1>Hello, tomorrow!!</h1>
+D/TEST    ( 1231): </body>
+D/TEST    ( 1231): </html>
 //}
+
+Socketとは異なりHTTPプロトコルを楽に使えるようなメソッドが用意されているため、簡単に取り扱うことができます。
 
 == HttpClient (Apache Http)
 GET / POST
