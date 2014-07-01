@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/sensor_0"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="40dp"
+        android:layout_marginTop="58dp"
+        android:text="方位角(Azmuth)"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <TextView
+        android:id="@+id/sensor_1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/sensor_0"
+        android:layout_below="@+id/sensor_0"
+        android:layout_marginTop="28dp"
+        android:text="傾斜角(Pitch)"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <TextView
+        android:id="@+id/sensor_2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/sensor_1"
+        android:layout_below="@+id/sensor_1"
+        android:layout_marginTop="31dp"
+        android:text="回転角(Roll)"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <TextView
+        android:id="@+id/sensor_0_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/sensor_0"
+        android:layout_alignBottom="@+id/sensor_0"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="120dp"
+        android:text="0"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <TextView
+        android:id="@+id/sensor_1_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/sensor_1"
+        android:layout_alignBottom="@+id/sensor_1"
+        android:layout_alignLeft="@+id/sensor_0_text"
+        android:text="0"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <TextView
+        android:id="@+id/sensor_2_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/sensor_2"
+        android:layout_alignBottom="@+id/sensor_2"
+        android:layout_alignLeft="@+id/sensor_1_text"
+        android:text="0"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+</RelativeLayout>
