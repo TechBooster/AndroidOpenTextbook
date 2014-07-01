@@ -48,10 +48,10 @@ public class MainActivity extends Activity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent intent = new Intent(self, HttpClientActivity.class);
+                startActivity(intent);
             }
         });
     }
-
 
 }
