@@ -4,3 +4,5 @@ book-pdf/
 *~
 
 .DS_Store
+bin/
+gen/
