@@ -40,13 +40,19 @@ public class HttpURLConnectionActivity extends Activity {
                 URL url = new URL("http://tomorrowkey.github.io");
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                 connection.setRequestMethod("GET");
+                connection.setRequestProperty("Host", "tomorrowkey.github.io");
                 connection.connect();
+
+                int responseCode = connection.getResponseCode();
+                Log.d("TEST", "responseCode=" + responseCode);
+                String contentLength = connection.getHeaderField("Content-Length");
+                Log.d("TEST", "Content-Length=" + contentLength);
+                String contentType = connection.getHeaderField("Content-Type");
+                Log.d("TEST", "contentType=" + contentType);
+
                 InputStream inputStream = connection.getInputStream();
-                int length;
-                byte[] buffer = new byte[1024];
-                while ((length = inputStream.read(buffer)) != -1) {
-                    Log.d("TEST", new String(buffer, 0, length));
-                }
+                String body = readToEnd(inputStream);
+                Log.d("TEST", "body=" + body);
                 inputStream.close();
             } catch (MalformedURLException e) {
                 throw new RuntimeException(e);
@@ -55,6 +61,16 @@ public class HttpURLConnectionActivity extends Activity {
             }
 
             return null;
+        }
+
+        private String readToEnd(InputStream inputStream) throws IOException {
+            StringBuilder sb = new StringBuilder();
+            int length;
+            byte[] buffer = new byte[1024];
+            while ((length = inputStream.read(buffer)) != -1) {
+                sb.append(new String(buffer, 0, length));
+            }
+            return sb.toString();
         }
     }
 }
