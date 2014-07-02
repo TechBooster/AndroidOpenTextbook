@@ -67,7 +67,6 @@ public class Chapter01_01 extends Fragment implements GLSurfaceView.Renderer {
     @Override
     public void onDrawFrame(GL10 gl) {
         GLES20.glClearColor(0.0f, 1.0f, 1.0f, 1.0f);
-//            GLES20.glClearColor((float) Math.random(), (float) Math.random(), (float) Math.random(), 1.0f); // ランダムな色でクリアする
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT);
     }
 }

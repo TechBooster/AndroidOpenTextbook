@@ -208,6 +208,13 @@ Math.random()
 
 == プリミティブの描画を行う
 
+OpenGL ES 2.0は、「プログラマブルパイプライン」という仕組みを導入しています。これはプログラマが描画の仕組みを「プログラマブル」に、つまりプログラムによって柔軟に書き換えが行えるということです。ですがそれと同時に、プログラマに対してその「パイプラインを構築する」という義務を課しています。
+
+「やれること」が増えた代わりに、「やらなければいけないこと」もまた増えたわけです。
+
+Hello Worldのプログラムから多くの変更がありますが、一つ一つはあまり大きくありません。
+
+
 === 演習1: 三角形を描画する
 
 //listnum[][Chapter01_02.java]{
@@ -258,7 +265,6 @@ public class Chapter01_02 extends Chapter01_01 {
 ====================================================== [4] ここまで
 
 ====================================================== [5] ここから
-            // linkShaderの中でvertex/fragmentの各シェーダーがDeleteされていることに注意する
             this.program = ES20Util.linkShader(vertexShader, fragmentShader);
 ====================================================== [5] ここまで
         }
@@ -324,6 +330,128 @@ public class Chapter01_02 extends Chapter01_01 {
 }
 
 //}
+
+//listnum[][ES20Utilクラス 抜粋]{
+    /**
+     * 頂点シェーダー/フラグメントシェーダーのコンパイルを行う
+     */
+    public static int compileShader(int GL_XXXX_SHADER, String source) {
+        final int shader = glCreateShader(GL_XXXX_SHADER);
+
+        glShaderSource(shader, source);
+        glCompileShader(shader);
+
+        // コンパイルエラーをチェックする
+        {
+            int[] compileSuccess = new int[]{0};
+            glGetShaderiv(shader, GL_COMPILE_STATUS, compileSuccess, 0);
+            if (compileSuccess[0] == GL_FALSE) {
+                throw new RuntimeException(glGetShaderInfoLog(shader));
+            }
+        }
+
+        return shader;
+    }
+
+    /**
+     * 頂点シェーダとフラグメントシェーダをリンクさせる
+     */
+    public static int linkShader(int vertexShader, int fragmentShader) {
+        final int program = glCreateProgram();
+        glAttachShader(program, vertexShader);
+        glAttachShader(program, fragmentShader);
+
+        glLinkProgram(program);
+
+
+        // リンクエラーをチェックする
+        {
+            int[] linkSuccess = new int[]{0};
+            glGetProgramiv(program, GL_LINK_STATUS, linkSuccess, 0);
+            if (linkSuccess[0] == GL_FALSE) {
+                throw new RuntimeException(glGetProgramInfoLog(program));
+            }
+        }
+
+        // delete
+        glDeleteShader(vertexShader);
+        glDeleteShader(fragmentShader);
+
+        return program;
+    }
+
+//}
+
+OpenGL ES 2.0では、「GPUで実行される、描画専用のプログラム」を最低2種類記述する必要があります。それが「頂点シェーダー」と「フラグメントシェーダー」です。フラグメントシェーダーは、「ピクセルシェーダー」と言い換えればご存知の方もいるかもしれません。フラグメントシェーダーとピクセルシェーダーはどちらも特に違いはありませんが、OpenGL ESではピクセルを「フラグメント」と呼ぶため、フラグメントシェーダーと名付けられています。
+
+ただし、このフラグメントとはAndroidプログラミング的な意味のandroid.app.Fragmentクラスとは全く意味合いが異なるため、注意してください。グラフィックの章内でカタカナ表記の「フラグメント」とはOpenGL ESのピクセルを示し、英語表記のFragmentとはAndroid SDKに含まれるandroid.app.Fragmentクラスを示します。
+
+[1][3][4][5]の箇所が、シェーダーの生成とプログラム内への保持を行っている箇所です。まずは頂点シェーダー・フラグメントシェーダーのプログラムを見てみましょう。
+
+//list[][頂点シェーダー]{
+            final String vertexShaderSource =
+                            "attribute mediump vec4 attr_pos;" +
+                            "void main() {" +
+                            "   gl_Position = attr_pos;" +
+                            "}";
+//}
+
+//list[][フラグメントシェーダーシェーダー]{
+            final String fragmentShaderSource =
+                            "uniform lowp vec4 unif_color;" +
+                            "void main() {" +
+                            "   gl_FragColor = unif_color;" +
+                            "}";
+//}
+
+これらは全てString型の変数、つまりただの文字列としてJava言語のプログラム内に保持されています。もちろん、Javaがコンパイルされてアプリとなっても文字列は文字列のままで、このままでは実行できません。
+
+OpenGL ES 2.0のシェーダーはGPUで動作させる必要がありますが、GPUは無数に種類があり、なおかつ機械語単位で見ると互換性がありません。そのため、GPUで実行するプログラムをコンパイルするためには、そのGPUが載っている端末でコンパイルを行わなければならないのです@<fn>{シェーダー事前コンパイル}。
+
+//footnote[シェーダー事前コンパイル][厳密に言えば、事前コンパイルが出来ますが機種ごとに互換性が失われるためAndroidではあまり使用されていません]
+
+シェーダーは「GLSL ES」というC言語に似た言語で記述することができ、エントリーポイントとなるのは"main"関数です。このプログラムはC言語に似ていますが、GPUにより同時並列的な実行が行われるため、様々な制約があります。ですが、まずは細かいことを考えずに少しずつ理解していってください。
+
+シェーダーで最初に覚えるべきは２つあります。
+
+一つは、「頂点シェーダーでは必ずgl_Positionに頂点座標を書き込むこと」。もう一つは、「gl_FragColorに最終的なフラグメント色を書き込むこと」です。
+
+サンプルの頂点シェーダーは「gl_Positionに対し、Java側のプログラムから与えられたattr_posを代入する」ことを行い、フラグメントシェーダーでは「gl_FragColorに対し、Java側のプログラムから与えられたunif_colorを代入する」という処理を行います。
+
+[4]の部分では頂点シェーダーとフラグメントシェーダーのコンパイルを行っています。ES20Util.compileShaderは筆者が用意した補助メソッドです。内部ではコンパイルとエラーチェックを行っています。詳細な解説を行うためにはページ数が足りませんので、興味がある方は実装を覗いてみると良いでしょう。
+
+シェーダーのコンパイル結果はそれぞれint型の変数として取得できます。OpenGL ESはオブジェクト指向のAPIではなく、OpenGL ESが管理するメモリは全て"ID"が割り振られ、そのIDによって管理する必要があります。
+
+ですが、まだこの状態では実行をすることが出来ません。例えばAndroidアプリは".java"拡張子のプログラムを記述し、コンパイルによって".class"ファイルが出来上がります。ですが、実際にAndroid端末上で実行するためにはそれらを結合して".dex"ファイルに変換しなければなりません。これらは(厳密に言えば違いますが)"コンパイル"と"リンク"という別々の作業であり、そのどちらも実行には欠かすことが出来ません。
+
+Eclipseのような統合開発環境はそれらを隠蔽しているため、「コンパイル＝実行できる状態にする」ように見えますが、実際には複数の処理を行っているのです。
+
+「コンパイル〜実際に実行可能な状態にする」という一連の流れを、一般的に"ビルド(build)"と呼びます。
+
+シェーダーも同じように、リンクを行わなければ実行することが出来ません。リンクを行っているのが[5]のES20Util.linkShaderメソッドです。ES20Util.compileShaderとES20Util.linkShaderはどちらも定型的な処理で、エラー処理を除けばほぼ書き換えることはありません。
+
+[2][6]ではシェーダーから変数の"Location(番号)"を取得します。シェーダーはGPUという特殊な環境下で動作する特殊なプログラムです。そのため、Java側のコードから値をアップロードするためには、変数の管理番号を取得して「何番の変数にこの値を入力してください」という命令を行わなければなりません。
+
+
+//list[][頂点シェーダーで定義している変数]{
+attribute mediump vec4 attr_pos;
+//}
+
+//list[][フラグメントシェーダーで定義している変数]{
+uniform lowp vec4 unif_color;
+//}
+
+このサンプルでシェーダーで宣言している変数は2つです。attr_posとunif_colorにそれぞれ値をアップロードしなければ、シェーダーは正常に計算を行うことが出来ません。そしてアップロードを行うためにはLocationを取得するしか無く、Locationを取得したら使用するためにはどこかに保持して置かなければなりません。
+
+取得したLocationを保持しているのがメンバ変数attr_posとunif_colorです。今回はそれぞれシェーダー内の変数名と同じ変数名をそれぞれ名づけていますが、この名前はプログラマがわかりやすければ何でも構いません。
+
+Locationを取得するためにはそれぞれ"glGetAttribLocation"と"glGetUniformLocation"を使用する必要があります。どちらも第1引数は取得を行うプログラムオブジェクト、第2引数は変数名です。正常にLocationが取得できると0以上の値が返却されます。もし変数名が間違っていたり、使用されていない変数の場合は"-1"がエラーとして返却されます。
+
+最後に[7]の"glUseProgram"コマンドを使用し、「このシェーダーで描画を行いますよ」とGPUに対して宣言します。
+
+これで初期化は完了です。
+
+
 
 ==== TRY: 端末の縦横を切り替えてみよう
 
@@ -415,6 +543,7 @@ public class Chapter01_03 extends Chapter01_02 {
 }
 
 //}
+
 
 ==== TRY: 五角形や六角形を描画してみよう
 
