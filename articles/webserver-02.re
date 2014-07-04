@@ -130,18 +130,20 @@ RFCは同じ分野で新しい仕様を必要とした場合、
 2014年6月に、このHTTP 1.1の仕様が15年ぶりに改定されました。
 現在ではその内容が下記のRFCとして公開されています。
 
-* RFC7230: Message Syntax and Routing
-* RFC7231: Semantics and Content
-* RFC7232: Conditional Requests
-* RFC7233: Range Requests
-* RFC7234: Caching
-* RFC7235: Authentication
-* RFC7236:
-* RFC7237:
-* RFC7238:
-* RFC7239:
+#@warn(HTTP 1.1の概要説明)
 
-(TODO: 概要説明)
+ * RFC7230: Message Syntax and Routing
+ * RFC7231: Semantics and Content
+ * RFC7232: Conditional Requests
+ * RFC7233: Range Requests
+ * RFC7234: Caching
+ * RFC7235: Authentication
+ * RFC7236:
+ * RFC7237:
+ * RFC7238:
+ * RFC7239:
+
+
 
 この改定では、HTTPのバージョンが変化したわけではありません。
 HTTP 1.1と呼ぶとき、今後はRFC 2616ではなく上記のRFCのみを参照するようにしてください。
