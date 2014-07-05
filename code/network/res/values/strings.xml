@@ -12,5 +12,7 @@
     <string name="title_activity_http_urlconnection">HttpURLConnectionActivity</string>
     <string name="http_client">HttpClient</string>
     <string name="title_activity_http_client">HttpClientActivity</string>
+    <string name="title_activity_vollery">VolleryActviity</string>
+    <string name="vollery">Vollery</string>
 
 </resources>
