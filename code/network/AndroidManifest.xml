@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.example.sample.network">
+<manifest
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.sample.network">
 
     <uses-permission android:name="android.permission.INTERNET"/>
 
@@ -24,16 +25,16 @@
         </activity>
         <activity
             android:name=".SocketActivity"
-            android:label="@string/title_activity_socket">
-        </activity>
+            android:label="@string/title_activity_socket"/>
         <activity
             android:name=".HttpURLConnectionActivity"
-            android:label="@string/title_activity_http_urlconnection">
-        </activity>
+            android:label="@string/title_activity_http_urlconnection"/>
         <activity
             android:name=".HttpClientActivity"
-            android:label="@string/title_activity_http_client">
-        </activity>
+            android:label="@string/title_activity_http_client"/>
+        <activity
+            android:name=".VolleyActivity"
+            android:label="@string/volley"/>
     </application>
 
 </manifest>

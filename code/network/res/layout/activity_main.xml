@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
@@ -21,6 +22,13 @@
     <Button
         android:id="@+id/use_http_client_button"
         android:text="@string/use_http_client"
+        android:layout_margin="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <Button
+        android:id="@+id/use_volley_button"
+        android:text="@string/use_volley"
         android:layout_margin="8dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
