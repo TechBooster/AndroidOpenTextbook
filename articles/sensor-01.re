@@ -4,7 +4,8 @@
  Google Play Serviceのライブラリを使って位置情報を取得する方法について説明します。
 //}
 
-== 使用可能なセンサー
+== Androidで使用可能なセンサー
+
 AndroidではAPIレベルが上がるたびに使用可能なセンサーの種類が増えています。
 現在の対応はリファレンスを参照してください@<fn>{sensor_ref}。
 Androidでは多くのセンサー情報が取得できますが、実際のハードウェアがその数の
@@ -15,7 +16,6 @@ Androidでは多くのセンサー情報が取得できますが、実際のハ�
 
 //footnote[sensor_ref][@<href>{http://developer.android.com/reference/android/hardware/Sensor.html}]
 
-== 搭載されるセンサーの種類
 リファレンスによると、現在のAPI Level 19で使用可能なセンサーの一覧は以下のようになります。
 //image[sensor-01-list][センサー一覧]{
 //}
@@ -346,82 +346,82 @@ x軸、y軸、z軸のそれぞれの加速度を表します。単位は(m/s^2)
 //image[sensor-01-axis_device][加速度センサーの軸]{
 //}
 
-@<b>{周囲温度センサー (Temperature Sensor)}
+==== 周囲温度センサー (Temperature Sensor)
 
 端末の周囲の温度を表します単位は(℃)
 
-@<b>{地磁気センサー (Geomagnetic field sensor)}
+==== 地磁気センサー (Geomagnetic field sensor)
 
 x軸、y軸、z軸方向の磁気の強さを表します。単位は(μT)。磁気の強さから方位を測定できます。
 
-@<b>{地磁気センサー（生データ）(Uncalibrated Magnetometer)}
+==== 地磁気センサー（生データ）(Uncalibrated Magnetometer)
 
 x軸、y軸、z軸方向の磁気の強さをキャリブレーション無しの生データを表します。単位は(μT)
 
-@<b>{ジャイロスコープ (Gyroscope)}
+==== ジャイロスコープ (Gyroscope)
 
 x軸、y軸、z軸の回転の速度、角速度を表します。単位は(rad/s)
 例えば時計の秒針の角速度は、60秒で一回転(360度)なので、6度/秒です。rad = 度 × π/180となります。
 //image[sensor-01-gyro][角速度]{
 //}
 
-@<b>{照度センサー (Light)}
+==== 照度センサー (Light)
 
 周囲の明るさを表します。単位は(lx)
 
-@<b>{近接センサー (Proximity Sensor)}
+==== 近接センサー (Proximity Sensor)
 
 端末の前面との距離を表します。単位は(cm)。
 ただし"near"と"far"の2値しか返さない端末もあります。
 その場合は"near"が最小値となり"far"が最大値となります。
 
-@<b>{気圧センサー (Pressure)}
+==== 気圧センサー (Pressure)
 
 周囲の気圧を表します。単位は(hPa)
 
-@<b>{相対湿度センサー (Humidity Sensor)}
+==== 相対湿度センサー (Humidity Sensor)
 
 周囲の湿度を表します。単位は(%)
 
-@<b>{回転ベクトルセンサー (Rotation Vector Sensor)}
+==== 回転ベクトルセンサー (Rotation Vector Sensor)
 
 傾きセンサーよりも精度が高く傾きを取得できます。
 
-@<b>{回転ベクトルセンサー（地磁気影響を除外） (Game Rotation Vector Sensor)}
+==== 回転ベクトルセンサー（地磁気影響を除外） (Game Rotation Vector Sensor)
 
 回転ベクトルセンサーから地磁気の影響を除外したものを表します。ゲームなどに利用します。
 
-@<b>{地磁気回転ベクトルセンサー (Geomagnetic Rotation Vector Sensor)}
+==== 地磁気回転ベクトルセンサー (Geomagnetic Rotation Vector Sensor)
 
 回転ベクトルセンサーとほぼ同じものですが、ジャイロスコープの代わりに地磁気センサーを使用しています。
 回転ベクトルセンサーよりも精度は落ちますが低消費電力です。バックグラウンドでの動作に使われます。
 
-@<b>{重力センサー (Gravity sensor)}
+==== 重力センサー (Gravity sensor)
 
 重力加速度を表します。単位は(m/s^2)
 
-@<b>{ジャイロスコープ（生データ） (Uncalibrated Gyroscope)}
+==== ジャイロスコープ（生データ） (Uncalibrated Gyroscope)
 
 x軸、y軸、z軸の回転の速度、角速度を温度ドリフトなどを補正しない、生データを表します。単位は(rad/s)
 
-@<b>{加速度センサー（重力を除外） (Linear acceleration sensor)}
+==== 加速度センサー（重力を除外） (Linear acceleration sensor)
 
 x軸、y軸、z軸のそれぞれの加速度を重力加速度を差し引いて表します。単位は(m/s2^)
 
-@<b>{動き検知 (Significant Motion Sensor)}
+==== 動き検知 (Significant Motion Sensor)
 
 端末を持ったユーザが動いたことを検知します。例えば、歩く、自転車、座る、車で移動など。
 このセンサーはワンショットのトリガ起動なので、"TriggerEventListener"を使用します。
 
-@<b>{歩数計 (Step Counter Sensor)}
+==== 歩数計 (Step Counter Sensor)
 
 端末がリブート起動してからの歩数を表します。
 
-@<b>{歩行検知 (Step Detecter Sensor)}
+==== 歩行検知 (Step Detecter Sensor)
 
 端末を持ったユーザが歩行中であることを検出します。
 
-@<b>{傾きセンサー (Orientation Sensor)}
+==== 傾きセンサー (Orientation Sensor)
 
 端末の傾きを検出します。方位角と傾斜角と回転角を表します。
 
@@ -477,7 +477,7 @@ x軸、y軸、z軸のそれぞれの加速度を重力加速度を差し引い�
 
 それぞれに対して、対応を考える必要があります。
 
-=== 搭載センサーの違い
+==== 搭載センサーの違い
 
 例えば、"Sensor.TYPE_STEP_COUNTER"を使ったアプリを作りたい場合、
 このセンサーを搭載していない機種には対応ができません。そういった場合には
@@ -492,13 +492,13 @@ x軸、y軸、z軸のそれぞれの加速度を重力加速度を差し引い�
 //}
 
 
-=== センサーのハードウェアの違い
+==== センサーのハードウェアの違い
 
 これは実装の段階ではあまり気にすることは実はありません。ただしiPhoneと異なり、
 実際に搭載されているハードウェアは機種によって違うので、センサーの感度や精度が
 大きく違う場合があります。
 
-=== センサーの数値の上限下限の違い
+==== センサーの数値の上限下限の違い
 
 センサーのハードウェアが違えば、精度や上限・下限も異なる場合があります。センサー
 の値の範囲を気にする必要がある場合もあります。例えば先程のNexus5と中華系の端末
