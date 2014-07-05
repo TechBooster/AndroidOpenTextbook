@@ -1,12 +1,14 @@
-[
-   {
-      "id":1,
-      "name":"alice",
-      "gender":"female"
-   },
-   {
-      "id":2,
-      "name":"bob",
-      "gender":"male"
-   }
-]
+{
+   "users":[
+      {
+         "id":1,
+         "name":"alice",
+         "gender":"female"
+      },
+      {
+         "id":2,
+         "name":"bob",
+         "gender":"male"
+      }
+   ]
+}

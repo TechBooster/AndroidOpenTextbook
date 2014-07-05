@@ -25,16 +25,16 @@
         </activity>
         <activity
             android:name=".SocketActivity"
-            android:label="@string/title_activity_socket">
-        </activity>
+            android:label="@string/title_activity_socket"/>
         <activity
             android:name=".HttpURLConnectionActivity"
-            android:label="@string/title_activity_http_urlconnection">
-        </activity>
+            android:label="@string/title_activity_http_urlconnection"/>
         <activity
             android:name=".HttpClientActivity"
-            android:label="@string/title_activity_http_client">
-        </activity>
+            android:label="@string/title_activity_http_client"/>
+        <activity
+            android:name=".VolleyActivity"
+            android:label="@string/volley"/>
     </application>
 
 </manifest>

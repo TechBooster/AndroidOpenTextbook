@@ -7,7 +7,7 @@
 
     <TextView
         android:textAppearance="@android:style/TextAppearance.Large"
-        android:text="@string/vollery"
+        android:text="@string/volley"
         android:layout_margin="8dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>

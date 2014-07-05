@@ -2,6 +2,7 @@ package com.example.sample.network;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -43,19 +44,20 @@ public class VolleyActivity extends Activity {
     }
 
     private void download() {
-        String url = "http://example.com";
+        String url = "https://raw.githubusercontent.com/TechBooster/AndroidOpenTextbook/master/code/network/assets/sample.json";
         mRequestQueue.add(
                 new JsonObjectRequest(Request.Method.GET, url, null,
                         new Response.Listener<JSONObject>() {
                             @Override
                             public void onResponse(JSONObject jsonObject) {
-
+                                Log.d("TEST", jsonObject.toString());
                             }
                         },
                         new Response.ErrorListener() {
                             @Override
                             public void onErrorResponse(VolleyError volleyError) {
-                                Toast.makeText(getApplicationContext(), "", Toast.LENGTH_SHORT).show();
+                                String message = volleyError.getMessage();
+                                Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
                             }
                         }
                 )
