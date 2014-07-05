@@ -1,13 +1,13 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 15
+    compileSdkVersion 19
     buildToolsVersion "19.1.0"
 
     defaultConfig {
         applicationId "com.example.graphics.skelton"
-        minSdkVersion 15
-        targetSdkVersion 15
+        minSdkVersion 19
+        targetSdkVersion 19
         versionCode 3103
         versionName "3.3"
     }

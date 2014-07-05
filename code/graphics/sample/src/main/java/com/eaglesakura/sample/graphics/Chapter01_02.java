@@ -56,7 +56,7 @@ public class Chapter01_02 extends Chapter01_01 {
                             "}";
 
             final String fragmentShaderSource =
-                    "uniform lowp vec4 unif_color;" +
+                            "uniform lowp vec4 unif_color;" +
                             "void main() {" +
                             "   gl_FragColor = unif_color;" +
                             "}";
@@ -95,13 +95,12 @@ public class Chapter01_02 extends Chapter01_01 {
         glClearColor(0.0f, 1.0f, 1.0f, 1.0f);
         glClear(GL10.GL_COLOR_BUFFER_BIT);
 
-        // attr_posを有効にする
-        glEnableVertexAttribArray(attr_pos);
-
         // ポリゴン色をアップロードする
         // 色はRGBAでアップロードする
         glUniform4f(unif_color, 1.0f, 0.0f, 0.0f, 1.0f);
 
+        // attr_posを有効にする
+        glEnableVertexAttribArray(attr_pos);
 
         // 画面中央へ描画する
         final float[] position = {
