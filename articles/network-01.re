@@ -503,24 +503,10 @@ D/TEST    ( 1654): Content-Type=null
 D/TEST    ( 1654): Not Found
 //}
 
-== ライブラリを使ったネットワーク通信
+Volleyを使うと非同期処理を書かなくてよいのでとても便利です。
 
- * Volley https://android.googlesource.com/platform/frameworks/volley/
- * okhttp https://github.com/square/okhttp
- * Picasso https://github.com/square/picasso
+== まとめ
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-EOF
+さまざまな方法を使ってサーバーからファイルを取得する方法を実装しました。
+やり方がたくさんあってどれを使っていいか迷うかもしれませんが、それぞれの実装方法の特徴とやりたいことを比較して、最適な方法を選択してください。
+ほげほげ
