@@ -399,13 +399,125 @@ D/TEST    ( 1295): </body>
 D/TEST    ( 1295): </html>
 //}
 
-== メッセージキューとか
+== ライブラリを使ったネットワーク通信
+
+ネットワーク通信をする度にAsyncTaskを継承して、同じようなバックグラウンド処理を書くのは大変です。
+バックグラウンド処理を毎回書かなくてもいいようなライブラリがGoogleから公開されています。名前はVolleyといいます。
+
+platform/frameworks/volley - Git at Google https://android.googlesource.com/platform/frameworks/volley/
+
+Volleyは他のライブラリのようにjarファイルが公開されていたり、maven repositoryにホスティングされていません。
+AOSPにソース管理されているので、そこからjarファイルを作る必要があります。
+以下のコマンドを実行することでjarファイルをビルドできます。
+
+//list[compile-volley][Volleyのビルド]{
+git clone https://android.googlesource.com/platform/frameworks/volley
+cd volley
+ant jar
+//}
+
+生成されたjarファイルをlibsディレクトリに入れてソースコードから参照できるようにしましょう。
+
+実際には静的ファイルなのですが、JSONファイルを取得することでAPIアクセスする時のコードを実装しましょう。
+//list[download-json-file-with-volley][APIアクセス]{
+mRequestQueue = Volley.newRequestQueue(getApplicationContext());
+
+int method = Request.Method.GET;
+String url = "https://raw.githubusercontent.com/TechBooster/AndroidOpenTextbook/master/code/network/assets/sample.json";
+JSONObject requestBody = null;
+Response.Listener<JSONObject> listener = new Response.Listener<JSONObject>() {
+  @Override
+  public void onResponse(JSONObject jsonObject) {
+    Log.d("TEST", jsonObject.toString());
+  }
+};
+Response.ErrorListener errorListener = new Response.ErrorListener() {
+  @Override
+  public void onErrorResponse(VolleyError volleyError) {
+    String message = volleyError.getMessage();
+    Log.d("TEST", message);
+  }
+};
+
+mRequestQueue.add(new JsonObjectRequest(method, url, requestBody, listener, errorListener));
+//}
+
+=== リクエスト
+まずはリクエストキューを作ります。
+この作成されたリクエストキューにリクエストを追加することで、自動的にバックグラウンドで随時リクエストを送ります。
+リトライ処理についてもある程度行ってくれます。
+//list[make-a-instance-of-request-queue][リクエストキューの生成]{
+mRequestQueue = Volley.newRequestQueue(getApplicationContext());
+//}
+
+リクエストキューを生成したので、リクエストを追加します。
+リクエストを追加する際には以下のパラメータが必要です。
+
+//table[the-second-line-of-get-request][GETリクエスト2行目]{
+-----------------------
+method				リクエストメソッドを指定します
+url						アクセスするURLを指定します
+requestBody		リクエスト時にボディに送るJSONObjectを指定します。
+listener			レスポンスリスナー、正常系のステータスコード(200~299)が戻ってきた場合に実行されます
+errorListener	エラーレスポンスリスナー、異常系のステータスコード(200~299以外)が返ってきた場合に実行されます
+//}
+
+リクエストをリクエストキューに追加すると自動的にバックグラウンドでネットワーク通信が実行されます。
+ネットワーク通信が完了すると引数に渡したコールバック(listener, errorListener)が実行されます。
+
+=== レスポンス
+サーバーのレスポンスが正常系(200~299)だった場合、第四引数のlistenerのコールバックメソッドが実行されます。
+レスポンスボディは自動的にJSONObjectにパースされ、引数に渡されます。
+//list[succeed_response-listener][正常系レスポンスリスナー]{
+@Override
+public void onResponse(JSONObject jsonObject) {
+  Log.d("TEST", jsonObject.toString());
+}
+//}
+
+//list[succeed-response][正常系なレスポンス]{
+D/TEST    ( 1699): {"users":[{"id":1,"gender":"female","name":"alice"},{"id":2,"gender":"male","name":"bob"}]}
+//}
+
+サーバのレスポンスが異常系(200~299以外)だった場合、第五引数のerrorListenerのコールバックメソッドが実行されます。
+エラーの内容は引数のVolleyErrorオブジェクトに入っています。
+//list[error-response-listener][エラー系レスポンスリスナー]{
+@Override
+public void onErrorResponse(VolleyError volleyError) {
+  NetworkResponse networkResponse = volleyError.networkResponse;
+  int statusCode = networkResponse.statusCode;
+  Log.d("TEST", "Status-Code=" + statusCode);
+
+  String contentLength = networkResponse.headers.get("Content-Length");
+  Log.d("TEST", "Content-Length=" + contentLength);
+
+  String body = new String(networkResponse.data);
+  Log.d("TEST", body);
+}
+//}
+
+//list[error-response][エラーレスポンス]{
+D/TEST    ( 1654): Status-Code=404
+D/TEST    ( 1654): Content-Length=9
+D/TEST    ( 1654): Content-Type=null
+D/TEST    ( 1654): Not Found
+//}
 
 == ライブラリを使ったネットワーク通信
 
  * Volley https://android.googlesource.com/platform/frameworks/volley/
  * okhttp https://github.com/square/okhttp
  * Picasso https://github.com/square/picasso
+
+
+
+
+
+
+
+
+
+
 
 
 

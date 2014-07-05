@@ -5,8 +5,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 
+import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -44,24 +44,31 @@ public class VolleyActivity extends Activity {
     }
 
     private void download() {
+        int method = Request.Method.GET;
         String url = "https://raw.githubusercontent.com/TechBooster/AndroidOpenTextbook/master/code/network/assets/sample.json";
-        mRequestQueue.add(
-                new JsonObjectRequest(Request.Method.GET, url, null,
-                        new Response.Listener<JSONObject>() {
-                            @Override
-                            public void onResponse(JSONObject jsonObject) {
-                                Log.d("TEST", jsonObject.toString());
-                            }
-                        },
-                        new Response.ErrorListener() {
-                            @Override
-                            public void onErrorResponse(VolleyError volleyError) {
-                                String message = volleyError.getMessage();
-                                Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                )
-        );
+        JSONObject requestBody = null;
+        Response.Listener<JSONObject> listener = new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject jsonObject) {
+                Log.d("TEST", jsonObject.toString());
+            }
+        };
+        Response.ErrorListener errorListener = new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                NetworkResponse networkResponse = volleyError.networkResponse;
+                int statusCode = networkResponse.statusCode;
+                Log.d("TEST", "Status-Code=" + statusCode);
+
+                String contentLength = networkResponse.headers.get("Content-Length");
+                Log.d("TEST", "Content-Length=" + contentLength);
+
+                String body = new String(networkResponse.data);
+                Log.d("TEST", body);
+            }
+        };
+
+        mRequestQueue.add(new JsonObjectRequest(method, url, requestBody, listener, errorListener));
     }
 
 }
