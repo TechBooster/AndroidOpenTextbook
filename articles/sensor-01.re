@@ -338,17 +338,17 @@ public void onSensorChanged(SensorEvent event) {
 
 API-Level 19で規定されているセンサーをざっとですが整理してみます。
 
-=== 加速度センサー (Acceleration sensor)
+@<b>{加速度センサー (Acceleration sensor)}
 
 x軸、y軸、z軸のそれぞれの加速度を表します。単位は(m/s^2)
 //image[sensor-01-axis_device][加速度センサーの軸]{
 //}
 
-=== 周囲温度センサー (Temperature Sensor)
+@<b>{周囲温度センサー (Temperature Sensor)}
 
 端末の周囲の温度を表します単位は(℃)
 
-=== 地磁気センサー (Geomagnetic field sensor)
+@<b>{地磁気センサー (Geomagnetic field sensor)}
 
 x軸、y軸、z軸方向の磁気の強さを表します。単位は(μT)。磁気の強さから方位を測定できます。
 
@@ -356,70 +356,70 @@ x軸、y軸、z軸方向の磁気の強さを表します。単位は(μT)。磁
 
 x軸、y軸、z軸方向の磁気の強さをキャリブレーション無しの生データを表します。単位は(μT)
 
-=== ジャイロスコープ (Gyroscope)
+@<b>{ジャイロスコープ (Gyroscope)}
 
 x軸、y軸、z軸の回転の速度、角速度を表します。単位は(rad/s)
 例えば時計の秒針の角速度は、60秒で一回転(360度)なので、6度/秒です。rad = 度 × π/180となります。
 //image[sensor-01-gyro][角速度]{
 //}
 
-=== 照度センサー (Light)
+@<b>{照度センサー (Light)}
 
 周囲の明るさを表します。単位は(lx)
 
-=== 近接センサー (Proximity Sensor)
+@<b>{近接センサー (Proximity Sensor)}
 
 端末の前面との距離を表します。単位は(cm)。
 ただし"near"と"far"の2値しか返さない端末もあります。
 その場合は"near"が最小値となり"far"が最大値となります。
 
-=== 気圧センサー (Pressure)
+@<b>気圧センサー (Pressure)}
 
 周囲の気圧を表します。単位は(hPa)
 
-=== 相対湿度センサー (Humidity Sensor)
+@<b>相対湿度センサー (Humidity Sensor)}
 
 周囲の湿度を表します。単位は(%)
 
-=== 回転ベクトルセンサー (Rotation Vector Sensor)
+@<b>{回転ベクトルセンサー (Rotation Vector Sensor)}
 
 傾きセンサーよりも精度が高く傾きを取得できます。
 
-=== 回転ベクトルセンサー（地磁気影響を除外） (Game Rotation Vector Sensor)
+@<b>{回転ベクトルセンサー（地磁気影響を除外） (Game Rotation Vector Sensor)}
 
 回転ベクトルセンサーから地磁気の影響を除外したものを表します。ゲームなどに利用します。
 
-=== 地磁気回転ベクトルセンサー (Geomagnetic Rotation Vector Sensor)
+@<b>{地磁気回転ベクトルセンサー (Geomagnetic Rotation Vector Sensor)}
 
 回転ベクトルセンサーとほぼ同じものですが、ジャイロスコープの代わりに地磁気センサーを使用しています。
 回転ベクトルセンサーよりも精度は落ちますが低消費電力です。バックグラウンドでの動作に使われます。
 
-=== 重力センサー (Gravity sensor)
+@<b>{重力センサー (Gravity sensor)}
 
 重力加速度を表します。単位は(m/s^2)
 
-=== ジャイロスコープ（生データ） (Uncalibrated Gyroscope)
+@<b>{ジャイロスコープ（生データ） (Uncalibrated Gyroscope)}
 
 x軸、y軸、z軸の回転の速度、角速度を温度ドリフトなどを補正しない、生データを表します。単位は(rad/s)
 
-=== 加速度センサー（重力を除外） (Linear acceleration sensor)
+@<b>{加速度センサー（重力を除外） (Linear acceleration sensor)}
 
 x軸、y軸、z軸のそれぞれの加速度を重力加速度を差し引いて表します。単位は(m/s2^)
 
-=== 動き検知 (Significant Motion Sensor)
+@<b>{動き検知 (Significant Motion Sensor)}
 
 端末を持ったユーザが動いたことを検知します。例えば、歩く、自転車、座る、車で移動など。
 このセンサーはワンショットのトリガ起動なので、"TriggerEventListener"を使用します。
 
-=== 歩数計 (Step Counter Sensor)
+@<b>{歩数計 (Step Counter Sensor)}
 
 端末がリブート起動してからの歩数を表します。
 
-=== 歩行検知 (Step Detecter Sensor)
+@<b>{歩行検知 (Step Detecter Sensor)}
 
 端末を持ったユーザが歩行中であることを検出します。
 
-=== 傾きセンサー (Orientation Sensor)
+@<b>{傾きセンサー (Orientation Sensor)}
 
 端末の傾きを検出します。方位角と傾斜角と回転角を表します。
 
