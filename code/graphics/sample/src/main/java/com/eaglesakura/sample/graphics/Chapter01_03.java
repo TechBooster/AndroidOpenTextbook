@@ -1,7 +1,5 @@
 package com.eaglesakura.sample.graphics;
 
-import android.opengl.GLES20;
-
 import static android.opengl.GLES20.*;
 import com.eaglesakura.sample.graphics.util.ES20Util;
 
@@ -51,7 +49,7 @@ public class Chapter01_03 extends Chapter01_02 {
 
 
             glVertexAttribPointer(attr_pos, 2, GL_FLOAT, false, 0, ES20Util.wrap(position));
-            glDrawArrays(GLES20.GL_TRIANGLES, 0, 6);
+            glDrawArrays(GL_TRIANGLES, 0, 6);
         }
     }
 }
