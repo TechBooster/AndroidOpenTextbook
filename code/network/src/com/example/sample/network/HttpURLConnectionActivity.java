@@ -44,11 +44,11 @@ public class HttpURLConnectionActivity extends Activity {
                 connection.connect();
 
                 int responseCode = connection.getResponseCode();
-                Log.d("TEST", "responseCode=" + responseCode);
+                Log.d("TEST", "Response-Code=" + responseCode);
                 String contentLength = connection.getHeaderField("Content-Length");
                 Log.d("TEST", "Content-Length=" + contentLength);
                 String contentType = connection.getHeaderField("Content-Type");
-                Log.d("TEST", "contentType=" + contentType);
+                Log.d("TEST", "Content-Type=" + contentType);
 
                 InputStream inputStream = connection.getInputStream();
                 String body = readToEnd(inputStream);

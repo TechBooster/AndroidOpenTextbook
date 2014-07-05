@@ -1,12 +1,23 @@
 = ネットワーク
 
-== Androidアプリでネットワークを使うための知識
+Webサーバーと連携して最新のデータを取得したり、他のプラットフォームと同期するためにデータを送信したりする際にネットワークの知識が必要になります。
+この章ではHTTPサーバからファイルを取得する様々な方法を通してネットワーク通信の仕組みを学びます。
 
-Permission
+== Androidアプリでネットワークを使うために必要なパーミッション
 
-インターネットに接続するには以下のパーミッションが必要です。
+インターネットに接続するにはandroid.permission.INTERNET というパーミッションが必要なので、AndroidManifestに宣言します。
 
-=== 通信方式
+//list[internet-permission][インターネットパーミッション]{
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          package="com.example.sample.network">
+
+  <uses-permission android:name="android.permission.INTERNET" />
+
+  <application
+   ...
+//}
+
+== Androidで使用できる通信方式
 
 Androidが搭載される端末は以下のような通信方式を持っています。
 
@@ -20,23 +31,24 @@ Androidが搭載される端末は以下のような通信方式を持ってい�
 
 3GにもCDMAやHSDPAなど種類がありますがアプリ開発者が意識することはあまりなく、意識することがあってもWi-Fiに接続中なのか、もしくはMobileなのかくらいです。
 厳密にはもうすこし通信方式はありますが、あまり一般的ではないので省略します。
+この章ではHTTP通信を行う通信方法を紹介します。上記リストの中ではMobileとWi-Fiが該当します。
 
-=== モバイルという性質
+== モバイルという性質
 ネットワークと語る上で、サーバーのアプリケーションやデスクトップ向けアプリケーションとくらべて、２つの大きな特徴があります。
 一つはネットワークは不安定ということと、もう一つは電池消費量に気をつけなくてはならないということです。
 
-==== ネットワークは不安定
+=== ネットワークは不安定
 
 Androidを搭載した端末の多くは携帯電話です。様々な場所に持ち歩く携帯電話なので、必ずしもネットワークに恵まれた場所にいるとは限りません。
 アプリを作るにあたっていつネットワークが切れても問題ないように作らなくてはなりません。
 また、ネットワークが切れてしまった場合にユーザーにストレスをかけないような作りを心がけることも重要です。
 
-==== 電池消費量
+=== 電池消費量
 
 電池消費量にも気を配らなくてはなりません。モバイルで電池を消耗しやすい機能の１つがネットワーク通信です。
 できるだけ通信料を減らす、通信回数を減らす、一度まとめてに通信するといった事を心がけると、電池消費にも優しいアプリを作ることができます。
 
-=== メインスレッドと非同期スレッド
+== メインスレッドと非同期スレッド
 理論値では100Mbpsを越えるネットワークでも環境によっては数百bpsしかでないため、小さいデータのやりとりであっても時間がかかるものだと考えるべきです。
 時間のかかる処理はUIスレッドで行ってはいけません。必ず非同期処理ができる仕組み（AsyncTaskなど）を使うようにしましょう。
 
@@ -177,7 +189,7 @@ D/TEST    ( 1371): </html>
 
 HTTPレスポンスのheaderとbody両方が出力されました。
 Socketで通信する場合はこの文字列をJavaのオブジェクトに変換する処理が必要です。
-リクエストを自分で組み立てないといけなかったり、レスポンスが生データのままなので大変ですが、とても自由度が高いです。
+リクエストを自分で組み立てないといけなかったり、レスポンスが生データのままなので大変ですが、とても自由度が高いのが特徴です。
 
 == HttpURLConnection
 
@@ -210,7 +222,7 @@ try {
 }
 //}
 
-### リクエスト
+=== リクエスト
 
 アクセスするURLを使いURLオブジェクトを作ります。
 //list[make-a-instance-of-url][URLオブジェクトの生成]{
@@ -224,7 +236,7 @@ HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 注意しなければならないのが、URL.openConnection()の戻り値はURLConnectionなのでHttpURLConnectionにパースしなければならないということです。
 
 リクエストはファイルの取得なので、setRequestMethod()メソッドで"GET"を渡します。
-setRequestProperty()メソッドを使うことでリクエストヘッダーを設定することができます。
+また、setRequestProperty()メソッドを使うことでリクエストヘッダーを設定することができます。
 Hostは設定しなくても自動的に追加させるのですが、あえて追加しました。
 //list[set-request-method][リクエストの設定]{
 connection.setRequestMethod("GET");
@@ -236,9 +248,7 @@ connectメソッドでサーバと接続します。
 connection.connect();
 //}
 
-### レスポンス
-
-HTTPレスポンスをHttpURLConnectionで取得するには
+=== レスポンス
 
 ステータスコードを取得する場合、getResponseCode()メソッドを呼びます
 //list[get-status-code-from-http-url-connection][ステータスコードの取得]{
@@ -263,7 +273,7 @@ Log.d("TEST", "body=" + body);
 //}
 InputStreamから文字列に変換する処理はSocketと同じなので、メソッド化しました。
 
-### 実行結果
+=== 実行結果
 
 //list[response-of-http-url-connection-request][HttpURLConnectionを使ったリクエストのレスポンス]{
 D/TEST    ( 1231): responseCode=200
@@ -288,29 +298,23 @@ Socketとは異なりHTTPプロトコルを楽に使えるようなメソッド�
 GET / POST
 InputStream / OutputStream
 
-AndroidではApacheのHttpClientも使うことができます。
+AndroidではApacheのHttpClientが標準で入っているので、HttpClientも使うことができます。
 こちらも先ほどと同様のアクセスをしてみましょう。
 
 //list[basic-implementation-of-http-client][HttpClientの実装方法]{
 try {
-  // 1
   HttpGet httpGet = new HttpGet("http://tomorrowkey.github.io");
+  httpGet.addHeader("Host", "tomorrowkey.github.io");
 
-  // 2
   HttpClient httpClient = new DefaultHttpClient();
-
-  // 3
   HttpResponse httpResponse = httpClient.execute(httpGet);
 
-  // 4
   InputStream inputStream = httpResponse.getEntity().getContent();
   int length;
   byte[] buffer = new byte[1024];
   while ((length = inputStream.read(buffer)) != -1) {
     Log.d("TEST", new String(buffer, 0, length));
   }
-
-  // 5
   inputStream.close();
 } catch (MalformedURLException e) {
   throw new RuntimeException(e);
@@ -319,38 +323,190 @@ try {
 }
 //}
 
-1. リクエストオブジェクトを作ります。
-2. HttpClientのインスタンスを作ります。DefaultHttpClientを使っていますが、この他にAndroidHttpClientを使う方法もあります。
-3. リクエストを実行します。
-4. レスポンスを取得します。
-5. 使い終わったリソースはcloseで閉じます
-
-リクエストとレスポンスのオブジェクトが分かれている分分かりやすいです。
-
-//list[response-of-http-client-request][HttpClientを使ったリクエストのレスポンス]{
-D/TEST    ( 1489): <html>
-D/TEST    ( 1489): <!DOCTYPE html>
-D/TEST    ( 1489): <html lang="ja">
-D/TEST    ( 1489): <head>
-D/TEST    ( 1489): <title>tomorrowkey GitHub page</title>
-D/TEST    ( 1489): <meta charset="UTF-8" />
-D/TEST    ( 1489): </head>
-D/TEST    ( 1489): <body>
-D/TEST    ( 1489): <h1>Hello, tomorrow!!</h1>
-D/TEST    ( 1489): </body>
-D/TEST    ( 1489): </html>
+=== リクエスト
+GETリクエストなので、HttpGetオブジェクトを作ります。引数にはアクセスするURLを指定します。
+//list[make-a-instance-of-http-get][HttpGetオブジェクトの生成]{
+HttpGet httpGet = new HttpGet("http://tomorrowkey.github.io");
 //}
 
-== メッセージキューとか
+ヘッダの指定はaddHeaderメソッドを使います。
+//list[add-header-to-http-get][ヘッダーの追加]{
+httpGet.addHeader("Host", "tomorrowkey.github.io");
+//}
+
+実際に通信を行うのはHttpClientというオブジェクトなので、HttpClientを生成します。
+今回はDefaultHttpClientを使ってHttpClientを生成していますが、AndroidHttpClientを使うこともできます。
+
+//list[make-a-instance-of-http-client][HttpClientの生成]{
+HttpClient httpClient = new DefaultHttpClient();
+//}
+
+生成したhttpClientのexecute()メソッドにリクエストオブジェクト(httpGet)を渡すことで通信をします。
+//list[communicate-with-http-client][HttpClientを使った通信]{
+HttpResponse httpResponse = httpClient.execute(httpGet);
+//}
+通信したレスポンスはHttpResponseというクラスで戻り値に返ってきます。
+
+=== レスポンス
+
+
+ステータスコードを取得するには、まずはgetStatusLine()メソッドでステータスラインを取得した後に、getStatusCode()メソッドを呼びます。
+//list[get-status-code][ステータスコードの取得]{
+StatusLine statusLine = httpResponse.getStatusLine();
+Log.d("TEST", "Status-Code=" + statusLine.getStatusCode());
+//}
+ステータスラインとはHTTPレスポンスの以下の部分を指します。
+//list[status-line][ステータスライン]{
+HTTP/1.1 200 OK
+//}
+
+レスポンスヘッダを取得するには、getFirstHeader()メソッドでHeaderオブジェクトを取得します。
+Headerオブジェクトの値を取得するにはgetValue()メソッドを呼びます。
+//list[get-header][ヘッダーの取得]{
+Header contentLengthHeader = httpResponse.getFirstHeader("Content-Length");
+Log.d("TEST", "Content-Length=" + contentLengthHeader.getValue());
+Header contentTypeHeader = httpResponse.getFirstHeader("Content-Type");
+Log.d("TEST", "Content-Type=" + contentTypeHeader.getValue());
+//}
+
+レスポンスボディを取得する場合、getInputStream()メソッドを呼びます
+
+//list[get-response-body][レスポンスボディの取得]{
+InputStream inputStream = httpResponse.getEntity().getContent();
+String body = readToEnd(inputStream);
+Log.d("TEST", body);
+inputStream.close();
+//}
+
+リクエストとレスポンスのオブジェクトが分かれているので分かりやすいですね。
+
+=== 実行結果
+
+//list[response-of-http-client-request][HttpClientを使ったリクエストのレスポンス]{
+D/TEST    ( 1295): Status-Code=200
+D/TEST    ( 1295): Content-Length=169
+D/TEST    ( 1295): Content-Type=text/html; charset=utf-8
+D/TEST    ( 1295): <html>
+D/TEST    ( 1295): <!DOCTYPE html>
+D/TEST    ( 1295): <html lang="ja">
+D/TEST    ( 1295): <head>
+D/TEST    ( 1295): <title>tomorrowkey GitHub page</title>
+D/TEST    ( 1295): <meta charset="UTF-8" />
+D/TEST    ( 1295): </head>
+D/TEST    ( 1295): <body>
+D/TEST    ( 1295): <h1>Hello, tomorrow!!</h1>
+D/TEST    ( 1295): </body>
+D/TEST    ( 1295): </html>
+//}
 
 == ライブラリを使ったネットワーク通信
 
- * Volley https://android.googlesource.com/platform/frameworks/volley/
- * okhttp https://github.com/square/okhttp
- * Picasso https://github.com/square/picasso
+ネットワーク通信をする度にAsyncTaskを継承して、同じようなバックグラウンド処理を書くのは大変です。
+バックグラウンド処理を毎回書かなくてもいいようなライブラリがGoogleから公開されています。名前はVolleyといいます。
 
+platform/frameworks/volley - Git at Google https://android.googlesource.com/platform/frameworks/volley/
 
+Volleyは他のライブラリのようにjarファイルが公開されていたり、maven repositoryにホスティングされていません。
+AOSPにソース管理されているので、そこからjarファイルを作る必要があります。
+以下のコマンドを実行することでjarファイルをビルドできます。
 
+//list[compile-volley][Volleyのビルド]{
+git clone https://android.googlesource.com/platform/frameworks/volley
+cd volley
+ant jar
+//}
 
+生成されたjarファイルをlibsディレクトリに入れてソースコードから参照できるようにしましょう。
 
-EOF
+実際には静的ファイルなのですが、JSONファイルを取得することでAPIアクセスする時のコードを実装しましょう。
+//list[download-json-file-with-volley][APIアクセス]{
+mRequestQueue = Volley.newRequestQueue(getApplicationContext());
+
+int method = Request.Method.GET;
+String url = "https://raw.githubusercontent.com/TechBooster/AndroidOpenTextbook/master/code/network/assets/sample.json";
+JSONObject requestBody = null;
+Response.Listener<JSONObject> listener = new Response.Listener<JSONObject>() {
+  @Override
+  public void onResponse(JSONObject jsonObject) {
+    Log.d("TEST", jsonObject.toString());
+  }
+};
+Response.ErrorListener errorListener = new Response.ErrorListener() {
+  @Override
+  public void onErrorResponse(VolleyError volleyError) {
+    String message = volleyError.getMessage();
+    Log.d("TEST", message);
+  }
+};
+
+mRequestQueue.add(new JsonObjectRequest(method, url, requestBody, listener, errorListener));
+//}
+
+=== リクエスト
+まずはリクエストキューを作ります。
+この作成されたリクエストキューにリクエストを追加することで、自動的にバックグラウンドで随時リクエストを送ります。
+リトライ処理についてもある程度行ってくれます。
+//list[make-a-instance-of-request-queue][リクエストキューの生成]{
+mRequestQueue = Volley.newRequestQueue(getApplicationContext());
+//}
+
+リクエストキューを生成したので、リクエストを追加します。
+リクエストを追加する際には以下のパラメータが必要です。
+
+//table[the-second-line-of-get-request][GETリクエスト2行目]{
+-----------------------
+method				リクエストメソッドを指定します
+url						アクセスするURLを指定します
+requestBody		リクエスト時にボディに送るJSONObjectを指定します。
+listener			レスポンスリスナー、正常系のステータスコード(200~299)が戻ってきた場合に実行されます
+errorListener	エラーレスポンスリスナー、異常系のステータスコード(200~299以外)が返ってきた場合に実行されます
+//}
+
+リクエストをリクエストキューに追加すると自動的にバックグラウンドでネットワーク通信が実行されます。
+ネットワーク通信が完了すると引数に渡したコールバック(listener, errorListener)が実行されます。
+
+=== レスポンス
+サーバーのレスポンスが正常系(200~299)だった場合、第四引数のlistenerのコールバックメソッドが実行されます。
+レスポンスボディは自動的にJSONObjectにパースされ、引数に渡されます。
+//list[succeed_response-listener][正常系レスポンスリスナー]{
+@Override
+public void onResponse(JSONObject jsonObject) {
+  Log.d("TEST", jsonObject.toString());
+}
+//}
+
+//list[succeed-response][正常系なレスポンス]{
+D/TEST    ( 1699): {"users":[{"id":1,"gender":"female","name":"alice"},{"id":2,"gender":"male","name":"bob"}]}
+//}
+
+サーバのレスポンスが異常系(200~299以外)だった場合、第五引数のerrorListenerのコールバックメソッドが実行されます。
+エラーの内容は引数のVolleyErrorオブジェクトに入っています。
+//list[error-response-listener][エラー系レスポンスリスナー]{
+@Override
+public void onErrorResponse(VolleyError volleyError) {
+  NetworkResponse networkResponse = volleyError.networkResponse;
+  int statusCode = networkResponse.statusCode;
+  Log.d("TEST", "Status-Code=" + statusCode);
+
+  String contentLength = networkResponse.headers.get("Content-Length");
+  Log.d("TEST", "Content-Length=" + contentLength);
+
+  String body = new String(networkResponse.data);
+  Log.d("TEST", body);
+}
+//}
+
+//list[error-response][エラーレスポンス]{
+D/TEST    ( 1654): Status-Code=404
+D/TEST    ( 1654): Content-Length=9
+D/TEST    ( 1654): Content-Type=null
+D/TEST    ( 1654): Not Found
+//}
+
+Volleyを使うと非同期処理を書かなくてよいのでとても便利です。
+
+== まとめ
+
+さまざまな方法を使ってサーバーからファイルを取得する方法を実装しました。
+やり方がたくさんあってどれを使っていいか迷うかもしれませんが、それぞれの実装方法の特徴とやりたいことを比較して、最適な方法を選択してください。
+ほげほげ

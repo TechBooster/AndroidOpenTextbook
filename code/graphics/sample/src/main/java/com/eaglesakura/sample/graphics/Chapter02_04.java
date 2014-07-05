@@ -8,21 +8,7 @@ import com.eaglesakura.sample.graphics.util.SampleUtil;
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
-import static android.opengl.GLES20.GL_FLOAT;
-import static android.opengl.GLES20.GL_FRAGMENT_SHADER;
-import static android.opengl.GLES20.GL_TRIANGLE_STRIP;
-import static android.opengl.GLES20.GL_VERTEX_SHADER;
-import static android.opengl.GLES20.glClear;
-import static android.opengl.GLES20.glClearColor;
-import static android.opengl.GLES20.glDrawArrays;
-import static android.opengl.GLES20.glEnableVertexAttribArray;
-import static android.opengl.GLES20.glGetAttribLocation;
-import static android.opengl.GLES20.glGetUniformLocation;
-import static android.opengl.GLES20.glUniform4f;
-import static android.opengl.GLES20.glUniformMatrix4fv;
-import static android.opengl.GLES20.glUseProgram;
-import static android.opengl.GLES20.glVertexAttribPointer;
-import static android.opengl.GLES20.glViewport;
+import static android.opengl.GLES20.*;
 
 /**
  * Chapter 02-01
@@ -129,17 +115,26 @@ public class Chapter02_04 extends Chapter01_01 {
 
 
         final float[] position = {
+                // triangle 0
                 // v0(left top)
                 -0.75f, 0.75f,
                 // v1(left bottom)
                 -0.75f, -0.75f,
                 // v2(right top)
                 0.75f, 0.75f,
-                // v3(right bottom)
-                0.75f, -0.75f,};
+
+                // triangle 1
+                // v3(right top)
+                0.75f, 0.75f,
+                // v4(left bottom)
+                -0.75f, -0.75f,
+                // v5(right bottom)
+                0.75f, -0.75f,
+        };
+
 
         glVertexAttribPointer(attr_pos, 2, GL_FLOAT, false, 0, ES20Util.wrap(position));
-        glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+        glDrawArrays(GL_TRIANGLES, 0, 6);
 
         // デバッグ用メッセージを表示する
         SampleUtil.setDebugText(getActivity(), String.format("rotate(%.2f)", rotate));

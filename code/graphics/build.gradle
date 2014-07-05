@@ -19,3 +19,8 @@ allprojects {
         jcenter()
     }
 }
+
+task buildSetup << {
+    File file = new File("local.properties");
+    file.write("sdk.dir=" + System.getenv("ANDROID_HOME") + "\n");
+}

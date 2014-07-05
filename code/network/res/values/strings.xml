@@ -5,6 +5,7 @@
     <string name="use_socket">Use socket</string>
     <string name="use_http_url_connection">Use HttpURLConnection</string>
     <string name="use_http_client">Use HttpClient</string>
+    <string name="use_volley">Use Volley</string>
     <string name="title_activity_socket">SocketActivity</string>
     <string name="socket">Socket</string>
     <string name="http_url_connection">HttpURLConnection</string>
@@ -12,5 +13,7 @@
     <string name="title_activity_http_urlconnection">HttpURLConnectionActivity</string>
     <string name="http_client">HttpClient</string>
     <string name="title_activity_http_client">HttpClientActivity</string>
+    <string name="title_activity_volley">VolleyActviity</string>
+    <string name="volley">Volley</string>
 
 </resources>

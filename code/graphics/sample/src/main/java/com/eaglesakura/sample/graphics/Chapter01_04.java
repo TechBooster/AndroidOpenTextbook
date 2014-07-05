@@ -91,7 +91,7 @@ public class Chapter01_04 extends Chapter01_01 {
 
             glBindTexture(GL_TEXTURE_2D, texture);
             {
-                GLUtils.texImage2D(GL_TEXTURE_2D, 0, bitmap, 0); // テクスチャをバインド
+                GLUtils.texImage2D(GL_TEXTURE_2D, 0, bitmap, 0); // テクスチャをアップロード
                 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
                 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
                 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
@@ -121,35 +121,50 @@ public class Chapter01_04 extends Chapter01_01 {
         glEnableVertexAttribArray(attr_uv);
 
         // 使用するテクスチャをバインドする
-        // unif_textureへテクスチャを設定する
         glBindTexture(GL_TEXTURE_2D, texture);
-        glUniform1i(unif_texture, 0);
-
         {
             final float[] position = {
+                    // triangle 0
                     // v0(left top)
                     -0.75f, 0.75f,
                     // v1(left bottom)
                     -0.75f, -0.75f,
                     // v2(right top)
                     0.75f, 0.75f,
-                    // v3(right bottom)
-                    0.75f, -0.75f,};
+
+                    // triangle 1
+                    // v3(right top)
+                    0.75f, 0.75f,
+                    // v4(left bottom)
+                    -0.75f, -0.75f,
+                    // v5(right bottom)
+                    0.75f, -0.75f,
+            };
+
+
+            glVertexAttribPointer(attr_pos, 2, GL_FLOAT, false, 0, ES20Util.wrap(position));
 
             final float[] uv = {
+                    // triangle 0
                     // v0(left top)
                     0, 0,
                     // v1(left bottom)
                     0, 1,
                     // v2(right top)
                     1, 0,
-                    // v3(right bottom)
-                    1, 1,};
 
+                    // triangle 1
+                    // v3(right top)
+                    1, 0,
+                    // v4(left bottom)
+                    0, 1,
+                    // v5(right bottom)
+                    1, 1,
+            };
 
-            glVertexAttribPointer(attr_pos, 2, GL_FLOAT, false, 0, ES20Util.wrap(position));
             glVertexAttribPointer(attr_uv, 2, GL_FLOAT, false, 0, ES20Util.wrap(uv));
-            glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+
+            glDrawArrays(GL_TRIANGLES, 0, 6);
         }
     }
 }

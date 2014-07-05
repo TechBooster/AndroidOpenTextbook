@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-
 public class MainActivity extends Activity {
 
     private MainActivity self = this;
@@ -17,8 +16,9 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
 
         initUseSocketButton();
-        initUseHttpURLConnection();
-        initUseHttpClient();
+        initUseHttpURLConnectionButton();
+        initUseHttpClientButton();
+        initUseVolleyButton();
     }
 
     private void initUseSocketButton() {
@@ -32,7 +32,7 @@ public class MainActivity extends Activity {
         });
     }
 
-    private void initUseHttpURLConnection() {
+    private void initUseHttpURLConnectionButton() {
         Button button = (Button) findViewById(R.id.use_http_url_connection_button);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -43,12 +43,23 @@ public class MainActivity extends Activity {
         });
     }
 
-    private void initUseHttpClient() {
+    private void initUseHttpClientButton() {
         Button button = (Button) findViewById(R.id.use_http_client_button);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(self, HttpClientActivity.class);
+                startActivity(intent);
+            }
+        });
+    }
+
+    private void initUseVolleyButton() {
+        Button button = (Button) findViewById(R.id.use_volley_button);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(self, VolleyActivity.class);
                 startActivity(intent);
             }
         });
