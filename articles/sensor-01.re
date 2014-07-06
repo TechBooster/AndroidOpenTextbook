@@ -887,7 +887,8 @@ public void onConnected(Bundle connectionHint) {
  * PRIORITY_LOW_POWER : GPSを使わない。WiFiやセルを使用する。市レベル（約10km）の精度
  * PRIORITY_NO_POWER : 正確性はその時の状態に依存
 
-微妙に資料と違いますが、公称と実験結果という差がありそうです。。。
+微妙に資料と違いますが、この辺は機種依存性もあるので
+一概には言えませんが公称と実験結果という差がありそうです。
 
 //footnote[gps_priority][Googl I/O 2013講演資料より @<href>{http://y-anz-m.blogspot.jp/2013/05/google-io-2013-android-beyond-blue-dot.html}]
 
@@ -966,6 +967,6 @@ protected void onPause() {
 のプログラミングや検証作業では、どの端末で対応するのか？APIレベルはいくつ
 以上なのか？など考慮する必要があります。
 
-そしてもう一つ重要なのは電池消費量です。GPSも含むセンサーは電池消費が
+そしてもう一つ重要なのは電池消費量です。GPSも含めてセンサーは電池消費が
 大きいため、常時動作させることは避けるべきです。いかに電池消費を抑えつつ
 効果のある動作を実現できるか？も、このセンサーを扱う上でポイントとなります。
