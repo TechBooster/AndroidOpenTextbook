@@ -26,7 +26,7 @@ public class Chapter02_01 extends Chapter01_01 {
 
     /**
      * 平行移動
-     * unif_matrix
+     * unif_translate
      */
     protected int unif_translate;
 
@@ -53,14 +53,14 @@ public class Chapter02_01 extends Chapter01_01 {
         {
             final String vertexShaderSource =
                     "" +
-                            "uniform mediump vec4 unif_matrix;" +
+                            "uniform mediump vec4 unif_translate;" +
                             "attribute mediump vec4 attr_pos;" +
                             "void main() {" +
-                            "   gl_Position = attr_pos + unif_matrix;" +
+                            "   gl_Position = attr_pos + unif_translate;" +
                             "}";
 
             final String fragmentShaderSource =
-                    "uniform lowp vec4 unif_color;" +
+                             "uniform lowp vec4 unif_color;" +
                             "void main() {" +
                             "   gl_FragColor = unif_color;" +
                             "}";
@@ -77,7 +77,7 @@ public class Chapter02_01 extends Chapter01_01 {
             unif_color = glGetUniformLocation(program, "unif_color");
             assert unif_color >= 0;
 
-            unif_translate = glGetUniformLocation(program, "unif_matrix");
+            unif_translate = glGetUniformLocation(program, "unif_translate");
             assert unif_translate >= 0;
         }
 
