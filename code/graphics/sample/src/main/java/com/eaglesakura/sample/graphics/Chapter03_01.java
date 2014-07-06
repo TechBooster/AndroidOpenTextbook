@@ -237,7 +237,6 @@ public class Chapter03_01 extends Chapter01_01 {
         setupCamera();
 
         glBindTexture(GL_TEXTURE_2D, texture);
-        glUniform1i(unif_texture, 0);
 
         {
             // キューブを構築する
