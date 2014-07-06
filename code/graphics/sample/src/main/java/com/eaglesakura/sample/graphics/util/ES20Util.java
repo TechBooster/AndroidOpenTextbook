@@ -178,16 +178,13 @@ public class ES20Util {
 
     /**
      * 単位行列を生成する
-     *
-     * @return
      */
     public static float[] createMatrixIdentity() {
-        float[] result = new float[]{
+        return new float[]{
                 1, 0, 0, 0,
                 0, 1, 0, 0,
                 0, 0, 1, 0,
                 0, 0, 0, 1,
         };
-        return result;
     }
 }

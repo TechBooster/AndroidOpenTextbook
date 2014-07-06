@@ -1,5 +1,7 @@
 package com.eaglesakura.sample.graphics;
 
+import android.opengl.Matrix;
+
 import com.eaglesakura.sample.graphics.util.ES20Util;
 import com.eaglesakura.sample.graphics.util.SampleUtil;
 
@@ -9,7 +11,7 @@ import javax.microedition.khronos.opengles.GL10;
 import static android.opengl.GLES20.*;
 
 /**
- * Chapter 02-01
+ * Chapter 02-02
  * <p/>
  * 四角形を行列で平行移動させる
  */

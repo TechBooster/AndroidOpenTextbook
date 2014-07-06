@@ -128,14 +128,6 @@ public class Chapter02_03 extends Chapter01_01 {
 
             scaleX -= 0.01f;
             scaleY -= 0.005f;
-
-            // 適当なところで元に戻す
-            if (scaleX < 0) {
-                scaleX = 2;
-            }
-            if (scaleY < 0) {
-                scaleY = 2;
-            }
         }
 
 

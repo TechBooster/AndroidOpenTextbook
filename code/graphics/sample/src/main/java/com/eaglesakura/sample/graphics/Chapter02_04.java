@@ -104,7 +104,7 @@ public class Chapter02_04 extends Chapter01_01 {
         // 色はRGBAでアップロードする
         glUniform4f(unif_color, 1.0f, 0.0f, 0.0f, 1.0f);
 
-        // 平行移動を行う
+        // 回転を行う
         {
             float[] matrix = ES20Util.createMatrixIdentity();
             Matrix.setRotateM(matrix, 0, rotate, 0, 0, 1.0f);
