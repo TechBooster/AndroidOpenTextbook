@@ -112,8 +112,6 @@ public class Chapter03_04 extends Chapter03_02 {
         setupCamera();
 
         glBindTexture(GL_TEXTURE_2D, texture);
-        glUniform1i(unif_texture, 0);
-
         {
             glBindBuffer(GL_ARRAY_BUFFER, vertexBufferObject);
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBufferObject);
