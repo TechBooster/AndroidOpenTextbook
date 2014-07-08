@@ -1,4 +1,4 @@
-= Webサーバの基本
+= Webサーバ
 
 Android端末を有効活用する上では、インターネット、あるいはクラウド、そしてそこにあるサーバについて理解し、
 それらと通信することが欠かせません。
@@ -1081,11 +1081,362 @@ Webというのは地獄のように広いトピックで、書き始めた担�
  * Webや車載アプリのような、さらにAndroidの世界を広げる用途において、「ネイティブ」なアプリは常に求められることになると予想している
 
 
+== Webサーバから見たWeb
+
+うぇぇん
+
+本節ではWebサーバからみたWebを考えてみます。
+おまけで少しWebサーバを作ってみることにしましょう。
+
+=== 基本はHTTPのレスポンスを返すこと
+
+AndroidからはHTTPリクエストを送りますが、サーバから見るとリクエストは「来る」ものです。
+リクエストを読み取り、レスポンスを返すことがサーバアプリケーションの基本的な役割です。
+
+クライアントからWebサーバへアクセスがあった場合、目的はWebサーバ上の「リソース」です。
+すでにURIの説明であった通り、WebリソースはURIによって
+一意に識別されるわけですが、Webサーバから見るとそれを階層構造・ツリー上にマッピングする必要があります。
+
+そして、マッピングしたデータは必要に応じて取り出されます。
+保存の仕方はサーバ開発者が選びます。
+
+例えば"Hello World"とだけテキスト形式でHTTPレスポンスを
+返すWebサーバがあったとすると、サーバプログラム自体に
+Hello Worldという文字を埋め込むだけで済みます。
+何かを「覚えて」おく仕組みを用意する必要はありません。
+
+レスポンスのためのリソースをデータとして保存しておきます。
+クライアントとしてのAndroid端末と異なり、
+一つのサーバに複数のクライアントがアクセスし、
+天気予報のような共有できるデータは共有します。
+Web上の掲示板やTwitterのようなソーシャルサイトでもやはり共有します。
+
+いわゆる「データベース」のような、
+データの保存に特化した仕組みを使って保存しておきます。
 
 
+=== 自分でナマのレスポンスを記述することはめったにない。
+
+しかしHTTPはすでに大変複雑な技術と化しており、
+更にサーバへアクセスしてくるWebブラウザ側の挙動に問題があったりするため
+自力で全てを実装するのは難しくなっています。
+特に高度なことを達成しようとすればするほど、
+ミスが発生します。
+
+また、特にセキュリティについて言えば、
+いくつかの典型的な問題向けには取るべき定番の対策があります。
+それを実現するための仕組みを、プログラミング言語や
+Webサーバを作るためのフレームワークが提供しています。
+例えばCSRF脆弱性の多くはPOST送信を行うフォーム等に
+nonceを埋め込めば防げるため、Webフレームワークでは
+nonceを自動生成して埋め込む仕組み、
+それがないPOSTリクエストを遮断する仕組みがあったりします。
+@<fn>{csrf_token}
+@<fn>{not_all}
+
+//footnote[csrf_token][PythonのWebフレームワークであるDjangoにはそのものずばり、csrf_tokenという仕組みがあり、POSTリクエストはこれが含まれていない場合、標準で一律に遮断されます。]
+
+//footnote[not_all][では全ての脆弱性をフレームワークなどで防げるかと言いますと、答えは「いいえ」です]
 
 
-== その他のサーバ
+=== Python + Djangoでサーバを作る。
+
+Pythonはプログラミング言語の一つです。
+DjangoはPythonで利用できる有名なWebアプリケーションフレームワークです。
+ここまで説明したことをざっとPython + Djangoで実装してみましょう。
+概要だけ把握できるように詳細な説明は落としていきます。
+サーバ環境はLinuxのUbuntu系OSとしています。
+@<fn>{why_django}
+
+//footnote[why_django][なぜこの組み合わせかというと、単純に本章担当者がPythonとDjangoで普段Webサーバを実装しているためです。Androidとは独立していますが、Pythonの比較的大きなカンファレンスであるPyCon JP 2014 でDjangoで開発しているプロジェクトについてトークセッションをいただけることになりました]
+
+==== プロジェクトを作る
+
+Linux環境の/optディレクトリに/opt/helloworldというプロジェクトを作ることにします。
+
+//emlist[helloworldプロジェクトを作る]{
+$ python --version
+Python 2.7.3
+$ django-admin.py --version
+1.6.5
+$ cd /opt
+$ django-admin.py startproject helloworld
+$ cd helloworld/
+$ ls -R
+.:
+helloworld  manage.py
+
+./helloworld:
+__init__.py  settings.py  urls.py  wsgi.py
+//}
+
+django-admin.py はDjangoがもともと提供する管理者用プログラムで、ここではhelloworldというプロジェクトを作っています。
+".py"で終わるファイルがPythonスクリプトのファイルです。
+ここではhelloworldモジュールがすでに作成されており、プロジェクトの設定を司るsettings.pyを始めとしていくつかの
+標準的なファイルが自動的に作られています。
+
+
+//emlist[helloworldプロジェクトを実行する]{
+$ python manage.py runserver
+Validating models...
+
+0 errors found
+July 08, 2014 - 07:22:45
+Django version 1.6.5, using settings 'helloworld.settings'
+Starting development server at http://127.0.0.1:8000/
+Quit the server with CONTROL-C.
+//}
+
+この時点でDjangoのプロジェクトは試験用のサーバを立ちあげてしまうことができます。
+"python manage.py"はこのプロジェクトを管理するための各種サブコマンドを実行するためのコマンドです。
+
+ここでは"runserver"サブコマンドでDjango組み込みのWebサーバを立ち上げています。
+この状態でhttp://127.0.0.1:8000/へブラウザからアクセスすると@<img>{django-01}のようになります。
+
+//image[django-01][作りたてのDjangoサーバ]{
+//}
+
+これはDjango自体が表示しているページで自分で表示させているものではありません。
+
+==== DBを用意する
+
+Djangoでは標準の状態で複数のSQLエンジンからバックエンドとして利用することができます。
+今回採用したDjango 1.6.5の場合、作られたプロジェクトではすでに
+SQLiteというSQLエンジンを使う設定ができているので、
+その設定を元に実際にDBを準備してもらうことにします。
+
+//emlist[sqliteを使ってDBを準備する]{
+python manage.py syncdb
+Creating tables ...
+Creating table django_admin_log
+Creating table auth_permission
+Creating table auth_group_permissions
+Creating table auth_group
+Creating table auth_user_groups
+Creating table auth_user_user_permissions
+Creating table auth_user
+Creating table django_content_type
+Creating table django_session
+
+You just installed Django's auth system, which means you don't have any superusers defined.
+Would you like to create one now? (yes/no): no
+Installing custom SQL ...
+Installing indexes ...
+Installed 0 object(s) from 0 fixture(s)
+$ ls
+db.sqlite3  helloworld	manage.py
+//}
+
+"db.sqlite3"というファイルが作られました。
+SQLiteはファイルにデータを保存する軽量のSQL実装で、
+独立したデーモンやサーバが要らず軽量でもあるため、
+特に実験時のWebサーバ開発や組み込み開発で良く使われます。
+@<fn>{android_uses_content_provider}
+
+//footnote[android_uses_content_provider][AndroidでもContentProviderの背後でSQLiteが動いていることはきっとご存知でしょう]
+
+この時点では、サーバで保存するデータについて何も記述してませんが、
+Djangoが自身を管理する情報は実はすでにDBに書き込まれています。
+以下ではその内容を見ています。
+dbshellはその時点で利用されているDBエンジンに合わせて
+DBとのインタラクティブ環境を起動します。
+
+//emlist[DBの中身]{
+$ python manage.py dbshell
+
+sqlite> .tables
+auth_group                  auth_user_user_permissions
+auth_group_permissions      django_admin_log          
+auth_permission             django_content_type       
+auth_user                   django_session            
+auth_user_groups
+
+sqlite> select * from auth_permission;
+1|Can add log entry|1|add_logentry
+2|Can change log entry|1|change_logentry
+3|Can delete log entry|1|delete_logentry
+4|Can add permission|2|add_permission
+5|Can change permission|2|change_permission
+6|Can delete permission|2|delete_permission
+7|Can add group|3|add_group
+8|Can change group|3|change_group
+9|Can delete group|3|delete_group
+10|Can add user|4|add_user
+11|Can change user|4|change_user
+12|Can delete user|4|delete_user
+13|Can add content type|5|add_contenttype
+14|Can change content type|5|change_contenttype
+15|Can delete content type|5|delete_contenttype
+16|Can add session|6|add_session
+17|Can change session|6|change_session
+18|Can delete session|6|delete_session
+//}
+
+この例ではいくつかのサーバ側パーミッションがすでに準備されていることが分かります。
+
+==== Hello Worldサーバ
+
+さて最初に"Hello World"とだけ返すWebサーバを作ります。
+
+helloworldプロジェクトを作成した時点でhelloworld/ディレクトリに以下のようなファイルが出来ています。
+
+//emlist[helloworld/urls.py]{
+from django.conf.urls import patterns, include, url
+
+from django.contrib import admin
+admin.autodiscover()
+
+urlpatterns = patterns('',
+    # Examples:
+    # url(r'^$', 'helloworld.views.home', name='home'),
+    # url(r'^blog/', include('blog.urls')),
+
+    url(r'^admin/', include(admin.site.urls)),
+)
+//}
+
+ここでは、URIのpath部分を正規表現でチェックしていき、
+マッチするものがあればそれに対応する関数にルーティングするという処理をしています。
+もともと、そのプロジェクトの管理者用のページとして"admin/"についての実装が入っています。
+
+ここでWebサーバのトップページに"Hello World"を表示させてみることにします。
+
+//emlist[helloworld/urls.py を改変する]{
+from django.conf.urls import patterns, include, url
+
+from django.contrib import admin
+admin.autodiscover()
+
+urlpatterns = patterns('',
+    url(r'^$', 'helloworld.views.home', name='home'),
+    url(r'^admin/', include(admin.site.urls)),
+)
+//}
+
+重要な行が一行追加されました。
+
+//emlist[]{
+    url(r'^$', 'helloworld.views.home', name='home'),
+//
+
+これは、パスが何もないときにhelloworldモジュールのviews.pyにあるhome関数を実行しろ、という意味になります。
+最初のプロジェクトではviews.pyはないので、ここでは作ります。
+@<fn>{django_does_not_recommend_this}
+
+//footnote[django_does_not_recommend_this][ちなみに直接ここでプロジェクト名と同名のhelloworldモジュールに実装を書くのは推奨されていないようです。興味がおありのかたはDjango公式のTutorialを見てみましょう。]
+
+//emlist[views.py]{
+from django.http import HttpResponse
+
+def home(request):
+    return HttpResponse('Hello World\n', content_type='text/plain')
+//}
+
+プログラミング言語Pythonではブロックはインデントで表します。
+ここではreturnで始まる一行がトップページへクライアントがアクセスしてきた時の処理の全てです。
+
+ブラウザでアクセスしてみます。
+
+//image[django-02][Hello Worldサーバ]{
+//}
+
+サーバの実装について、詳細な説明は置いておくとして、
+ここで重要なことは「HTTPに関するやりとりのほとんどをDjangoが代わりにやってくれている」ということです。
+この例では、本章で説明したHTTPレスポンスのContent-Typeと、メッセージボディを
+Djangoが提供するHTTPのユーティリティライブラリに通知し、オブジェクトを得てそれを関数から返しているだけです。
+
+さて、すでにtelnetコマンドを紹介していますから、ここでtelnetで生のHTTPも見てみることにしましょう。
+
+//emlist[telnetでアクセスする]{
+(サーバを立ち上げている状態で)
+$ telnet 127.0.0.1 8000
+Trying 127.0.0.1...
+Connected to 127.0.0.1.
+Escape character is '^]'.
+GET / HTTP/1.1
+Host: localhost
+
+HTTP/1.0 200 OK
+Date: Tue, 08 Jul 2014 07:53:30 GMT
+Server: WSGIServer/0.1 Python/2.7.3
+X-Frame-Options: SAMEORIGIN
+Content-Type: text/plain
+
+Hello World
+Connection closed by foreign host.
+//}
+
+それはともかく、返答はできているようです。
+
+==== Apache上で実行する
+
+これまでのWebサーバはDjango組み込みでしたが、ここでApacheからこのプロジェクトを実行させてみます。
+
+Apacheの設定ファイル上で例えば次のように書くとしましょう。
+
+//emlist[Apacheの設定例]{
+WSGIDaemonProcess helloworld user=www-data group=www-data \
+   processes=5 threads=5 maximum-requests=5 umask=0007 \
+   python-path=/opt/helloworld
+WSGIProcessGroup helloworld
+WSGIScriptAlias /helloworld /opt/helloworld/helloworld/wsgi.py
+<Directory /opt/helloworld/helloworld>
+    <Files wsgi.py>
+        Order deny,allow
+        Allow from all
+    </Files>
+</Directory>
+//
+
+詳細は置いておくとして、これでApache上からこのプロジェクトが実行されるようになります。
+なお、WSGIというのは、Pythonプログラムで書かれたアプリケーションへ他のWebサーバからアクセスするための規格です。
+プロジェクト作成時にすでに作られていたwsgi.pyがこの通信部分の面倒を見てくれますので、
+開発者はここでも面倒くさいことを行わずに済みます。
+
+Webブラウザ上では結果はそっくり同じに見えるはずです。
+ここではApacheに対してtelnetをしてみましょう。
+なお今回Apache上に施した設定により、Apache上からアクセスする際に"/helloworld"がパスの先頭に必要になります。
+
+//emlist[Apacheにtelnet接続してDjangoプロジェクトのパスへアクセスする]{
+$ telnet 127.0.0.1 80
+Trying 127.0.0.1...
+Connected to 127.0.0.1.
+Escape character is '^]'.
+GET /helloworld HTTP/1.1
+Host: localhost
+Connection: close
+
+HTTP/1.1 200 OK
+Date: Tue, 08 Jul 2014 08:09:28 GMT
+Server: Apache/2.2.22 (Debian)
+X-Frame-Options: SAMEORIGIN
+Vary: Accept-Encoding
+Connection: close
+Transfer-Encoding: chunked
+Content-Type: text/plain
+
+c
+Hello World
+
+0
+//}
+
+Djangoが提供するテストサーバと比べると応答がいくつかの点で異なっているのが分かります。
+何より、こちらではレスポンスがHTTP/1.1ですね！
+
+==== HTMLテンプレート
+
+==== POSTとデータの保存
+
+==== XSSとCSRF対策は？？
+
+
+=== IaaS: Webサーバ開発者のつよーい味方
+
+昔は実際のコンピュータを自宅に並べる、なんていうことも行われていましたが、現在ではあまり行われなくなりました。
+
+
+== その他の「サーバ」
 
 本章を始めとする一連の説明は、Webサーバについての説明を中心としています。
 しかしインターネット・クラウド上にあるサーバはそれだけにとどまりません。
