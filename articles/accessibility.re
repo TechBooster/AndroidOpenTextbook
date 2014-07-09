@@ -129,8 +129,64 @@ android:nextFocusUp	上キーが押された時にフォーカスの当たるVie
 //list[focus_cursor][方向キーのある端末向けに設定をいれた例]{
 //}
 
-=== 字幕を付ける
+=== 動画に字幕を付ける
+
+作成したAndroidアプリ内で、説明のためにVideoViewを用いて動画再生を行うこともあるでしょう。しかし、耳の不自由な方は台詞を聞くことができないため、動画に字幕をつける必要があります。Androidでは、VideoViewに再生中の動画に字幕を付けるAPIがAndroid 4.4（API Level 19）で追加されました。以下の手順で、VideoViewで再生する動画に字幕を付けることができます。
+
+ * WebVTT形式の字幕ファイルを作成する。
+ * VideoViewに字幕ファイルをセットする。
+
+==== WebVTT形式の字幕ファイルを作成する
+
+WebVTTとは、The Web Video Text Tracks Formatの略で、HTML5のvideoタグで表示される動画に字幕を付ける時などに使用されます。詳細なドラフトはhttp://dev.w3.org/html5/webvtt/で読むことができます。
+
+WebVTTファイルの形式を@<list>[webvtt]に示します。
+
+//list[webvtt][WebVTTフォーマット]{
+WEBVTT
+Kind:captions
+Language:ja
+
+1
+00:00:06.500 -> 00:00:08.200
+ようこそ
+
+2
+00:00:09.000 -> 00:00:11.300
+OpenTextbookへ
+
+//}
+
+この形式のファイルを、res/rawフォルダにいれます。ここではcaption.vttとして保存したとして話を進めます。
+
+==== VideoViewに字幕ファイルをセットする
+
+次に、作成したvttファイルをVideoViewにセットします。VideoViewのインスタンスを取得し、addSubtitleSource()メソッドで字幕データをセットします。@<list>[videoview]に例を示します。
+
+//list[videoview][VideoViewに字幕データをセットする]{
+mVideoView.addSubtitleSource(
+    getResources().openRawResource(R.raw.caption),
+    MediaFormat.createSubtitleFormat(
+        "text/vtt",locale.JAPANESE.getLanguage()));
+//}
 
 === テストする
 
+作成したアプリがアクセシビリティの機能を正しくサポートしているかテストしましょう。アクセシビリティテストのゴールは以下の3点です。
+
+ * 作成したアプリを、視覚情報なしで利用できること
+ * アプリ内の作業を方向操作のみで容易に行うことができること
+ * その際のフィードバック（読み上げ）は正しいこと
+
+次の6点を特に検証しましょう。
+
+ * 画面のタップを用いず、方向キーのみで操作できるか？
+ * TalkbackがONの時、フォーカスが当たったものが正しく読み上げられるか？
+ * タッチガイドがONの時、タップしたものが正しく読み上げられるか？
+ * ユーザーが操作可能なViewは、Android Designで推奨されている1辺48dp以上であるか？
+ * TalkbackがONの時、画像の拡大縮小やスクロールなどのジェスチャーが正しく動作するか？
+ * 音のみのフィードバックを行っていないか？メール着信を音のみで通知していた場合、耳の不自由な方は通知に気付くことができません。
+
 == まとめ
+
+本章では、作成したアプリをより多くのユーザーに使用してもらうため、ローカライズの手法とアクセシビリティ機能に対応する手法を紹介しました。日本語を読むことができないユーザーや、画面を見ることができないユーザー向けの改善を行うことで、より多くのユーザーによりよいユーザー体験を提供しましょう。
