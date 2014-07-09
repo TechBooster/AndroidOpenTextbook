@@ -741,9 +741,6 @@ Contentは「中身」です。@<fn>{contents}
 ここでは「仕様無視！そういうのもあるのか」という程度で軽く理解しておくことにしましょう。
 
 
-#@warn(TODO: 実際にリクエストの中身とレスポンスの中身を平文で書く。telnetの結果みたいなもの)
-
-
 ==== 演習: Android アプリからWebサーバにアクセスしてみよう
 
 さて、ここでは実際にAndroid経由でHTTPアクセスをしてみましょう。
@@ -763,6 +760,77 @@ HTTPアクセスを行うライブラリは他にも@<code>{org.apache.http.impl
  * 参考: Android Apache HTTP Client と HttpURLConnection どっちを使うべき？ @<href>{http://y-anz-m.blogspot.jp/2011/10/androidapache-http-client.html}@<fn>{this_is_also_old_article}
 
 //footnote[this_is_also_old_article][記事の公開2011年10月4日に公開された点も出来れば]
+
+
+==== 演習おまけ: curlコマンド
+
+telnetコマンドは生のHTTPを見やすいために使ってみましたが、それにしてもちょっと面倒臭いすぎます。
+telnetで一つ一つの文字列を丁寧に入れてもサーバの機嫌が良くなったりはしませんし。
+@<fn>{shutdown}
+
+//footnote[shutdown][むしろ人間の入力は遅いので、タイムアウトでサーバから切られたりします]
+
+一方Webブラウザで結果を見ると、画像等も表示されて、間違いなく本物のWebページを見ていることになりますが、
+telnetのようにその下で何が起きているかを把握はしづらくなります。
+特に、ある特定のHTTPリクエストを発行したい、という要望を叶えるのは難しいです。
+実際にはtelnetでも、例えばPOSTリクエストを送る場合には手で入力するのは難しいですし、繰り返し試す場合にも不便です。
+
+中間の対策としてしばしば使われる別のコマンドとしてcurlというものがあります。
+これはいろいろなHTTPリクエストをサーバに送って見る上ではかなり便利です。
+
+まず、curlで@<href>{http://techinstitute.jp/}というURIにGETリクエストを送る例を示します。
+
+//emlist[curlのGET実行例]{
+$ curl http://techinstitute.jp/
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8">
+
+... （HTMLどびゃー）
+//}
+
+これですとヘッダがわかりませんが、-vとつけるとヘッダの内容も見られます。
+
+//emlist[curlのGET実行例。今回はリクエストヘッダとレスポンスヘッダを見る]{
+> curl -v http://techinstitute.jp/
+* About to connect() to techinstitute.jp port 80 (#0)
+*   Trying 157.7.156.136...
+* connected
+* Connected to techinstitute.jp (157.7.156.136) port 80 (#0)
+> GET / HTTP/1.1
+> User-Agent: curl/7.26.0
+> Host: techinstitute.jp
+> Accept: */*
+> 
+* additional stuff not fine transfer.c:1037: 0 0
+* HTTP 1.1 or later with persistent connection, pipelining supported
+< HTTP/1.1 200 OK
+< Date: Wed, 09 Jul 2014 07:48:07 GMT
+< Server: Apache/2.2.23 (Unix) mod_ssl/2.2.23 OpenSSL/1.0.1h
+< X-Powered-By: PHP/5.5.9
+< Transfer-Encoding: chunked
+< Content-Type: text/html
+< 
+<!doctype html>
+<html>
+<head>
+
+//}
+
+
+次にHTTPのPOSTリクエストで、@<href>{http://127.0.0.1:8000/submit}というURIに対して
+HTMLフォームから送るかのように"message=Sample Message"というデータを送信する例を示します。
+
+//emlist[curlのPOST実行例]{
+$ curl -F "message=Sample Message" http://127.0.0.1:8000/submit
+//}
+
+ここでは詳細な説明は避けますが、状況によってはこちらの方が便利なこともある、ということで一つ。
+@<fn>{curl_used_later}
+
+//footnote[curl_used_later][特に後述する「プログラマブルな」Webでは大変重宝します。あと、ここで紹介したPOSTの例は本章で後に使います。]
+
 
 === HTTPのRFC
 
@@ -1155,9 +1223,11 @@ Webアプリケーションフレームワークは、そういった問題の�
 特にセキュリティについて言えば、いくつかの典型的な問題には、それぞれ取るべき定番の対策があります。
 それを実現するための仕組みを、プログラミング言語やWebサーバを作るためのフレームワークが提供しています。
 
-例えばCSRF脆弱性の多くは、POST送信を行うフォーム等にnonceを埋め込めば防げます。
+例えばCSRF（Cross Site Request Forgery）脆弱性@<fn>{csrf_described_later}の多くは、POST送信を行うフォーム等にnonceを埋め込めば防げます。
 Webアプリケーションフレームワークではnonceを自動生成して埋め込む仕組み、
 それがないPOSTリクエストを遮断する仕組みがあったりします。
+
+//footnote[csrf_described_later][CSRF脆弱性についてはDjangoでWebアプリケーションを作る際に説明します]
 
 全ての脆弱性をWebフレームワークなどで防げるかと言いますと、答えは「いいえ」です。
 しかし、防ぎやすい仕組みについてはフレームワーク等を頼ったほうがより素早く安全に開発できます。
@@ -1500,13 +1570,338 @@ ApacheのようなWebサーバはそれ自体、OS内の静的ファイルをル
 
 //footnote[about_nginx][「えんじんえっくす」と読みます。@<href>{http://nginx.org/}]
 
-//footnote[django_own_server][本文ではDjango自身が提供するWebサーバも使っていますが、これは開発用で外部公開には全く向きません。まさかHTTP/1.0を返してくるとは思いませんでしたが。さて、WSGIを介してスタンドアローンで動作するPython製Webサーバというのもあり、そのうちの一つを筆者も使ってみたことがあります（「異なるバージョンのPython(wsgi)アプリを一つの開発環境上で動かす」@<href>{http://qiita.com/amedama/items/a8f511bd75a14aac0277}）]
+//footnote[django_own_server][本文ではDjango自身が提供するWebサーバも使っていますが、これは開発用で外部公開には全く向きません。まさかHTTP/1.0を返してるとは思いませんでしたが。さて、WSGIを介してスタンドアローンで動作するPython製Webサーバというのもあり、そのうちの一つを筆者も使ってみたことがあります（「異なるバージョンのPython(wsgi)アプリを一つの開発環境上で動かす」@<href>{http://qiita.com/amedama/items/a8f511bd75a14aac0277}）]
 
 ==== HTMLテンプレート
 
+HTTPレスポンスで"text/plain"を指定しましたが、HTMLを返すこともできます。
+むしろデフォルトでは（何も指定しない場合）"text/html"をContent-Typeとして返します。
+
+//emlist[HTMLを返す場合のhome()関数]{
+def home(request):
+    return HttpResponse('<html><body>Hello World</body></html>')
+//}
+
+このような形でHTMLを書くのは大変面倒です。@<fn>{wrong_html}
+
+//footnote[wrong_html][そもそもここに書かれているHTMLは適切なHTMLではない気がしますね！]
+
+Webサーバが返答するレスポンスにある程度パターンが決まっているのであれば、
+Webサーバでそれを共通化・テンプレート化する方が色々と楽です。
+
+Djangoを含むWebアプリケーションフレームワークにはしばしばそういった仕組みがあります。
+ちょっと試してみましょう。
+
+//emlist[helloworld/settings.pyに"TEMPLATE_DIRS"の行を足す]{
+import os
+BASE_DIR = os.path.dirname(os.path.dirname(__file__))
+TEMPLATE_DIRS = [os.path.join(os.path.dirname(__file__), 'templates')] # <-- ここが追加部分
+//}
+
+//emlist[テンプレートの元になるhelloworld/templates/helloworld/hello.djtmlを作る]{
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Hello World Portal</title>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  </head>
+  <body>
+    <h1>{{ message }}</h1>
+  </body>
+</html>
+//}
+
+//emlist[helloworld/views.pyのhome()を修正する]{
+from django.core.urlresolvers import reverse
+from django.http import HttpResponse, HttpResponseRedirect
+from django.template import RequestContext, loader
+
+def home(request):
+    template = loader.get_template('helloworld/hello.djhtml')
+    context = RequestContext(request, {'message': 'Hello World Again!'})
+    return HttpResponse(template.render(context))
+//}
+
+結果は@<img>{server-6}通りです。
+
+//image[server-6][あげーん]{
+//}
+
+ここで重要なのは、テンプレートとなる"hello.djhtml"に{{ message }}という文字列があり、
+対応するhome()関数でその部分を"Hello World Again!"に変えるよう指示していることです。
+
+//emlist[hello.djhtmlでテンプレート化されている部分を再掲]{
+    <h1>{{ message }}</h1>
+//}
+
+//emlist[views.pyでテンプレート部分に実際に文字列を埋め込む部分を再掲@<fn>{about_dict}]{
+    context = RequestContext(request, {'message': 'Hello World Again!'})
+//}
+
+//footnote[about_dict][{'message': 'Hello World Again!'}の部分ですが、JavaでいうMapに相当する仕組みです（「辞書型データ構造」などと呼ばれます）。keyは"message"、valueが"Hello World Again!"です。]
+
+そのため、次のようにhome()関数を書き換えると、テンプレート側を変更しなくても最終的なHTMLもそれに応じて変化します
+
+//emlist[views.pyでテンプレート部分に実際に文字列を埋め込む部分を再掲@<fn>{about_dict}]{
+    context = RequestContext(request, {'message': 'Good Evening Android!'})
+//}
+
 ==== POSTとデータの保存
 
-==== XSSとCSRF対策は？？
+いっそ表示させる文字列をユーザに決めてもらいましょう。
+具体的にはHTTPのPOSTで送られてきた文字列をサーバに保存し、トップページでは最新のPOSTの結果を表示するようにしてみます。
+
+保存するためには保存するデータ形式を指定する必要があります。
+Djangoの場合、Modelという仕組みを用いて指定し、SQLiteのような特定のDBの制約になるべく依らないデータ構造をプログラム中で使うことができます。
+@<fn>{need_to_include_to_app}
+
+//footnote[need_to_include_to_app][今回全く本質的でないので省略しますが、helloworldというプロジェクトをDBを持つAppとして登録しておく必要があります。万が一この説明と同じ作業をされている場合には、helloworld/settings.pyのINSTALLED_APPSという変数の最後に'helloworld'を追加してください。]
+
+//emlist[helloworld/models.pyを新規に作成する]{
+from django.db import models
+
+class HelloWorldMessage(models.Model):
+    message = models.CharField(max_length=100)
+    created_at = models.DateTimeField(auto_now_add=True)
+//}
+
+ここでクラスを定義し、クラスにはJavaでいう二つのメンバ変数を作ります。
+
+ * message ... 最大100文字のデータ。今回は"Hello World"の代わりとして使うつもり。
+ * created_at ... オブジェクトが作られた日時。今回は「最新の結果」を得るためのソートの鍵で使うつもり。
+
+Pythonではプログラムをコンパイルする必要はありません。
+しかしこのようにDjangoのModelを定義した際には、使用しているDBに対応する実際のSQLのテーブルなどをDjangoに作ってもらう必要があります。
+
+//emlist[DBを準備するようDjangoにお願いする]{
+$ python manage.py syncdb
+Creating tables ...
+Creating table helloworld_helloworldmessage
+Installing custom SQL ...
+Installing indexes ...
+Installed 0 object(s) from 0 fixture(s)
+//}
+
+先ほど、一度dbshellというサブコマンドでSQLite中のテーブルを見ましたね。
+ここでもう一度、DBの中身を見てみることにします。
+
+//emlist[SQLiteの中を再度覗くと、helloworldという文字列が！]{
+$ python manage.py dbshell
+SQLite version 3.7.11 2012-03-20 11:35:50
+Enter ".help" for instructions
+Enter SQL statements terminated with a ";"
+
+sqlite> .tables 
+auth_group                    auth_user_user_permissions  
+auth_group_permissions        django_admin_log            
+auth_permission               django_content_type         
+auth_user                     django_session              
+auth_user_groups              helloworld_helloworldmessage
+
+sqlite> .schema helloworld_helloworldmessage
+CREATE TABLE "helloworld_helloworldmessage" (
+    "id" integer NOT NULL PRIMARY KEY,
+    "message" varchar(100) NOT NULL,
+    "created_at" datetime NOT NULL
+);
+//}
+
+"helloworld_helloworldmessage"というテーブルが新たに作られ、プログラム上で書いた"message"と"created_at"がSQLite上のテーブルのスキーマにあらわれているのが分かります。
+Pythonプログラム内でのデータの取り扱いと、SQLエンジンでのデータの取り扱いは、一定のルールに従ってDjangoが代わりに行なっています。
+
+なお、SQLiteではなく、仮にMySQLのような異なるSQLエンジンを使っていた場合にも、同様に適切なテーブルが作られます。
+このとき、多くの場合Python側のModelに関する定義を修正する必要はありません。
+
+参考まで、この仕組みをより一般に、プログラム上で見えるオブジェクト（Object）とSQLのような関係データベース（Relational Database）間を
+マップする仕組み（Mapper）ということでORM（ORM、Object-relational mapper）と呼んだりします。
+
+さてデータを保存する場所は出来ました。
+後はHTTPのPOSTリクエストを受け取る準備をします。
+RESTfulには拘らずに/submitというpathにPOSTリクエストがあったら、ということにしましょう。
+
+//emlist[helloworld/urls.pyに"submit"を追加]{
+urlpatterns = patterns('',
+    url(r'^$', 'helloworld.views.home', name='home'),
+    url(r'^submit$', 'helloworld.views.submit', name='submit'),
+    url(r'^admin/', include(admin.site.urls)),
+)
+//}
+
+//emlist[helloworld/views.pyにsubmit()を追加して、home()で結果を使うように変更！]{
+from django.core.urlresolvers import reverse
+from django.http import HttpResponse, HttpResponseRedirect
+from django.template import RequestContext, loader
+
+def home(request):
+    result = HelloWorldMessage.objects.order_by('-created_at')
+    if len(result) > 0:
+        message = result[0].message
+    else:
+        message = 'Hello World'
+    return HttpResponse(u'{}\n'.format(), content_type='text/plain')
+
+def submit(request):
+    message = request.POST.get('message')
+    obj = HelloWorldMessage.objects.create()
+    obj.message = submit
+    obj.save()
+    return HttpResponseRedirect(reverse('home'))
+//}
+
+//emlist[トップページにformを追加する]{
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Hello World Portal</title>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  </head>
+  <body>
+    <h1>{{ message }}</h1>
+    <form action="{% url 'submit' %}" method="post">
+      <input type="text" name="message">
+      <input type="submit" value="Submit">
+    </form>
+  </body>
+</html>
+//}
+
+//image[server-7][フォームが表示されました]{
+//}
+
+そこで、例えば"Hello Android!"と入れて、Submitボタンをクリックします。
+これで文字が変わると思いきや。
+
+//image[server-8][謎のエラー]{
+//}
+
+おや？
+
+==== フレームワークに組み込まれるCSRF脆弱性を軽減する仕組み
+
+#@warn(TODO: CSRF脆弱性の説明がモヒカン耐性を持つ程度に正確か怪しい。要確認)
+
+@<img>{server-8}には英語の説明がズラズラ表示されています。@<fn>{not_shown_on_production}
+文中にはDjango特有の説明も多数書かれているのでここで逐一説明することは避けますが、要は「Cross Site Request Forgery」の疑いがある、と警告しています。
+
+//footnote[not_shown_on_production][本番環境では表示されません。具体的にはhelloworld/settings.pyにDEBUGという変数があり、プロジェクトが作成されたときにはこれがTrue（Javaで言う boolean の true）に設定されているため、うやうやしく理由を説明してくれています。本番環境で同じミスがあった場合、HTTPの403（Forbidden）を返します。ここでは説明しませんが、404や403といったレスポンスコードに対応したHTMLをDjangoに指定することもできます。]
+
+先ほど準備したテンプレートのform部分は大変シンプルです。
+単純に「message」というインプットと、ボタンを兼ねる「submit」というインプットの二つしかありません。
+ユーザは実際、テキスト入力フィールド一つとボタンだけ見ることになります。
+formタグに指定がある通り、この2つのフィールドがPOSTメソッドとともにHTTPリクエストで送信されます。
+
+さて、HTTPの基本的なやり取りを思い出しながら、以下の質問について考えてみてください。
+「このPOSTリクエスト、該当するフォームをユーザが実際に入力・確認しなくても送信できませんか？」
+
+実際に見ないで送る例を示します。
+HTTPリクエストを送るためのツールcurlコマンドを本章前半でこっそり紹介していました。
+
+//emlist[curlのPOST実行例]{
+$ curl -v -F 'message=Malicious Message' http://localhost:8000/submit
+//}
+
+仮にDjangoが止めてくれなかったとしますと、このコマンドでメッセージを書き込みたい放題です。
+@<fn>{csrf_exempt}
+
+//footnote[csrf_exempt][この機構を無理やり止めた例を少し続けます。具体的には、submit()関数に"@csrf_exempt"という「デコレータ」をつけると、Djangoは今回説明している機構を止めます。]
+
+//image[server-9][Malicious Messageが書き込まれてしまった]{
+//}
+
+//emlist[curlのPOST実行例]{
+$ curl -v -F 'message=こんにちはこんにちは！ぼくもわもわさん！' http://localhost:8000/submit
+//}
+
+//image[server-10][わー、また書き込まれてしまった]{
+//}
+
+今回の事例では単にトップページが書き換わるだけです。そもそもそれが目的のページですので、まぁ酷いことにはなりません。
+
+ただしこれが、ログイン付きのサービスだったとするとかなり困ります。
+例えば、上のフォームが、仮に銀行の送金サービスで金額と宛先の口座を入力する画面だったりすると、以下のようなことが発生します。
+
+ある善良な一市民がおかしなWebページに迷い込んでしまったとします。
+そのWebページに今回の/submit pathへ投稿するフォームがが埋め込まれているとすると、
+Webサーバからはその人自身が送信してきたPOSTリクエストの内容が、
+自分のサーバのHTML上から行われたものなのか、そうでなく悪意のあるWebページからのものなのか、区別する方法が実はありません。
+
+悪意のある第三者がその人の名のもとに、しかしその人は気づかない間に（その画面を当人がWebブラウザで一切見ること無く）
+このフォームを外部から今回のURIへ直接送信出来ることになります。
+
+
+ここで紹介した一連の問題の最大の原因は、上記の"submit"というpathが、誰からでもPOSTリクエストを受け付けることです。
+これをCSRF（Cross Site Request Forgery）脆弱性と呼びます。
+
+さて@<img>{server-9}と@<img>{server-10}は、これまで実装してきた実際のDjangoのアプリケーションの画面ではありませんでした。
+実際に表示されたのは@<img>{server-8}です。
+Djangoがエラーを表示して、これ以上このPOSTリクエストを処理することを拒否したのです。
+
+偉い！
+
+さて、DjangoはWebサーバを攻撃っぽいものから守ろうとしていますが、ここで私達の「正当な要求」が拒否されている点は問題です。
+「正当だ。このフォームから、正しく送ったんだ！」ということを示すものが必要です。
+
+というわけで説明が長くなりましたが、フォームに一行追加します。
+
+//emlist[トップページのフォームを改良する]{
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Hello World Portal</title>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  </head>
+  <body>
+    <h1>{{ message }}</h1>
+    <form action="{% url 'submit' %}" method="post">
+      {% csrf_token %}
+      <input type="text" name="message">
+      <input type="submit" value="Submit">
+    </form>
+  </body>
+</html>
+//}
+
+{% csrf_token %}を追加しただけですが、これでこのフォームは完成です。
+@<fn>{csrf_token_is_mentioned}
+
+//footnote[csrf_token_is_mentioned][エラー画面をよく見ると実際、ここで追加している内容を提案しています。]
+
+実際にWebサーバに送られるHTMLを見てみましょう
+
+//emlist[実際に送られてきた内容の一例]{
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Hello World Portal</title>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  </head>
+  <body>
+    <h1>Hello World</h1>
+    <form action="/submit" method="post">
+      <input type='hidden' name='csrfmiddlewaretoken' value='MlTmHwtCNrLgCjsbNpRzoCL9bNbVjIQW' />
+      <input type="text" name="message">
+      <input type="submit" value="Submit">
+    </form>
+  </body>
+</html>
+//}
+
+csrfmiddlewaretokenの値が、簡単には予測不可能な値である点に注目してください。
+
+この値は、Djangoが自身で擬似乱数から生成したものです。
+自身のDBの中に保存しておき、以降のPOSTリクエストに値がないかをチェックします。
+
+ここで説明した、CSRF脆弱性がこれでどう守れるでしょうか。
+少なくとも、curlコマンドは上記のトップページ（フォームが表示されるページ）をその都度見るまで動作しません。
+csrfmiddlewaretokenというフォーム内の値を予測できないためです。
+
+また、攻撃者のWebページからも直接フォームを送れなくなりました。
+正確には、そのPOSTリクエストはDjangoによって拒否されます。
+
+少なくとも、明らかなCSRF脆弱性は、少し遠のいたようです。@<fn>{not_perfect}
+
+//footnote[not_perfect][ここで使われる秘密の値は]
+
 
 
 === IaaS: Webサーバ開発者のつよーい味方
