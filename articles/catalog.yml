@@ -4,6 +4,7 @@ CHAPS:
     - sample.re
     - uibasic-01.re
     - background01.re
+    - arduino-01.re
     - sensor-01.re
     - network-01.re
     - graphics-01.re
@@ -14,3 +15,5 @@ CHAPS:
     - glossary.re
 
 POSTDEF:
+
+#夏コミ仕様ではarduino-01.reは抜いてちょ@mhidaka
