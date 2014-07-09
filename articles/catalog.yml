@@ -15,3 +15,5 @@ CHAPS:
     - glossary.re
 
 POSTDEF:
+
+#夏コミビルドではarduino-01.reは外しておくれ > @mhidaka
