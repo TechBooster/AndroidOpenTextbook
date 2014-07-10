@@ -4,6 +4,7 @@
 #define LED 13 // LEDピン
 
 void setup() {
+  // デバッグシリアルの初期化
   Serial.begin(9600);
   
   // Cdsセルを入力に設定
