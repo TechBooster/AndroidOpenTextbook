@@ -841,7 +841,7 @@ IETFのHTTPbisワーキンググループでは現在2.0の仕様策定がされ
 
 //footnote[http20_thrown_out][英語ですが、例えば @<href>{http://www.phoronix.com/scan.php?page=news_item&px=MTcwMTA} などを参照してください。]
 
-0.9と1.0については省略し、HTTP/1.1について考えます。
+HTTP/0.9と1.0については省略し、HTTP/1.1について考えます。
 HTTP/1.1は当初、1999年に発行されたRFC 2616を拠り所として15年使われてきました。
 しかし曖昧さや現在のWebにそぐわない仕様が盛り込まれていることはよく知られていました。
 
