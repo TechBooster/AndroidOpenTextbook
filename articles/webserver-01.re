@@ -1309,7 +1309,7 @@ Pythonはプログラミング言語の一つです。
 
 //footnote[why_django][なぜこの組み合わせかというと、単純に本章担当者が使っているためです]
 
-===[column] IaaS, SaaS, etc.
+====[column] IaaS, SaaS, etc.
 
 さて実際にWebサーバ上でWebアプリケーションを動かしてみるのですが、その前に。
 
