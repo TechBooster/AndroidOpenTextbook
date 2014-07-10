@@ -16,10 +16,10 @@ void loop() {
   // Cdsセルからの入力
   int light = analogRead(CDS);
   // デバッグ表示
-  Serial.println(data);
+  Serial.println(light);
   
   // 明るさによってLEDの点灯を変化させる
-  if (data > 100) {
+  if (light > 500) {
     digitalWrite(LED, HIGH);
   } else {
     digitalWrite(LED, LOW);
