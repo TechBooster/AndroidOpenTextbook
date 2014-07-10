@@ -341,24 +341,97 @@ Webで情報をやりとりする際、どのコンピュータのどこにリ�
      urn:example:animal:ferret:nose
 //}
 
-特に上の例（fooというスキームで始まる方）は良く見るものかと思います。
+特に上の例（fooというスキームで始まる方）は良く見るものかと思います。@<fn>{about_example_com}
 ここでは、それぞれのパーツに名前と役割とルールが決められている点を軽く確認しておくにとどめておきます。
 普段WebブラウザでWebページを見る際や、Androidアプリ開発ではURIを事細かに理解する必要はあまりないでしょう。
 
+//footnote[about_example_com][そう言えば、Webではexample.comというドメイン、やたら良く見ますね。このホスト名、実はRFCで取り扱い方の規定があります（RFC 6061 "Special-Use Domain Names"）]
+
 @<list>{uri_format}のパーツの中には、特に後述するHTTPのGETリクエストで見るqueryの記述もあります。
-よくあるのはkey=valueというプログラミング言語で言う辞書型の構造です。
+よくあるのはkey=valueというプログラミング言語で言うMap・辞書型の構造です。
 さらに&で文字列を区切って、複数の辞書型データを記述する記法も当たり前のように使われています。
 
-当たり前なのでこれは仕様の一部かと言われると実はそうではないようです。
-『めんどうくさいWebセキュリティ』によると、"&"で区切る方法は、実は仕様にはなくデファクトスタンダードです。
-確かに同RFCには&で区切るという仕様はどこにも記載されていません。
+あまりに当たり前に使われているので、この挙動が仕様の一部かと言われると、実はそうではないようです。
+該当部分を（ページ境界を取り除いて）掲載してみます。
 
-なので、相当困った際にはここに許されている限りの文字を詰め込んで特殊なことをやっても「仕様違反じゃないもん！」って叫ぶことが出来ます。
+//emlist[RFC 3986のQuery]{
+3.4.  Query
 
-その次の#の後に並ぶfragmentでも状況は似ています。
-@<fn>{practical_enough}
+   The query component contains non-hierarchical data that, along with
+   data in the path component (Section 3.3), serves to identify a
+   resource within the scope of the URI's scheme and naming authority
+   (if any).  The query component is indicated by the first question
+   mark ("?") character and terminated by a number sign ("#") character
+   or by the end of the URI.
 
-//footnote[practical_enough][なお、ここで書いていることが馬鹿げた言葉遊び的に見えるかも知れませんが、Webが進化する過程ではプロトコル上の巧妙な抜け道を利用したり、あえてプロトコル違反したりして技術を進化させてきた部分もあり、そのためあながちここの説明も100%馬鹿げた遊びとも言い切れないのが難しいところです。ケースによってはセキュリティ上の問題にそのままつながるため、相当柔軟に複数の側面を理解して応用していく必要があります]
+   query       = *( pchar / "/" / "?" )
+
+   The characters slash ("/") and question mark ("?") may represent data
+   within the query component.  Beware that some older, erroneous
+   implementations may not handle such data correctly when it is used as
+   the base URI for relative references (Section 5.1), apparently
+   because they fail to distinguish query data from path data when
+   looking for hierarchical separators.  However, as query components
+   are often used to carry identifying information in the form of
+   "key=value" pairs and one frequently used value is a reference to
+   another URI, it is sometimes better for usability to avoid percent-
+   encoding those characters.
+
+   (以下、参考訳)
+
+   query要素は階層構造になっていないデータを保持する。
+   同要素はpath要素を伴って存在し、URIのsheme要素、
+   (もし存在すれば)authority要素のスコープ内にあるリソースを識別するのに
+   用いられる。query要素は冒頭のクエスチョンマーク("?")によって
+   その存在があることが明示され、シャープ記号("#")かURI末尾によって
+   終端が明示される。
+
+   query       = *( pchar / "/" / "?" )   (注: RFCで良くあるBNF記法)
+
+   スラッシュ("/")やクエスチョンマーク("?")がquery要素に含まれていて良い。
+   ただし関節参照むけのベースURIとしてそれらが使われた際、
+   古いぼっこわれた実装はまともにそういったデータに対応できないことがある。
+   （訳注: ベースURIは同RFC内の他の章の知識が必要。説明は省略）
+   階層構造を示すセパレータ(訳注: path要素の"/"のこと)を探している際に
+   queryに該当するデータとpathに該当するデータを分割するのに失敗しがち
+   だからである。しかし（訳注: そういった文字列をパーセントエンコーディング
+   させたくなる気持ちはわかるが)、query要素はしばしば"key=value"の
+   複数の組み合わせで取り扱われ、しかもそこでよく使われる値の種類として
+   別のURIへの参照があるることを考えると、それらの文字("/"と"?")を
+   パーセントエンコーディングしないほうが良いこともある。
+//}
+
+ポイントは後半のパーセントエンコーディング周りの説明です。
+実際に今述べた"key=value"の「複数の組み合わせ」("pairs")がしばしば使われる、
+とは書いてありますが、
+具体的にそのデータを使わなければならない(MUST)とはひっとことも書いてありません。
+
+『めんどうくさいWebセキュリティ』でも、"&"で区切る方法は仕様にはなくデファクトスタンダードという説明があるので、
+この解釈は間違いないようです。
+
+なので、相当困った際にはここに許されている限りの文字を詰め込んで特殊なことをやっても「仕様違反じゃないもん！」って叫ぶことが一応出来ます。
+
+その次の#の後に並ぶfragmentも状況は似ています。
+
+//emlist[]{
+3.5.  Fragment
+
+   The fragment identifier component of a URI allows indirect
+   identification of a secondary resource by reference to a primary
+   resource and additional identifying information.  The identified
+   secondary resource may be some portion or subset of the primary
+   resource, some view on representations of the primary resource, or
+   some other resource defined or described by those representations.  A
+   fragment identifier component is indicated by the presence of a
+   number sign ("#") character and terminated by the end of the URI.
+
+   (以下省略。実はqueryよりだいぶ長い)
+//
+
+"secondary resource"とはありますが、それが具体的に"primary resource"から見て
+どういうものであるかの解釈には幅がある表現となっています。
+HTMLとWebブラウザでは特定のヘッダに移動するためにfragment部分を使っていますが、
+これが唯一絶対の使い方というわけではないわけです。
 
 
 ==== URI, URL, URNの違い
@@ -753,35 +826,34 @@ Contentは「中身」です。@<fn>{contents}
 
 #@warn(ネットワークの章でWebサーバへアクセスする事例は終了している可能性が高い。要調整)
 
-====[column] DefaultHttpClientとAndroidHttpClient について
+#@# ====[column] DefaultHttpClientとAndroidHttpClient について
 
-HTTPアクセスを行うライブラリは他にも@<code>{org.apache.http.impl.client.DefaultHttpClient}や
-@<code>{android.net.http.AndroidHttpClient}といったライブラリが紹介されることがあります。
-しかし本稿ではそれらの理由はおすすめしません。
-現時点でこれらの実装にはバグが多く、今後もメンテナンスされる見込みがないと考えられているためです。
-なお、非常に古いAndroidのバージョン（2.2）では@<code>{java.net.HttpURLConnection}にバグがあったため、
-それらの古いバージョンでは注意が必要です。
+#@# HTTPアクセスを行うライブラリは他にも@<code>{org.apache.http.impl.client.DefaultHttpClient}や
+#@# @<code>{android.net.http.AndroidHttpClient}といったライブラリが紹介されることがあります。
+#@# しかし本稿ではそれらの理由はおすすめしません。
+#@# 現時点でこれらの実装にはバグが多く、今後もメンテナンスされる見込みがないと考えられているためです。
+#@# なお、非常に古いAndroidのバージョン（2.2）では@<code>{java.net.HttpURLConnection}にバグがあったため、
+#@# それらの古いバージョンでは注意が必要です。
+#@# 
+#@#  * 参考: Android Apache HTTP Client と HttpURLConnection どっちを使うべき？ @<href>{http://y-anz-m.blogspot.jp/2011/10/androidapache-http-client.html}@<fn>{this_is_also_old_article}
+#@# 
+#@# //footnote[this_is_also_old_article][記事の公開2011年10月4日に公開された点も出来れば]
+#@# 
+#@# ====[/column]
 
- * 参考: Android Apache HTTP Client と HttpURLConnection どっちを使うべき？ @<href>{http://y-anz-m.blogspot.jp/2011/10/androidapache-http-client.html}@<fn>{this_is_also_old_article}
+==== curlコマンド
 
-//footnote[this_is_also_old_article][記事の公開2011年10月4日に公開された点も出来れば]
-
-====[/column]
-
-==== 演習おまけ: curlコマンド
-
-telnetコマンドは生のHTTPを見やすいために使ってみましたが、それにしてもちょっと面倒臭いすぎます。
-telnetで一つ一つの文字列を丁寧に入れてもサーバの機嫌が良くなったりはしませんし。
+telnetコマンドを使ってみましたが、これはだいぶ不便です。
 @<fn>{shutdown}
+例えばPOSTリクエストを送る場合には手で入力するのはさらに難しくなります。
+繰り返し試しつつ、少しずつ内容を変更する、といった場合にも不便です。
 
-//footnote[shutdown][むしろ人間の入力は遅いので、タイムアウトでサーバから切られたりします]
+//footnote[shutdown][telnetで一つ一つの文字列を丁寧に入れてもサーバの機嫌が良くなったりはしませんし。むしろ人間の入力は遅いので、タイムアウトでサーバから一方的に接続を切断されたりします。]
 
-一方Webブラウザで結果を見ると、画像等も表示されて、間違いなく本物のWebページを見ていることになりますが、
-telnetのようにその下で何が起きているかを把握はしづらくなります。
-特に、ある特定のHTTPリクエストを発行したい、という要望を叶えるのは難しいです。
-実際にはtelnetでも、例えばPOSTリクエストを送る場合には手で入力するのは難しいですし、繰り返し試す場合にも不便です。
+一方Webブラウザで結果を見ると、本物のWebページを見ていることになりますが、telnetのようにその下で何が起きているかを把握はしづらくなります。
+やはり、ある特定のHTTPリクエストを発行したい、という要望を叶えるのは難しいです。
 
-中間の対策としてしばしば使われる別のコマンドとしてcurlというものがあります。
+中間の対策としてしばしば使われる別のコマンドとしてcurlというコマンドラインツールがあります。
 これはいろいろなHTTPリクエストをサーバに送って見る上ではかなり便利です。
 
 まず、curlで@<href>{http://techinstitute.jp/}というURIにGETリクエストを送る例を示します。
@@ -796,7 +868,7 @@ $ curl http://techinstitute.jp/
 ... （HTMLどびゃー）
 //}
 
-これですとヘッダがわかりませんが、-vとつけるとヘッダの内容も見られます。
+これですとヘッダがわかりませんが、"-v"オプションをつけると、ヘッダの内容も見られます。
 
 //emlist[curlのGET実行例。今回はリクエストヘッダとレスポンスヘッダを見る]{
 > curl -v http://techinstitute.jp/
@@ -821,22 +893,22 @@ $ curl http://techinstitute.jp/
 <!doctype html>
 <html>
 <head>
-
 //}
 
 
-次にHTTPのPOSTリクエストで、@<href>{http://127.0.0.1:8000/submit}というURIに対して
-HTMLフォームから送るかのように"message=Sample Message"というデータを送信する例を示します。
+次にPOSTリクエストで、@<href>{http://127.0.0.1:8000/submit}というURIに対して、
+まるでHTMLのフォームを入力したかのように"message=Sample Message"というデータを送信する例を示します。
 
 //emlist[curlのPOST実行例]{
 $ curl -F "message=Sample Message" http://127.0.0.1:8000/submit
 //}
 
-ここでは詳細な説明は避けますが、状況によってはこちらの方が便利なこともある、ということで一つ。
-@<fn>{curl_used_later}
+特に後述する「プログラマブルな」Webでは大変重宝します。
+@<fn>{facebook_maripo_book}
+ここではcurlコマンドについての詳細な説明はしませんが、興味があればぜひオンラインマニュアル等を参照してみてください。
+このコマンドは、本章後半でもう一度登場します。
 
-//footnote[curl_used_later][特に後述する「プログラマブルな」Webでは大変重宝します。あと、ここで紹介したPOSTの例は本章で後に使います。]
-
+//footnote[facebook_maripo_book][curlコマンドは、Webアプリケーション開発に関する記事や書籍でしばしば目にする有名なツールです。例えば郷田まり子著『facebookアプリケーション開発ガイド』でも、Facebookと連携するWebアプリケーション作成の際にcurlを用いる方法を紹介しています。]
 
 === HTTPのRFC
 
@@ -910,32 +982,51 @@ RFCはそもそも何も知らない人がゼロから読む教科書ではあ�
 ==== Cookie
 
 HTTPはもともと「ステートレスなプロトコル」と言われます。
-HTTPの仕様の中には「前回の状態をサーバやクライアントは覚えておいてね♪」と要求している項目がないという意味です。
+仕様の中に「前回の状態をサーバは覚えておいてね♪」と要求している項目がないという意味です。
 
-ここでハンバーガ屋と得意客の例を考えてみます。
+具体例を挙げてみましょう。
+江戸時代からあるテイクアウト専用のハンバーガ屋「ステートレス・バーガー」を考えてみます。
+普通の客は500円を払って即座に生成されるハンバーガーをGETして帰ります。
 
-#@warn(TODO: このハンバーガ屋の例はステートの意味を取り違えている。変える)
+ここで江戸時代から付き合いのある下町の旦那がやってきます。
+お金がありませんので「ツケといてくれ、旦那」と伝えます。
+店員は困惑しつつ「わかりました、次回おねがいしますね」といいつつ、ハンバーガーを一つ渡します。
 
-ハンバーガ屋に行き「ツケといてくれ、旦那」と客が支払いを後回しにもできるのがステートフルです。
-「ステートフル」は英語でStatefulで、「状態を保持している」という意味です。
-ハンバーガ屋は客のツケの金額等を覚えておく必要があります。
+次にその旦那はしっかり1000円持ってきて店に渡します。
 
-ステートフルな場合、次に行った時「この前のツケ、払ってくださいよ」と言うことができるように、
-ツケという状態をハンバーガ屋が覚えておけるのが、ステートフルの一見したところ良い点です。
-しかし、江戸時代からある下町のハンバーガ屋がお得意客数名に対してこれを行えても、最近の全国チェーンでこれは無理と言えます。
-ステートを保持するのはコストがかかります。
+しかし、ステートレス・バーカーの店員は1000円もらったのでハンバーガー二つを注文されたものと勘違いします。
+ハンバーガーを2つもらって旦那は困惑します。
+「おい、おれの顔を覚えちゃいないのかい……？」
 
-というよりも全国チェーンでは「40分後に取りに来ますのでその時に出して」というステートだって、割と断られます。
-非常にたくさんのお客を相手にうまくサービスを行き渡らせるには、客は逃げ出さない前提でその場で払ってその場でものをもらうのが通例です。
-つまり、自動販売機のように前のことを何も覚えていないのがステートレスです。@<fn>{stateful_burger}
+もう少しまともな例を挙げましょう。
 
-//footnote[stateful_burger][ちなみにこの無理矢理な例で言うと、番号札を渡して店員が後から席に持っていくモデルは、十分ステートフルなサーバです。しかし秒間1万リクエストくらい来る先進的なハンバーガ屋だとこれすら無理です。ステートレス・バーガーが素晴らしいわけです]
+例えばGMailのようなWebメールのアプリケーションでは、最初にログイン操作を行います。
+HTTPで言えば、POSTメソッドでユーザ名とパスワードを送るイメージです。
+
+さてWebサーバーはユーザ名とパスワードを受け取って、正しいユーザーだと理解したので、
+「あなたは正しいユーザーです！」とサーバもブラウザも大喜びです。
+
+さて次にユーザーがしたいのは自分のメールチェックです。
+そこで、GETメソッドなどでメールの一覧に対応するURIへアクセスしようとするでしょう。
+
+ログイン画面に飛ばされました！！
+
+自分の顔を覚えてくれない老舗のテイクアウト専用ハンバーガ屋と、
+Webメールの無限ログイン画面問題、根っこにある問題は同じです。
+今までの説明の範囲では、Webサーバはクライアントに関する情報をうまく覚える仕組みがありません。
 
 しかし実際にWebサーバを介してアクセスすると、
 多くのWebサービスでは、ユーザ名とパスワードなど、いろいろなものをWebサーバが記憶しているように見えます。
-特に、ブラウザを閉じてもそれらが残っているのは驚きです。
+特に、ブラウザを閉じてもそれらが残っているのは、驚きです。
+どうなっているのでしょうか。
 
-この大方の欲求に対処するのがCookieと呼ばれる仕組みです。
+この大方の欲求に対処するのがCookie（HTTP Cookie）と呼ばれる仕組みです。
+CookieはWebサーバからブラウザに「このkeyとvalueの組み合わせを覚えておいてください」
+という意味のSet-Cookieレスポンスヘッダを送ります。
+Webブラウザは保存していたCookieを次の接続時にCookieヘッダとしてリクエストヘッダに埋め込みます。
+この仕組みを双方が了承することで、ステートレスなHTTP上でWebサーバとクライアントの間で
+状態を維持することが可能になります。
+
 RFC 6265が参照できる仕様ですが、歴史的事情で完全にこのRFCの通りには動作しないとのことです。
 @<fn>{rfc6265}
 
@@ -2020,7 +2111,303 @@ csrfmiddlewaretokenというフォーム内の値を予測できないためで�
 
 試してみましょう。
 
-#@warn(TODO: 試せ)
+//image[server-11][典型的なXSS脆弱性のチェック]
+
+//image[server-12][あれ？]
+
+Djangoのテンプレートシステムは標準でXSS対策のために典型的な文字をエスケープする処理を勝手に行います。
+そのため、単純にフォームからデータを流し込むだけであれば、非常によく例に挙げられるたぐいのXSSは自動的に避けられます。
+
+この機能をオフにしてXSSを許してみましょう。
+
+//emlist[テンプレートであるhome.djhtmlに「この文字列はエスケープの必要がない」と指定すると]{
+    <h1>{{ message|safe }}</h1>
+//}
+
+//image[server-13][XSSが成立した]
+
+実際にこの自動エスケープを切ることはあります。
+例えばテンプレートの出来る範囲を超えて動的にHTMLを生成したい場合、
+生のPython言語でHTMLの部品となる文字列そのものを作成する必要があります。
+そのような場合に上記のようにDjangoの自動エスケープを切るわけですが、
+そのときにはDjangoであってもXSS脆弱性のあるWebアプリケーションが生まれる余地が生まれます。
+@<fn>{great_service_has_no_way_to_avoid_xss}
+
+//footnote[great_service_has_no_way_to_avoid_xss][高度なことを行うアプリケーションほど、標準的なエスケープをされると困るケースが多くなる傾向があると思います。そういった状況ではしばしばプログラマが自己責任でXSSの可能性を潰す必要が出てきます。]
+
+==== パスワードに基づくログインを実装する
+
+Python + Djangoによる実装の最後ではユーザによるログインを実装してみます。
+具体的には、ここで行う認証は「フォーム認証」です。
+BASIC認証やDIGEST認証ではありません。
+認証後、認証情報はCookieに保存され、セッションが維持されます。
+
+これもDjangoの仕組みを使うことで大幅に実装を簡略化することができます。
+
+まずユーザを作る必要があります。
+ここではPythonのインタラクティブ環境でユーザを作っています。
+本当はWeb上でユーザ登録フォームが必要なところです。
+
+//emlist[ユーザを作る]{
+$ python manage.py shell
+...
+>>> from django.contrib.auth.models import User
+>>> User.objects.create_user(username='mowa', email='mowa@example.com', password='mowa2mowa')
+//}
+
+次にログイン画面を表示するURI（のpath）とViewの対応関係を指定します。
+ここではDjangoが提供するログインモジュールをViewとしてしまいます。
+
+//emlist[urls.pyにDjangoのパスワードログイン用のモジュールを指定する]{
+urlpatterns = patterns('',
+    url(r'^accounts/login/$', 'django.contrib.auth.views.login',
+        {'template_name': 'helloworld/login.djhtml'}),
+    url(r'^$', 'helloworld.views.home', name='home'),
+    url(r'^submit$', 'helloworld.views.submit', name='submit'),
+    url(r'^admin/', include(admin.site.urls)),
+)
+//}
+
+次に、ログイン用モジュールが参照するログイン画面を作ります。
+@<fn>{about_this_template}
+
+//footnote[about_this_template][このテンプレートでテンプレートされている変数はどれも、実際にはDjangoが提供するログイン用モジュールが使います。この機能で十分であれば、Webアプリケーション作者はHTMLの見栄えだけテンプレートを介して変更すれば良いわけです。]
+
+//emlist[login.djhtml]{
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Login Page</title>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  </head>
+  <body>
+    {% if form.errors %}
+      <p>Login Failure</p>
+    {% endif %}
+    <form method="post" action="{% url 'django.contrib.auth.views.login' %}">
+      {% csrf_token %}
+      <table>
+        <tr>
+          <td>{{ form.username.label_tag }}</td>
+          <td>{{ form.username }}</td>
+        </tr>
+        <tr>
+          <td>{{ form.password.label_tag }}</td>
+          <td>{{ form.password }}</td>
+        </tr>
+      </table>
+      <input type="submit" value="login" />
+      <input type="hidden" name="next" value="{{ next }}" />
+    </form>
+  </body>
+</html>
+//}
+
+これまで作った2つのViewをログイン必須とします。
+
+//emlist[login_required]{
+from django.contrib.auth.decorators import login_required
+...
+
+@login_required
+def home(request):
+    ...
+
+@login_required
+def submit(request):
+    ...
+//}
+
+これでWebサーバの準備終了です。
+@login_requiredが付けられたViewでは、ユーザは自動的にログインページにリダイレクトされます。
+
+//image[server-14][XSSが成立した]
+
+さて、curlでHTTPの中身を見つつこのログイン過程をおさらいして、Djangoとお別れしましょう。
+
+curlではCookieを保存するファイル、読み込むファイルを-cと-bで分けて記述します。
+しかしそれ以外については、これまでの説明でひと通り何が起きているかを理解できると信じています。
+
+//emlist[トップページは302]{
+$ curl -v -b /tmp/cookie.txt -c /tmp/cookie.txt http://127.0.0.1:8000/
+* About to connect() to 127.0.0.1 port 8000 (#0)
+*   Trying 127.0.0.1...
+* connected
+* Connected to 127.0.0.1 (127.0.0.1) port 8000 (#0)
+> GET / HTTP/1.1
+> User-Agent: curl/7.26.0
+> Host: 127.0.0.1:8000
+> Accept: */*
+> 
+* additional stuff not fine transfer.c:1037: 0 0
+* HTTP 1.0, assume close after body
+< HTTP/1.0 302 FOUND
+< Date: Thu, 10 Jul 2014 07:18:17 GMT
+< Server: WSGIServer/0.1 Python/2.7.3
+< Vary: Cookie
+< X-Frame-Options: SAMEORIGIN
+< Content-Type: text/html; charset=utf-8
+< Location: http://127.0.0.1:8000/accounts/login/?next=/
+< 
+* Closing connection #0
+//}
+
+//emlist[ログイン画面が返される]{
+$ curl -v -b /tmp/cookie.txt -c /tmp/cookie.txt http://127.0.0.1:8000/accounts/login/?next=/
+* About to connect() to 127.0.0.1 port 8000 (#0)
+*   Trying 127.0.0.1...
+* connected
+* Connected to 127.0.0.1 (127.0.0.1) port 8000 (#0)
+> GET /accounts/login/?next=/ HTTP/1.1
+> User-Agent: curl/7.26.0
+> Host: 127.0.0.1:8000
+> Accept: */*
+> 
+* additional stuff not fine transfer.c:1037: 0 0
+* HTTP 1.0, assume close after body
+< HTTP/1.0 200 OK
+< Date: Thu, 10 Jul 2014 07:18:51 GMT
+< Server: WSGIServer/0.1 Python/2.7.3
+< Expires: Thu, 10 Jul 2014 07:18:51 GMT
+< Vary: Cookie
+< Last-Modified: Thu, 10 Jul 2014 07:18:51 GMT
+< Cache-Control: max-age=0
+< X-Frame-Options: SAMEORIGIN
+< Content-Type: text/html; charset=utf-8
+* Added cookie csrftoken="PAxGoYK7u4DxuSIbTS1ltg29OEF82Ac8" for domain 127.0.0.1, path /, expire 1436426331
+< Set-Cookie:  csrftoken=PAxGoYK7u4DxuSIbTS1ltg29OEF82Ac8; expires=Thu, 09-Jul-2015 07:18:51 GMT; Max-Age=31449600; Path=/
+< 
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Login Page</title>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  </head>
+  <body>
+    
+
+    <form method="post" action="/accounts/login/">
+      <input type='hidden' name='csrfmiddlewaretoken' value='PAxGoYK7u4DxuSIbTS1ltg29OEF82Ac8' />
+      <table>
+        <tr>
+          <td><label for="id_username">Username:</label></td>
+          <td><input id="id_username" maxlength="254" name="username" type="text" /></td>
+        </tr>
+        <tr>
+          <td><label for="id_password">Password:</label></td>
+          <td><input id="id_password" name="password" type="password" /></td>
+        </tr>
+      </table>
+      <input type="submit" value="login" />
+      <input type="hidden" name="next" value="/" />
+    </form>
+  </body>
+* nread <= 0, server closed connection, bailing
+* Closing connection #0
+</html>
+//}
+
+//emlist[ユーザ名とパスワードとCSRFトークンを送信する。ユーザ名とパスワードは先に用意した通り]{
+$ curl -v -b /tmp/cookie.txt -c /tmp/cookie.txt -F "csrfmiddlewaretoken=PAxGoYK7u4DxuSIbTS1ltg29OEF82Ac8" -F "username=mowa" -F "password=mowa2mowa" http://127.0.0.1:8000/accounts/login/?next=/
+* About to connect() to 127.0.0.1 port 8000 (#0)
+*   Trying 127.0.0.1...
+* connected
+* Connected to 127.0.0.1 (127.0.0.1) port 8000 (#0)
+> POST /accounts/login/?next=/ HTTP/1.1
+> User-Agent: curl/7.26.0
+> Host: 127.0.0.1:8000
+> Accept: */*
+> Cookie: csrftoken=PAxGoYK7u4DxuSIbTS1ltg29OEF82Ac8
+> Content-Length: 393
+> Expect: 100-continue
+> Content-Type: multipart/form-data; boundary=----------------------------309989bff083
+> 
+* additional stuff not fine transfer.c:1037: 0 0
+* additional stuff not fine transfer.c:1037: 0 0
+* Done waiting for 100-continue
+* additional stuff not fine transfer.c:1037: 0 0
+* additional stuff not fine transfer.c:1037: 0 0
+* HTTP 1.0, assume close after body
+< HTTP/1.0 302 FOUND
+< Date: Thu, 10 Jul 2014 07:27:21 GMT
+< Server: WSGIServer/0.1 Python/2.7.3
+< Expires: Thu, 10 Jul 2014 07:27:21 GMT
+< Vary: Cookie
+< Last-Modified: Thu, 10 Jul 2014 07:27:21 GMT
+< Location: http://127.0.0.1:8000/
+< Cache-Control: max-age=0
+< X-Frame-Options: SAMEORIGIN
+< Content-Type: text/html; charset=utf-8
+* Replaced cookie csrftoken="t2t4kigdSwvfT8owzUDYoN3VUT7pKqfG" for domain 127.0.0.1, path /, expire 1436426841
+< Set-Cookie:  csrftoken=t2t4kigdSwvfT8owzUDYoN3VUT7pKqfG; expires=Thu, 09-Jul-2015 07:27:21 GMT; Max-Age=31449600; Path=/
+* Added cookie sessionid="cofmgjc0tv16k8pi6ho4wik9oxlyk6p4" for domain 127.0.0.1, path /, expire 1406186841
+< Set-Cookie:  sessionid=cofmgjc0tv16k8pi6ho4wik9oxlyk6p4; expires=Thu, 24-Jul-2014 07:27:21 GMT; httponly; Max-Age=1209600; Path=/
+< 
+* Closing connection #0
+//}
+
+//emlist[ログインセッションがCookieに残っているため、フォームが表示された]{
+curl -v -b /tmp/cookie.txt -c /tmp/cookie.txt http://127.0.0.1:8000/
+* About to connect() to 127.0.0.1 port 8000 (#0)
+*   Trying 127.0.0.1...
+* connected
+* Connected to 127.0.0.1 (127.0.0.1) port 8000 (#0)
+> GET / HTTP/1.1
+> User-Agent: curl/7.26.0
+> Host: 127.0.0.1:8000
+> Accept: */*
+> Cookie: sessionid=cofmgjc0tv16k8pi6ho4wik9oxlyk6p4; csrftoken=t2t4kigdSwvfT8owzUDYoN3VUT7pKqfG
+> 
+* additional stuff not fine transfer.c:1037: 0 0
+* HTTP 1.0, assume close after body
+< HTTP/1.0 200 OK
+< Date: Thu, 10 Jul 2014 07:27:41 GMT
+< Server: WSGIServer/0.1 Python/2.7.3
+< Vary: Cookie
+< X-Frame-Options: SAMEORIGIN
+< Content-Type: text/html; charset=utf-8
+* Replaced cookie csrftoken="t2t4kigdSwvfT8owzUDYoN3VUT7pKqfG" for domain 127.0.0.1, path /, expire 1436426861
+< Set-Cookie:  csrftoken=t2t4kigdSwvfT8owzUDYoN3VUT7pKqfG; expires=Thu, 09-Jul-2015 07:27:41 GMT; Max-Age=31449600; Path=/
+< 
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Hello World Portal</title>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  </head>
+  <body>
+    <h1>&lt;script&gt;alert(&quot;やぁ&quot;)&lt;/script&gt;</h1>
+    <form action="/submit" method="post">
+      <input type='hidden' name='csrfmiddlewaretoken' value='t2t4kigdSwvfT8owzUDYoN3VUT7pKqfG' />
+      <input type="text" name="message">
+      <input type="submit" value="Submit">
+    </form>
+  </body>
+</html>
+* nread <= 0, server closed connection, bailing
+* Closing connection #0
+//}
+
+//emlist[古代文明に打ち勝ちました@<fn>{about_this_curl}]{
+$ curl -L -b /tmp/cookie.txt -c /tmp/cookie.txt -F "csrfmiddlewaretoken=t2t4kigdSwvfT8owzUDYoN3VUT7pKqfG" -F "message=HTTPの勲章" http://127.0.0.1:8000/submit 
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Hello World Portal</title>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  </head>
+  <body>
+    <h1>HTTPの勲章</h1>
+    <form action="/submit" method="post">
+      <input type='hidden' name='csrfmiddlewaretoken' value='t2t4kigdSwvfT8owzUDYoN3VUT7pKqfG' />
+      <input type="text" name="message">
+      <input type="submit" value="Submit">
+    </form>
+  </body>
+</html>
+//}
+
+//footnote[about_this_curl][ここだけ、ちょっと冗長すぎるため-vオプションをなくして-Lオプションをつけました。HTTPステータスコード300番代をcurlが認識してリダイレクト先を取得してくれるオプションです。ここまでくるとtelnetとは便利さが違います]
 
 ====[column] RESTfulは？
 
