@@ -19,10 +19,10 @@ void loop() {
   Serial.println(light);
   
   // 明るさによってLEDの点灯を変化させる
-  if (light > 500) {
-    digitalWrite(LED, HIGH);
-  } else {
+  if (light > 600) {
     digitalWrite(LED, LOW);
+  } else {
+    digitalWrite(LED, HIGH);
   }
 
   delay(1000);
