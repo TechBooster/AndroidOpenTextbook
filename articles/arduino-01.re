@@ -115,7 +115,7 @@ void loop() {
 スケッチの内容としては
 
  * setupで13番のピンをOUTPUT（出力方向）に設定
- * looop内で、digitalWriteで13番に割り当てたledにHIGHとLOWを1秒置きに出力する
+ * loop内で、digitalWriteで13番に割り当てたledにHIGHとLOWを1秒置きに出力する
 
 それではこのスケッチを実行する前に、デバイスとの接続設定をしておきます。
 

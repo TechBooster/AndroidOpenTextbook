@@ -23,9 +23,9 @@ void setup() {
 
 void loop() {
   // 入力値を取得し、オフセットを引いておく
-  axis[0] = analogRead(X_AXIS) - 512;
-  axis[1] = analogRead(Y_AXIS) - 512;
-  axis[2] = analogRead(Z_AXIS) - 512;
+  axis[0] = analogRead(X_AXIS) - 511;
+  axis[1] = analogRead(Y_AXIS) - 511;
+  axis[2] = analogRead(Z_AXIS) - 511;
 
   sprintf(string, "x= %d, y= %d, z= %d", axis[0], axis[1], axis[2]);
   Serial.println(string);
