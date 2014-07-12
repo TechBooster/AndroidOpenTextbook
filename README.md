@@ -13,6 +13,13 @@ Android Open Textbook は「Androidの教科書」をつくるオープンソー
 ## コラボレーター
 （編集中かつ募集中）
 
+## Re:VIEWとは
+Re:VIEW は、EWB や RD あるいは Wiki に似た簡易フォーマットで記述したテキストファイルを、目的に応じて各種の形式に変換するツールセットです。Android Open TextbookはRe:VIEWを使って書かれています。詳細については以下の公式Wiki等を参照して下さい。
+
+
+* [Re:VIEWクイックスタートガイド](https://github.com/kmuto/review/blob/master/doc/quickstart.rdoc)
+* [Re:VIEW フォーマット](https://github.com/kmuto/review/blob/master/doc/format.rdoc)
+
 ## ビルド方法
 本節では、Android Open Textbookを各種環境でビルドする方法を解説します。
 

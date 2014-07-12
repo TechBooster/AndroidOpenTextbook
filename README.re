@@ -20,6 +20,13 @@ GitHubと書籍制作ツールRe:VIEWを利用して、開発者が欲しい技�
 
 （編集中かつ募集中）
 
+== Re:VIEWとは
+
+Re:VIEW は、EWB や RD あるいは Wiki に似た簡易フォーマットで記述したテキストファイルを、目的に応じて各種の形式に変換するツールセットです。Android Open TextbookはRe:VIEWを使って書かれています。詳細については以下の公式Wiki等を参照して下さい。
+
+ * @<href>{https://github.com/kmuto/review/blob/master/doc/quickstart.rdoc,Re:VIEWクイックスタートガイド}
+ * @<href>{https://github.com/kmuto/review/blob/master/doc/format.rdoc,Re:VIEW フォーマット}
+
 
 == ビルド方法
 
