@@ -13,6 +13,9 @@ CHAPS:
     - webserver-01.re
     - multidevice-01.re
     - glossary.re
+    - library-01.re
+    - library-02.re
+    - library-03.re
 
 POSTDEF:
 
