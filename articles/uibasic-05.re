@@ -585,3 +585,10 @@ dimens.xmlには@<list>{values-dimens}のコードが書かれています。
 //}
 
 @<list>{values-relative-dimen}と照らしあわせてみると、上下のpaddingには「@dimen/activity_vertical_margin」が、左右のpaddingには「@dimen/activity_horizontal_margin」が指定されていることがわかります。paddingの値を変えたいときは、dimens.xmlフォルダ内の数値を変えるだけでよいので、ここでも一元管理によって効率の良さが考えられています。
+
+== 実習
+
+次のレイアウトを作成しましょう。
+
+//image[sample][]{
+//}
