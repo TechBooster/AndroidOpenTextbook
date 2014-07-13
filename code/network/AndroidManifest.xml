@@ -35,6 +35,9 @@
         <activity
             android:name=".VolleyActivity"
             android:label="@string/volley"/>
+        <activity
+            android:name=".SocialIMEActivity"
+            android:label="@string/title_activity_social_ime"/>
     </application>
 
 </manifest>
