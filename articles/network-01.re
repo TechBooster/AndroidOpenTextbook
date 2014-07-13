@@ -656,8 +656,83 @@ D/TEST    ( 1654): Not Found
 
 Volleyを使うと非同期処理を書かなくてよいのでとても便利です。
 
+== WebAPIにアクセスする
+
+各種オンラインサービスはApplication Programming Interface(API)を公開していることがあります。
+例えばTwitterのAPIを使えば自分だけのオリジナルのTwitterアプリを作ることができます。
+天気予報サービスのAPIを使えば自分好みの天気予報アプリを作ることができます。
+WebAPIを使う上で気をつけなければならないことを挙げます。
+
+==== 料金体系
+
+Web APIには様々なものがあり料金体系も様々です。
+完全に無料のものもありますが、大抵は一定期間のアクセス数に応じて制限がかかったり有料になります。
+
+==== 利用規約を読む
+
+すべてのWeb APIには利用規約があり、使用するための条件があります。
+例えば、オープンソースアプリや無料で公開するアプリについては無料でAPIを使うことができるが、広告を掲載したり有償でアプリを公開する場合はAPI使用料を払わないといけないケースがあります。
+他にもAPIを使用するにあたって気をつけなければならないことが利用規約に書いてありますので、必ず使用する前に熟読しましょう。
+もしこの利用規約を守れなかった場合、予告のないサービスの提供の停止や、場合によってはサービス提供元から法的手段の実施などが起こりえます。
+
+== ソーシャルIMEを使ってみよう
+
+ここではソーシャルIMEというサービスを使って入力したひらがなを変換してみましょう。
+
+Social IME ～みんなで育てる日本語入力～ http://www.social-ime.com/
+
+Input Method Editor(IME)は文字入力を補助するソフトウェアです。言葉で説明するとすごく分かりづらいですが、ざっくりとわかりやすく説明すると、キーボードを使って入力するときにひらがなを漢字に変換してくれるソフトウェアです。ソーシャルIMEでは変換するための仕組みをWebAPIとして提供しています。
+
+ソーシャルIMEは簡単に試すことができます。
+例えば以下のURLにブラウザでアクセスしてみてください。
+
+//list[url-of-social-ime][Social IMEの簡単なリクエスト]{
+http://www.social-ime.com/api/?string=けいたいでんわ
+//}
+
+以下のように変換された結果がタブ区切りで表示されます。
+
+//list[result-of-access-to-social-ime][Social IMEのレスポンス]{
+携帯電話  けいたいでんわ ケイタイデンワ 
+//}
+
+それではこれをAndroidで実装してみましょう。
+
+//list[access-to-social-ime-with-android][Social IME]{
+try {
+  String keyword = params[0];
+  URL url = new URL("http://www.social-ime.com/api/?string=" + keyword);
+  HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+  connection.connect();
+  InputStream inputStream = connection.getInputStream();
+
+  StringBuilder sb = new StringBuilder();
+  int length;
+  byte[] buffer = new byte[1024];
+  while ((length = inputStream.read(buffer)) != -1) {
+    sb.append(new String(buffer, 0, length, "EUC-JP"));
+  }
+  return sb.toString();
+} catch (IOException e) {
+  throw new RuntimeException(e);
+}
+//}
+
+基本的には前節でHttpURLConnectionを使ったアクセスと同じです。
+
+気をつけなければならないのは、byte配列から文字列にする際に指定する文字コードです。
+Social IMEでは特に指定しなければレスポンスは"EUC-JP"という文字コードでレスポンスします。
+受け取ったbyte配列からそのまま文字列を生成すると文字化けを起こしてしまうので、文字コードを指定します。
+Web APIを使う際に文字化けを起こしてしまうことはよくあるので注意しましょう。
+
 == まとめ
 
 さまざまな方法を使ってサーバーからファイルを取得する方法を実装しました。
 やり方がたくさんあってどれを使っていいか迷うかもしれませんが、それぞれの実装方法の特徴とやりたいことを比較して、最適な方法を選択してください。
-ほげほげ
+
+なにかアプリを作りたいけど、アイデア浮かばない！というときにWebAPIを眺めていると、あのAPIとこのAPIを組み合わせれば面白いことができるぞ！なんて思いつくことがあります。大抵のWebAPIはHTTP通信ができれば使えるので、おもしろいWebAPIを見つけて奇抜なアプリを作りましょう！
+
+
+
+
+

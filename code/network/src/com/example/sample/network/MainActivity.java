@@ -19,6 +19,7 @@ public class MainActivity extends Activity {
         initUseHttpURLConnectionButton();
         initUseHttpClientButton();
         initUseVolleyButton();
+        initIMEButton();
     }
 
     private void initUseSocketButton() {
@@ -60,6 +61,17 @@ public class MainActivity extends Activity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(self, VolleyActivity.class);
+                startActivity(intent);
+            }
+        });
+    }
+
+    private void initIMEButton() {
+        Button button = (Button) findViewById(R.id.ime_button);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(self, SocialIMEActivity.class);
                 startActivity(intent);
             }
         });
