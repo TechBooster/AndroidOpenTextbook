@@ -1,18 +1,18 @@
 = センサー概要
 //lead{
- 本章ではAndroidに搭載された各種センサーの使用方法および、
- Google Play Serviceのライブラリを使って位置情報を取得する方法について説明します。
+ 本章ではAndroidに搭載された各種センサーの使用方法および、GPSセンサーを利用した
+ 位置情報の取得について説明します。
 //}
 
 == センサーとは
 
 一般にセンサーと言うと、加速度センサーやGPSセンサーというのを思い浮かべると思います。
-こういったセンサーは身近にも使われていて、車のエアバッグが開くのは加速度センサーである
-程度のマイナス加速度が発生した瞬間にエアバッグを膨らませるようになっています。またカー
-ナビには当然GPSが搭載されています。暗い廊下などで節電のために蛍光灯などが切ってあって
-も、人が通ると自動的に点くようになっているのは、人感センサーを使っています。このように
-センサーは意外と身近な所で使用されています。最近のセンサーはMEMS@<fn>{mems}で構成され、
-超小型化されているのが特徴です。
+こういったセンサーは身近にも使われていて、車のエアバッグが開くのは加速度センサーで、ある
+程度のマイナス加速度が発生した瞬間にエアバッグを膨らませるようになっています。カー
+ナビには自車位置を常に捕捉するためにGPSが搭載されています。暗い廊下などで節電のために
+蛍光灯などが切ってあっても、人が通ると自動的に点くようになっているのは、人感センサーを
+使っています。このようにセンサーは意外と身近な所で使用されています。最近のセンサーは
+MEMS@<fn>{mems}で構成され、超小型化されているのが特徴です。
 //image[sensor-01-mems][半導体プロセスを用いて作成されたギア（左下）とダニ（右上）の電子顕微鏡写真(Wikipediaより)]{
 //}
 
@@ -28,13 +28,13 @@ AndroidではAPIレベルが上がるたびに使用可能なセンサーの種�
 現在の対応はリファレンスを参照してください@<fn>{sensor_ref}。
 Androidでは多くのセンサー情報が取得できますが、実際のハードウェアがその数の
 分だけ搭載されているわけではありません。ハードウェア１つで複数のセンサー
-情報に対して提供することが多いです。また位置情報を取得するためのGPSセンサー
-については、他のセンサーとは異なりGoogle Play Servicesで提供されるライブラリ
-を使用して取得します。まずはGPS以外のセンサーから説明していきます。
+情報に対して提供することように実装されていることが多いです。また位置情報を取得す
+るためのGPSセンサーについては、他のセンサーとは異なりGoogle Play Servicesで
+提供されるライブラリを使用して取得します。まずはGPS以外のセンサーから説明していきます。
 
 //footnote[sensor_ref][@<href>{http://developer.android.com/reference/android/hardware/Sensor.html}]
 
-リファレンスによると、現在のAPI Level 19で使用可能なセンサーの一覧は以下のようになります。
+リファレンスによると、現在のAPI Level 20で使用可能なセンサーの一覧は以下のようになります。
 //image[sensor-01-list][センサー一覧]{
 //}
 
@@ -75,7 +75,9 @@ mSensorManager.registarListener(this, acceleration, Sensor.SENSOR_DELAY_NORMAL);
 これで、該当するActivityにSensorEventListenerが設定されていれば、イベントリスナー
 が呼ばれるようになります。
 
-リスナーは2つ用意します。
+リスナーは2つ用意します。onSensorChangedはセンサー値が変化した時に呼ばれます。
+onAccuracyChangedはセンサーの精度が変化した時に呼ばれます。大抵の場合、
+onSensorChangedを実装すれば問題ありません。
 //list[listener][イベントコールバック]{
 @Override
 public final void onAccuracyChanged(Sensor sensor, int accuracy) {
@@ -159,7 +161,7 @@ public class SensorActivity extends Activity implements SensorEventListener {
 
 === センサー値の取得
 
-それでは実際のセンサーの値を取得してみてみます。センサーのデータはリスナー
+それでは実際のセンサーの値を取得してみます。センサーのデータはコールバック内
 で取得します。センサーデータはSensorEventに入っています。SensorEventに
 は以下のデータが入っています
 
@@ -169,11 +171,11 @@ public class SensorActivity extends Activity implements SensorEventListener {
  * values : センサーデータ配列
 
 センサーデータはvaluesに入っていますが、配列の数と意味は使用するセンサーによって
-異なります。使用するセンサーによるデータの意味はリファレンスを見て下さい@<fn>{sensor_motion}。
+異なります。使用するセンサーによるデータの意味はリファレンスで確認しましょう@<fn>{sensor_motion}。
 
 //footnote[sensor_motion][@<href>{http://developer.android.com/guide/topics/sensors/sensors_motion.html}]
 
-今回の加速度の例では以下のようになります。valuesの配列サイズは"3"になります。
+今回の加速度センサーの場合は以下のようになります。valuesの配列サイズは"3"になります。
 また型はfloatなので注意して下さい。
 
  * SensorEvent.values[0] : x軸加速度
@@ -181,7 +183,7 @@ public class SensorActivity extends Activity implements SensorEventListener {
  * SensorEvent.values[2] : z軸加速度
 
 加速度なので、そのままx,y,xのそれぞれの加速度が取得できます。これを
-コードで取得するには以下のように上記のコードに追加すると以下のようになります。
+コードで取得するには、onSensorChangedに以下のように追加します。
 
 //list[sensorchange][センサー値変化イベントコールバック]{
   @Override
@@ -217,7 +219,7 @@ y軸の加速度が重力加速度の約9.8に近い値になっています。�
 ことで可能です。以下の例は"TYPE_ALL"で一旦すべてのセンサーをリストで取得し、リスト
 から使用するものだけを選択して登録しています。
 
-//list[multi-resume][複数のセンサーを使用 onResume]{
+//list[multi-resume][複数のセンサーを使用 onResumeでのセンサー登録]{
 @Override
 protected void onResume() {
     super.onResume();
@@ -236,7 +238,7 @@ protected void onResume() {
 }
 //}
 
-ただし、取得するデータを処理する場合は、下記のように場合分けして処理する必要があります。
+ただし、取得するデータを処理する場合は、以下のように場合分けして処理する必要があります。
 
 //list[multi-listener][複数センサー利用時のイベントコールバック]{
   @Override
@@ -252,10 +254,11 @@ protected void onResume() {
   }
 //}
 
-複数のセンサーを使用する例として、次に説明する傾きセンサーで方位や傾きを
-利用することで、端末の中のオブジェクトを様々な角度から見られるようにしたり、
-さらに位置情報とカメラを組みわせて、特定の場所にオブジェクトを出現させるような
-ARアプリの作成ができるようになります。
+複数のセンサーを使用する例として、次に説明する傾きを取得する場合があります。
+傾きは方位と加速度を使用して取得します。端末の傾きを利用することで、端末の中
+のオブジェクトを様々な角度から見られるようにしたり、さらに位置情報とカメラを
+組みわせて、特定の場所にオブジェクトを出現させるようなARアプリの作成ができる
+ようになります。
 
 === 傾きセンサーの取得
 
@@ -266,8 +269,8 @@ API Level 8以降では傾きセンサー(TYPE_ORIENTATION)は非推奨となっ
 "加速度センサー"から計算して求めます。前記の複数センサーの取得方法を使います。
 
 
-傾きは端末の縦横が変わると変わってしまうので、縦固定しておきます。
-AndroidManifest.xmlに"portrait"を追記します。
+傾きは端末の縦横が変わると変わってしまうので、縦に固定しておきます。
+AndroidManifest.xmlにandroid:screenOrientation="portrait"を追記します。
 //list[orientation-manifest][縦固定にする]{
 <activity android:name=".orientationSensorActivity"
           android:label="@string/app_name"
@@ -307,7 +310,7 @@ protected void onResume() {
 //list[orientation-changed][傾きを求めるイベントコールバック]{
 @Override
 public void onSensorChanged(SensorEvent event) {
-    // 信頼性の低いデータは捨てる
+    // 精度の低いデータは捨てる
     if (event.accuracy == SensorManager.SENSOR_STATUS_UNRELIABLE)
         return;
 
@@ -356,7 +359,7 @@ public void onSensorChanged(SensorEvent event) {
 
 == 使用可能なセンサーの概要
 
-API-Level 19で規定されているセンサーをざっとですが整理してみます。
+API-Level 20で規定されているセンサーをざっとですが整理してみます。
 
 ==== @<b>{加速度センサー (Acceleration sensor)}
 
@@ -383,13 +386,18 @@ x軸、y軸、z軸の回転の速度、角速度を表します。単位は(rad/
 //image[sensor-01-gyro][角速度]{
 //}
 
+==== @<b>{心拍センサー (Heart Rate)}
+
+１分間の心拍数を表します。単位は(回/分)。精度は重要なのでAcuuracyがSENSOR_STATUS_UNRELIABLE
+と場合と、SENSOR_STATUS_NO_CONTACTの場合はセンサーの値を使用しないようにします。（Android Wear用）
+
 ==== @<b>{照度センサー (Light)}
 
 周囲の明るさを表します。単位は(lx)
 
 ==== @<b>{近接センサー (Proximity Sensor)}
 
-端末の前面との距離を表します。単位は(cm)。
+端末の前面との距離を表します。単位は(cm)
 ただし"near"と"far"の2値しか返さない端末もあります。
 その場合は"near"が最小値となり"far"が最大値となります。
 
@@ -424,7 +432,7 @@ x軸、y軸、z軸の回転の速度、角速度を温度ドリフトなどを�
 
 ==== @<b>{加速度センサー（重力を除外） (Linear acceleration sensor)}
 
-x軸、y軸、z軸のそれぞれの加速度を重力加速度を差し引いて表します。単位は(m/s2^)
+x軸、y軸、z軸のそれぞれの加速度を重力加速度を差し引いて表します。単位は(m/s^2)
 
 ==== @<b>{動き検知 (Significant Motion Sensor)}
 
@@ -433,7 +441,7 @@ x軸、y軸、z軸のそれぞれの加速度を重力加速度を差し引い�
 
 ==== @<b>{歩数計 (Step Counter Sensor)}
 
-端末がリブート起動してからの歩数を表します（全アプリで共通）「歩いた歩数」が重要な場合に使用します。
+端末がリブート起動してからの歩数を表します（全アプリで共通）。「歩いた歩数」が重要な場合に使用します。
 
 ==== @<b>{歩行検知 (Step Detecter Sensor)}
 
@@ -453,7 +461,7 @@ x軸、y軸、z軸のそれぞれの加速度を重力加速度を差し引い�
 //}
 
 全センサーの取得には"Sensor.TYPE_ALL"を指定すると、センサーのリストとして取得できます。
-ログとして表示するようにしてみたのが下記になります。
+ログとして表示するようにしてみたのが以下になります。
 //list[sensor-all][センサーリストの取得]{
     // センサーのオブジェクトリストを取得する
     mSensors = mSensorManager.getSensorList(Sensor.TYPE_ALL);
@@ -475,8 +483,8 @@ x軸、y軸、z軸のそれぞれの加速度を重力加速度を差し引い�
 //}
 
 以下のスクリーンショットは見やすくするため、アプリ画面で表示させています。
-これはNexus5でのセンサーの例です。またNexus5では18種類ものセンサーが搭載
-されていることもセンサーリストの数を取得するとわかります。
+これはNexus5でのセンサーのハードウェアの例です。またNexus5では18種類もの
+センサーが搭載されていることもセンサーリストの数を取得するとわかります。
 //image[sensor-01-accelerometer][加速度センサー]{
 //}
 
@@ -586,7 +594,7 @@ x軸、y軸、z軸のそれぞれの加速度を重力加速度を差し引い�
 //footnote[sensor_batch][@<href>{https://source.android.com/devices/sensors/batching.html}]
 
 バッチモードを使用するには、LocationManager#registerListenerメソッドで指定します。
-通常のセンサーのメソッドにバッチ処理時間が引数で増えています。下記の例はバッチ処理として
+通常のセンサーのメソッドにバッチ処理時間が引数で増えています。以下の例はバッチ処理として
 1000 * 1000 * 10 μs = 10sに設定した場合です。
 
 //list[sensor_batch][バッチモード設定]{
@@ -606,8 +614,8 @@ boolean status = mSensorManager.registerListener(this, mStepDetector, SensorMana
 
 重要なデバイスとしてGPSセンサーがあります。GPSは"Global Positioning System"
 の略で、アメリカが上げた高度約2万キロに位置する軍事用衛星の複数からの電波を受信する
-ことで、現在位置を正確に知ることができます。正確にはセンサーというよりはGPSという
-電波信号を受信する受信機になります。ちょうど電波時計のように電波を受信して時計を
+ことで、現在位置を正確に知ることができます。正確にはセンサーというよりはGPSからの
+電波を受信する受信機になります。ちょうど電波時計のように電波を受信して時計を
 合わせる。というのと同じです。日本で受信可能なGPS衛星の数は6〜10個程度です。
 位置測位は緯度と経度を求めるには3つの衛星を捕捉する必要があり、高度を含んだ３次元
 測位を行うには４つ以上の衛星の捕捉が必要になります。
@@ -649,22 +657,22 @@ GPSは受信精度が高ければ、正確な位置を10m程度の誤差で測�
 
 == GPSを利用した位置情報の取得
 
-GPSを利用して位置情報を取得しますが、これは通常のセンサーと異なり"Google Play Services"
+GPSを利用して位置情報を取得しますが、これは通常のセンサーと異なり@<b>{Google Play Services}
 ライブラリを導入して、この中にあるLocationClientを使って取得します。
 
 === Google Play Services Libraryの導入
 
-"Android SDK Manager"から@<b>{Google Play Services}を選択して、インストールします。
+@<b>{Android SDK Manager}から@<b>{Google Play Services}を選択して、インストールします。
 //image[sensor-01-play_service-01][Google Play Servicesのインストール 1]{
 //}
 
-"Existing Android Code into Worksapce"を選択します。
+@<b>{Existing Android Code into Worksapce}を選択します。
 //image[sensor-01-play_service-02][Google Play Servicesのインストール 2]{
 //}
 
-"Browse"から@<b>{google-play-services_lib}を選択し、@<b>{Copy projects into workspaceにチェック}
-を入れて"Finish"ボタンを押します。google-play-servicesはAndroid SDKを
-インストールした"$(ANDORID_SDK)/extras/google/google_play_services"にあります。
+@<b>{Browse}から@<b>{google-play-services_lib}を選択し、@<b>{Copy projects into workspaceにチェック}
+を入れて@<b>{Finish}ボタンを押します。google-play-servicesはAndroid SDKを
+インストールした@<b>{$(ANDORID_SDK)/extras/google/google_play_services}にあります。
 //image[sensor-01-play_service-03][Google Play Servicesのインストール 3]{
 //}
 
@@ -687,13 +695,13 @@ GPSを利用した位置情報取得にはフレームワークが用意され�
  * LocationClient
  * Location
 
-使い方としては、LocationClientを生成しておきます。LocationClientへの接続が成功
+使い方としては、LocationClientを生成しておきます。Google Play Servicesへの接続が成功
 すると、位置情報はバックグラウンドで取得され、LocationClient#getLastLocationに
 現在の位置情報が非同期に更新されるので、この値を使用することができます。
 
 Google Play Servicesを使わずにGPSやWiFiを使って位置情報の取得も可能ですが、
 GPSやWiFiのON/OFFを検出したり、GPSとWiFiのステータスを管理しなければならず、
-かなり面倒なのが実際です。Google Play ServicesのLocationClientを使うこと
+かなり面倒なのが実際です。Google Play ServicesのLocationClientを使うと、
 「一番良い位置情報をクレ」ということができ、GPS/WiFiの区別を実際には意識する
 ことはありません。
 
@@ -725,7 +733,7 @@ public class MainActivity extends Activity implements ConnectionCallbacks, OnCon
 //list[gps_connectfail][接続失敗時のイベントコールバック]{
 @Override
 public void onConnectionFailed(ConnectionResult arg0) {
-  // TODO Auto-generated method stub
+  // Google Play Servicesの接続に失敗
 }
 //}
 
@@ -733,16 +741,17 @@ ConnectionCallbacksは接続時と切断時に呼ばれます。
 //list[gps_connect][接続時・切断時のイベントコールバック]{
 @Override
 public void onConnected(Bundle arg0) {
-  // TODO Auto-generated method stub
+  // Google Play Servicesに接続した
 }
 
 @Override
 public void onDisconnected() {
-  // TODO Auto-generated method stub 
+  // Google Play Servicesと切断した
 }
 //}
 
-実際に使用する場合の実装は、LocationAPIへの接続が必要になります。
+実装ではGoogle Play Servicesへの接続と切断を明示的にを行う必要があります。
+この辺は通常のセンサーと同じような実装です。
 
  * onCreate()もしくはonResumeでLocationClientを取得
  * onResume()でLocationClient#connectでGoogle Play Servicesへ接続
@@ -831,7 +840,7 @@ AndroidManifest.xmlにGPSのパーミッションを追加します。
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
 //}
 
-位置情報を取得した例として、アプリで表示させると下記のようになります。
+位置情報を取得した例として、アプリで表示させると以下のようになります。
 //image[sensor-01-location][位置情報取得]{
 //}
 
@@ -900,6 +909,12 @@ com.google.android.gms.location.LocationListenerをリスナーにセットし�
 コールバックを実装します。これで、更新タイミングでこのコールバックが呼ばれる
 ようになります。また、リクエストした更新はonPauseで解除しておきます。
 
+//list[gps_location_listener][ActivityへのLocationListenerの設定]{
+public class MainActivity extends Activity implements ConnectionCallbacks,
+        OnConnectionFailedListener, LocationListener {
+//}
+
+
 //list[gps_location][位置情報更新のコールバック]{
 @Override
 public void onLocationChanged(Location loc) {
@@ -963,7 +978,7 @@ protected void onPause() {
 
 ここまで見てきたように、センサー自体の使い方はさほど難しくありませんが、
 これらを組み合わせて応用しようとすると、行列演算やリアルタイム処理など、
-かなり複雑な処理を行う必要が出てきます。数学的な視点などプログラミング
+かなり複雑な処理を行う必要があり、数学的な視点などプログラミング
 技術だけでは無い点が出てきます。また、AndroidはiPhoneのようにすべて
 同じ部品が使われているわけではないため、ハードウェアの違いが少なくなく
 微妙に動作が異なったり、あるいは全く動かない。ということもあります。実際
