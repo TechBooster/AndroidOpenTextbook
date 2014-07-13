@@ -2,7 +2,7 @@
 
 Graphical Layoutではドラッグアンドドロップでだれでもレイアウトを作ることができます。しかし、細かいレイアウトの設定は、XMLを使って作れるようにならなければなりません。
 
-この章では、XMLを使ってよく使うパーツを作れるようになりましょう。
+この節では、XMLを使ってよく使うパーツを作れるようになりましょう。
 
 == XMLレイアウトがどんなものかを知る
 
@@ -17,10 +17,10 @@ Graphical Layoutではドラッグアンドドロップでだれでもレイア�
 
 下のタブを「fragment_main.xml」に切り替えてみましょう。
 
-ここに書かれているのが、XMLレイアウトです。
+ここに書かれているのが、レイアウトを構成するXMLです。
 
 
-//image[202][XMLレイアウトが書かれている]{
+//image[202][レイアウトを構成するXMLが書かれている]{
 //}
 
 テキストが表示されている部分のXMLは、次のようになっています。
@@ -81,7 +81,7 @@ Graphical Layoutではドラッグアンドドロップでだれでもレイア�
 
 == XMLの書き方
 
-XMLは、次のような要素iewで構成されています。
+XMLは、次のような要素で構成されています。
 
 
 //image[205][テキストを表示させるXML]{
@@ -93,6 +93,7 @@ XMLは、次のような要素iewで構成されています。
 
 === ビュー名
 
+Androidでは、各パーツのことを「ビュー（View）」と呼びます。
 ビュー名は、よく使うものとして次のようなものがあります。
 
 //table[よく使うビュー名][]{
@@ -134,7 +135,7 @@ SeekBar シークバーを表示する
 それでは、よく使うパーツを詳しく説明していきます。
 これらのパーツは、何も見なくても@<fn>{notsee}XMLで作成できるようにしておくことが望ましいです。
 
-//footnote[notsee][とはいえ、すべてを覚える必要はありません。ADTでは候補一覧が表示されますので、この機能は積極的に使っていきましょう。]
+//footnote[notsee][とはいえ、すべてを覚える必要はありません。ADTでは候補一覧が表示されますので、この機能はヒントとして積極的に使っていきましょう。]
 
  * ボタン
  * テキスト
@@ -158,10 +159,13 @@ SeekBar シークバーを表示する
 
 デザインのカスタマイズを何もしていない、デフォルトの状態のこのボタンは、タップすると色が変わり、「タップされた」という状態をユーザーにフィードバックしています。
 
-#@# //image[button1-1-pressed-4][Android 4.3までは青くなる]{
-#@# //}
-#@# //image[button1-1-pressed-kitkat][Android 4.4では少し色が薄くなる]{
-#@# //}
+
+//image[button1-1-pressed-4][Android 4.3までは青くなる]{
+//}
+
+
+//image[button1-1-pressed-kitkat][Android 4.4では少し色が濃くなる]{
+//}
 
 @<list>{button-normal}の4行目の「android:text」という属性が、ボタン内に表示するテキストです。
 
@@ -169,7 +173,7 @@ SeekBar シークバーを表示する
 それぞれのビューが、横方向（layout_width）または縦方向（layout_height）に対してどれぐらいの領域を占めるかという設定です。
 これらには「wrap_content」と「match_parent@<fn>{matchparent}」というふたつの値が存在します。
 
-//footnote[matchparent][APIレベルxx以前は、「fill_parent」とが使われていました。古いアプリではそれが使われていることもあります。]
+//footnote[matchparent][APIレベルxx以前は、「fill_parent」が使われていました。古いアプリではそれが使われていることもあります。]
 
 //table[][]{
 値       説明
@@ -278,7 +282,7 @@ ic_launcher.png@<fn>{launchericon}は、resフォルダの「drawable-mdpi」「
 android:src="@drawable/ic_launcher"
 //}
 
-なぜなら端末ごとに、どの画面密度なのかは一意に決まっていて、Android側で自動で判別することができるからです。
+なぜなら端末ごとに、どの画面密度なのかは一意に決まっていて、@<b>{Android側で自動で判別することができる}からです。
 例えば、Galaxy S3 の端末はxhdpiに属します。このときに画像を参照するフォルダは「drawable-xhdpi」ですが、コードで書くのは「@drawable/ic_launcher」でよいのです。
 
 逆に、画面密度を指定してしまうと、他の画面密度の違ういろいろな端末から見たときに、表示がおかしくなってしまう恐れがあるので注意しましょう。
@@ -374,17 +378,17 @@ Android全体のルールは、ガイドラインのIconographyの項@<fn>{icono
 //footnote[inputtype][https://developer.android.com/reference/android/widget/TextView.html#attr_android:inputType]
 
 //table[inputtype][android:inputTypeでよく使う値]{
-none	入力不可
-text	文字を入力
-textAutoCorrect	文字のスペルミスを自動で修正する
-textAutoComplete	文字の補完入力をする
-textMultiLine	文字を複数行入力する
-textUri	URLを入力する
-textEmailAddress	メールアドレスを入力する
-textPassword	パスワード入力する
-textVisiblePassword	パスワードを隠さずに入力する
-number	数値を入力する
-phone	電話番号を入力する
+none    入力不可
+text    文字を入力
+textAutoCorrect 文字のスペルミスを自動で修正する
+textAutoComplete        文字の補完入力をする
+textMultiLine   文字を複数行入力する
+textUri URLを入力する
+textEmailAddress        メールアドレスを入力する
+textPassword    パスワード入力する
+textVisiblePassword     パスワードを隠さずに入力する
+number  数値を入力する
+phone   電話番号を入力する
 //}
 
 ==== ユーザーにわかりやすい入力フォーム
@@ -422,15 +426,15 @@ phone	電話番号を入力する
 //image[textfield-hint][]{
 //}
 
-このように、入力エリア内に説明のテキストラベル入れてもいいのですが、ユーザーの操作性からすると、少し問題もあります。
+このように、入力エリア内に説明のテキストラベルを入れてもいいのですが、ユーザーの操作性からすると、少し問題もあります。
 入力前の状態（@<img>{textfield-form-before}と@<img>{textfield-dropbox-login}）を比べてもあまり差がわからないかもしれませんので、入力後の状態を見てみましょう。
 
 
-//image[textfield-form-after][]{
+//image[textfield-form-after][テキストラベルが入力エリアの外にある場合]{
 //}
 
 
-//image[textfield-dropbox-after][]{
+//image[textfield-dropbox-after][テキストラベルが入力エリアの中にある場合、入力するとラベルが消えてしまった]{
 //}
 
 @<img>{textfield-dropbox-after}のほうは、説明のテキストラベルが消えてしまいました。
@@ -438,3 +442,8 @@ phone	電話番号を入力する
 
 単なるテキストフィールドとはいえ、ユーザーが実際に入力をしていくパーツです。
 やみくもにEditTextを置いていくだけではなく、inputTypeをそれぞれについて最適なものを設定したりして、操作性と、認識性には常に心がけるようにしましょう。
+
+
+
+
+

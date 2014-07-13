@@ -4,8 +4,8 @@
 XMLにおいてレイアウトを作成し、パーツを配置していくためには、主に次の2つの方法があります。
 
 //table[パーツを配置していくための方法][]{
-RelativeLayout	相対配置。それぞれのパーツにおいて基準となるビューを決めながら配置していく。
-LinearLayout	絶対配置。画面の左上を中心にして、ビューを右方向または下方向へ順番に配置していく。
+RelativeLayout  相対配置。それぞれのパーツにおいて基準となるビューを決めながら配置していく。
+LinearLayout    絶対配置。画面の左上を中心にして、ビューを右方向または下方向へ順番に配置していく。
 //}
 
 これらの方法を、適宜組み合わせながら配置していきます。
@@ -13,7 +13,7 @@ LinearLayout	絶対配置。画面の左上を中心にして、ビューを右�
 == RelativeLayout
 
 RelativeLayoutは、相対配置ともいわれます。
-それぞれのパーツを配置していくときに、基準となるビューを決めながら配置をしていきます。それでは実際に作成しながら説明をしていきます。
+それぞれのパーツを配置していくときに、基準となるビューを決めながら配置をしていきます。それでは実際に作成しながら進めていきましょう。
 
 新規に作成したAndroidプロジェクトのXMLレイアウトは、「fragment_main.xml」ですが、ここにはあらかじめRelativeLayoutが記述されていますので、このまま使っていきましょう。
 
@@ -48,11 +48,11 @@ RelativeLayoutは相対配置ですから、基準となるビューが必要で
 //}
 
 1〜9行目と、14行目は、あらかじめ書かれているコードです。
-中の、ImageViewを追加しましょう。
+中に書かれていたTextViewを一旦削除し、ImageViewを追加しましょう。
 
 
 
-//image[rltv-imageonly][]{
+//image[rltv-imageonly][画像が表示された]{
 //}
 
 ==== 親ビューの中央に配置する
@@ -94,13 +94,13 @@ RelativeLayoutは相対配置ですから、基準となるビューが必要で
 @<list>{rltv-centerinparent}の5行目に追加した「android:layout_centerInParent="true" 」を、@<table>{rltv-parentposition}の属性を参考にしながら書き換えていきます。
 
 //table[rltv-parentposition][親ビューに対する配置を決める属性一覧]{
-android:layout_centerInParent	親ビューの中央に配置する
-android:layout_centerHorizontal	親ビューの水平方向中央に配置する
-android:layout_centerVertical	親ビューの垂直方向中央に配置する
-android:layout_alignParentLeft	親ビューの左端にそろえて配置する
-android:layout_alignParentRight	親ビューの右端にそろえて配置する
-android:layout_alignParentTop	親ビューの上側にそろえて配置する
-android:layout_alignParentBottom	親ビューの下側にそろえて配置する
+android:layout_centerInParent   親ビューの中央に配置する
+android:layout_centerHorizontal 親ビューの水平方向中央に配置する
+android:layout_centerVertical   親ビューの垂直方向中央に配置する
+android:layout_alignParentLeft  親ビューの左端にそろえて配置する
+android:layout_alignParentRight 親ビューの右端にそろえて配置する
+android:layout_alignParentTop   親ビューの上側にそろえて配置する
+android:layout_alignParentBottom    親ビューの下側にそろえて配置する
 //}
 
 @<img>{rltv-allposition}のA〜Hの場合を実際に作ってみて確認してください。
@@ -222,14 +222,14 @@ RelativeLayoutにおいて今回のような配置にする場合は、「画像
 それ以外にも、基準となるビューに対してどこに配置するかを指定する属性があります。
 
 //table[rltv-tagposition][基準となるビューに対してどこに配置するかを決める属性一覧]{
-android:layout_above	上側に配置する
-android:layout_below	下側に配置する
-android:layout_toLeftOf	左側に配置する
-android:layout_toRightOf	右側に配置する
-android:layout_alignLeft	左端をそろえて配置する
-android:layout_alignRight	右端をそろえて配置する
-android:layout_alignTop	上端をそろえて配置する
-android:layout_alignBottom	下端をそろえて配置する
+android:layout_above    上側に配置する
+android:layout_below    下側に配置する
+android:layout_toLeftOf 左側に配置する
+android:layout_toRightOf    右側に配置する
+android:layout_alignLeft    左端をそろえて配置する
+android:layout_alignRight   右端をそろえて配置する
+android:layout_alignTop 上端をそろえて配置する
+android:layout_alignBottom  下端をそろえて配置する
 //}
 
 値は、すべてid名となります。
@@ -319,8 +319,8 @@ LinearLayoutは、絶対配置ともいわれます。
 LinearLayoutに必要な属性は、「android:layout_width」「android:layout_height」の他に、「android:orientation」という属性が必要になります。
 
 //table[][「android:orientation」に設定する値]{
-horizontal	中のコンテンツを横方向に並べる
-vertical	中のコンテンツを縦方向に並べる
+horizontal  中のコンテンツを横方向に並べる
+vertical    中のコンテンツを縦方向に並べる
 //}
 
 まず、新規Androidプロジェクトを作成し、fragment_main.xmlの中身を、@<list>{lnr-sample}のように書き換えます。
@@ -521,8 +521,8 @@ Gravityとは、重力の意味です。
 Gravityには2種類あります。
 
 //table[][]{
-android:gravity	親となるビューに指定することで、中に入るコンテンツのそろえを設定する
-android:layout_gravity	それぞれのビューに指定することで、そのビューのそろえを設定する
+android:gravity 親となるビューに指定することで、中に入るコンテンツのそろえを設定する
+android:layout_gravity  それぞれのビューに指定することで、そのビューのそろえを設定する
 //}
 
 === android:gravity
@@ -561,20 +561,22 @@ android:gravityは、親となるビューに指定する属性です。これ�
 @<list>{gravity-simple}の6行目の「android:gravity="xxxxxx"」の「xxxxxx」に入るもののうち、よく使うものは次のとおりです。
 
 //table[][]{
-top	上に寄せる
-bottom	下に寄せる
-left	左に寄せる
-right	右に寄せる
-center_vertical	垂直方向中央にそろえる
-center_hotizontal	水平方向中央にそろえる
-center	画面の中央にそろえる
+top 上に寄せる
+bottom  下に寄せる
+left    左に寄せる
+right   右に寄せる
+center_vertical 垂直方向中央にそろえる
+center_hotizontal   水平方向中央にそろえる
+center  画面の中央にそろえる
 //}
+
+指定なし、bottom、rightを指定したものが@<img>{gravity-simple}です。
 
 
 //image[gravity-simple][親のLinearLayoutに対するandroid:gravityの指定]{
 //}
 
-また、@<img>{gravity-simple}にはない右下に配置したいときには、「android:gravity=”right|bottom”」といった具合に、値を「 |（パイプ）」でつなぐと、複数指定することができます。
+また、@<img>{gravity-simple}にはないのですが、右下に配置したいときには、「android:gravity=”right|bottom”」といった具合に、値を「 |（パイプ）」でつなぐと、複数指定することができます。
 
 コードで覚えるとわかりづらい人は、イメージで覚えましょう。
 このgravityは、先ほども述べたとおり、@<b>{重力}の意味があります。親となるLinearLayoutにどのような重力をかけるか、ということを考えるとイメージしやすいのではないでしょうか。
@@ -632,11 +634,11 @@ center	画面の中央にそろえる
 これらのことから、「android:gravity」は、横方向であっても縦方向であっても「match_parent」を使っている方向に対して有効だ、ということがいえます@<fn>{gravity-match}。
 また、相対的にレイアウトを考えるRelativeLayout自体には使えないことも想像できるでしょう。
 
-//footnote[gravity-match][この場合、厳密には、TextViewのandroid:layout_widthをwrap_contentにしても、ちゃんと右寄せになります]
+//footnote[gravity-match][この場合、厳密には、TextViewのandroid:layout_widthをwrap_contentにしても、右寄せになります。わかりやすい例として、match_parentにしています]
 
 === android:layout_gravity
 
-android:layout_gravityは、それぞれのビューに指定することで、そのビューのそろえを設定する属性です。これらのビューには、そろえる方向についてwrap_contentが指定されている必要があります。
+android:layout_gravityは、それぞれのビューに指定することで、そのビューの配置を設定する属性です。これらのビューには、配置する方向にwrap_contentが指定されている必要があります。
 たとえば、@<img>{layoutgravity-simple}には「A」〜「D」の4つのボタンがありますが、すべて横方向にwrap_contentが指定されています。そして、デフォルトの左寄せになっています@<list>{layoutgravity-simple}。
 
 
@@ -691,9 +693,9 @@ RelativeLayout/LinearLayoutは、それぞれの考え方が違いますが、�
 
 RelativeLayoutであれば、親ビューを基準にしたり、もしくは任意のビューを基準にして配置します。
 LinearLayoutであれば、ビューの占める領域を比率によって指定することができます。
-これらは、HTML/CSSによるWebサイトのレイアウトや、iPhoneアプリの画面レイアウトとはまったく違った考え方を持っていて、画面サイズがどんなに変わってもそのときに応じてできるというのが特徴です。
+これらは、HTML/CSSによるWebサイトのレイアウトや、iPhoneアプリの画面レイアウトとはまったく違った考え方を持っていて、画面サイズがどんなに変わってもそのときに応じて配置できるというのが特徴です。
 
-これは、AndroidというOSはオープンソースであり、どのような画面サイズの端末にも入れることができるということにつながります。中には、縦横比すらまったく違うような、正方形のような画面サイズのものもあるでしょう。
+これは、AndroidというOSはオープンソースであり、どのような画面サイズの端末にも入れることができる、ということにもつながります。中には、縦横比すらまったく違うような、正方形のような画面サイズのものもあるでしょう。
 
 レイアウトを作成するときには、画面サイズが変わってもある程度は許容できるようなレイアウトを心がけましょう。
 
