@@ -14,10 +14,6 @@
 
 Androidアプリケーションで利用できるライブラリにはjar(Java Archive)、ライブラリプロジェクト、aar(Android Archive)があります。これらはJavaから参照できるライブラリです。この他NDKを用いてC言語でプログラムを記述する場合にはso(Shared Object)というライブラリ形式を利用する事になります。
 
-#@# 参考
-#@# jar:http://www.cse.yorku.ca/tech/other/jdk1.2.1/docs/guide/jar/
-#@# manifest format:http://www.cse.yorku.ca/tech/other/jdk1.2.1/docs/guide/jar/manifest.html
-
 === jar(Java Archive)
 
 Androidアプリケーションは基本的にJavaでソースコードを記述します。その為既存のJavaライブラリの多くを利用できます。Javaライブラリの形式はjar(Java Archive)と呼ばれ、classファイル群と署名やバージョン等のメタ情報が書かれたファイルなどがアーカイブされています@<fn>{jar features}。コンパイル時にjarファイルのパスを指定する事で利用できます。Androidアプリケーションの場合プロジェクトのlibsディレクトリにjarファイルを配置するだけで自動的にパスが通り、利用が可能となります@<fn>{jar for eclipse}。
@@ -47,7 +43,7 @@ NDKを用いる事でC言語を使ってAndroidアプリケーションで利用
 
 静的リンクはアプリケーションとライブラリをコンパイルのリンク時に結びつけ、実行ファイルに含める方式です。静的リンクの場合リンク時にライブラリのAPIやバージョン等の整合性をチェックする事になるので、コンパイルの時点で問題があれば検出できます。ただし、実行ファイルにライブラリファイルを含めるので実行ファイルのサイズは大きくなってしまいます。また、ライブラリをアップデートするには再度アプリケーションをコンパイルし直す必要があります。Androidにおいてはライブラリプロジェクトやaar、exportedなjarが静的リンクになります@<fn>{exported jar}。
 
-//footnote[exported jar][通常jarファイルは動的リンク形式のライブラリです。しかしAndroidアプリケーションはDalvikVMというJavaとは異なる処理系で動作します。この為、classファイルをDalvikVM用のdexファイルに変換する際に、参照しているjarファイルの中身もdexファイルに変換され、アプリケーションに組み込まれます。コンパイルのタイミングでアプリケーション内にライブラリを組み込んでいるのでAndroidアプリケーションではjarファイルを静的リンクしているという事になります。]
+//footnote[exported jar][通常jarファイルは動的リンク形式のライブラリです。しかしAndroidアプリケーションはDalvikVMというJavaとは異なる処理系で動作します。この為、classファイルをDalvikVM用のdexファイルに変換する際に、参照しているjarファイルの中身もdexファイルに変換され、アプリケーションに組み込まれます。コンパイルのタイミングでアプリケーション内にライブラリを組み込んでいるのでAndroidアプリケーションではjarファイルを静的リンクしているという事になります。exportedなjarとはdexファイルに変換する対象に含めるjarファイルの事を指します。]
 
 === 動的リンク
 
@@ -55,7 +51,7 @@ NDKを用いる事でC言語を使ってAndroidアプリケーションで利用
 
 //footnote[dll][Windowsを利用している方は「.dll(Dynamic Link Library)」という拡張子のファイルを見たことがあると思います。これが動的リンクができるライブラリです。]
 
-== なぜライブラリが必要なのか
+== Androidフレームワークもライブラリ
 
 @<list>{android.jar}はAndroidアプリケーションを開発するにあたって最初に目にするコードの一つです。
 このコードの中でライブラリを利用している部分がどこかわかるでしょうか。
@@ -73,35 +69,95 @@ public class MainActivity extends Activity {
 }
 //}
 
-importしているandroid.app.Activityクラスやandroid.os.Bundleクラス、MainActivityクラスのonCreateメソッドや、setContentViewメソッドがライブラリに依存したコードです。これらのクラスやメソッドはAndroid SDKが提供しているライブラリによって解決しています。このライブラリをAndroidフレームワークと呼びます。Androidプロジェクトのソースコードがコンパイルできるのは、Androidフレームワークのライブラリをコンパイル時に参照しているからです。
+importしているandroid.app.Activityクラスやandroid.os.Bundleクラス、MainActivityクラスのonCreateメソッドや、setContentViewメソッドがライブラリに依存したコードです。ほとんど全部ですね。これらのクラスやメソッドはAndroid SDKが提供しているAndroidフレームワークのAPIが定義をしたライブラリ(android.jar)によって解決しています。Androidプロジェクトのソースコードがコンパイルできるのは、android.jarをコンパイル時に参照しているからです。
 
-EclipseでAndroidプロジェクトを見てみると、Androidフレームワークのバージョンや中身を確認できます。@<img>{android-framework}はAndroid 4.4.2のフレームワークを参照している例です。anrdoid.jarがAndroidフレームワークのライブラリの本体です。ライブラリの中にどのようなクラスがあるか確認できます。
+EclipseでAndroidプロジェクトを見てみると、参照しているAndroidフレームワークのバージョンや中身を確認できます。@<img>{android-framework}はAndroid 4.4.2のandroid.jarを参照している例です。ライブラリの中にどのようなクラスがあるか確認できます。
 
 //image[android-framework][Androidプロジェクトで参照しているAndroidフレームワーク]{
 //}
 
-===[column] 動的リンクとバージョン互換の問題
-
-API Level違いで発生する問題
-
-===[/column] 
+#@# ===[column] 動的リンクとバージョン互換の問題
+#@# 
+#@# Androidアプリケーションにおける静的リンクと動的リンクの関係は理解できたと思います。ここでひとつ気になるのは「なぜAndroidフレームワークのandroid.jarはjarファイルなのに動的リンクなのか」という事ではないでしょうか。
+#@#
+#@# 本コラムでは
+#@# Androidアプリケーションを開発する際に参照するandroid.jarの中身を見てみるとわかりますが、
+#@#
+#@# 機種によってはAndroidフレームワーク部分を修正したり拡張しています。この為特定の機種ではAPIの挙動が異なるという場合があります。
+#@#
+#@# API Level違いで発生する問題
+#@#
+#@# ===[/column] 
 
 == 演習1 
 
-ライブラリの形態とAndroidアプリケーションにおけるライブラリの種類がわかった所で、早速ライブラリを使ってみましょう。ネットワーク章で作ったHttpURLConnectionの処理を@<href>{https://github.com/loopj/android-async-http,android-async-http}に置き換えます。
+ライブラリの形態とAndroidアプリケーションにおけるライブラリの種類がわかった所で、早速ライブラリを使ってみましょう。本演習ではネットワーク章で作ったHttpURLConnectionの処理を@<href>{https://github.com/loopj/android-async-http,android-async-http}に置き換える手順を解説します。android-async-httpは様々な形式で配布していますが、ここではjarファイルを直接利用する事とします。
 
-=== jarファイルをダウンロードする
+=== jarファイルをダウンロードし、libsディレクトリへコピーする
 
-http://loopj.com/android-async-http/
+android-async-httpのjarファイルは@<href>{http://loopj.com/android-async-http/}でダウンロードできます。ダウンロードしたjarファイルをAndroidプロジェクトのlibsディレクトリにコピーすれば利用できます。
 
-=== libsディレクトリへコピーする
+=== ライブラリを用いない場合のコード
+
+まずはライブラリを使わない場合のコードをおさらいしてみましょう。@<list>{scratch}はネットワーク章で実装したHttpURLConnectionを用いるコードからログ出力を取り除いたものです。接続の準備やデータの取得、後処理など沢山の処理を記述しています。また、このコードはUIスレッドでは実行できないため、AsyncTask等を用いて別のスレッドで呼び出す必要があります。
+
+//list[scratch][HttpURLConnection]{
+private void scratch() {
+  try {
+    URL url = new URL("http://tomorrowkey.github.io");
+    HttpURLConnection connection = (HttpURLConnection) url
+        .openConnection();
+    connection.setRequestMethod("GET");
+    connection.setRequestProperty("Host", "tomorrowkey.github.io");
+    connection.connect();
+
+    int responseCode = connection.getResponseCode();
+    InputStream inputStream = connection.getInputStream();
+    String body = readToEnd(inputStream);
+    inputStream.close();
+  } catch (MalformedURLException e) {
+    throw new RuntimeException(e);
+  } catch (IOException e) {
+    throw new RuntimeException(e);
+  }
+}
+//}
+
+=== android-async-httpを用いたコード
+
+次はandroid-async-httpを用いたコードを見てみましょう。android-async-httpは主に非同期的にネットワーク処理を行うAsyncHttpClientクラスと、同期的にネットワーク処理を行うSyncHttpClientクラスを提供しています。@<list>{library}ではAsyncHttpClientを使って非同期のリクエスト処理をしています。実装の詳細はここでは深く立ち入りませんが、簡潔にリクエスト処理を記述できている事がわかると思います。
+
+//list[library][HttpURLConnection]{
+private void library() {
+  AsyncHttpClient client = new AsyncHttpClient();
+  client.get("http://tomorrowkey.github.io",
+    new AsyncHttpResponseHandler() {
+    @Override
+    public void onSuccess(int responseCode, Header[] headers,
+      byte[] response) {
+      String body = new String(response);
+    }
+
+    @Override
+    public void onFailure(int responseCode, Header[] headers,
+      byte[] response, Throwable e) {
+
+    }
+    });
+}
+//}
+
+AsyncHttpClientクラスは自動的に非同期でネットワーク処理を行うのでUIスレッドから呼び出しても問題ありません。また実行後の
 
 ===[column] Android Studio + Gradleを使う場合
 
 
-
-
 ===[/column] 
+
+
+== ライブラリのソースコードを読む
+
+
 
 == jarファイルの限界とライブラリプロジェクトの誕生
 
