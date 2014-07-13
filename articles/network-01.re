@@ -118,7 +118,7 @@ Host: tomorrowkey.jp
 User-Agentは、ブラウザの種類を表します。
 Hostは、アクセスするホストの名前を指定します。
 
-このリクエストはコマンドプロンプト/ターミナルから実行することができます。
+このリクエストはコマンドプロンプト/ターミナルから実行することができます。//footnote[][Windowsの場合はtelnetがデフォルトで無効になっていますので、コントロールパネルから有効にしてください。詳しくは「Windows telnet」で検索してみてください。]
 //list[request-http-via-telnet][telnetを使ったHTTP通信のリクエスト]{
 telnet tomorrowkey.jp 80
 GET / HTTP/1.0
