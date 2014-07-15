@@ -1,0 +1,10 @@
+image: vvakame/review
+script:
+  - ruby --version
+  - gem list review
+  - npm install
+  - grunt clean pdf
+notify:
+  email:
+    recipients:
+      - vvakame@gmail.com
