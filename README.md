@@ -1,4 +1,7 @@
 # Android Open Textbook
+
+[![Build Status](http://review-ci.vvakame.net/github.com/TechBooster/AndroidOpenTextbook/status.svg?branch=master)](http://review-ci.vvakame.net/github.com/TechBooster/AndroidOpenTextbook)
+
 Android Open Textbook は「Androidの教科書」をつくるオープンソースプロジェクトです。GitHubと書籍制作ツールRe:VIEWを利用して、開発者が欲しい技術情報を集約する試みです。
 
 ## マイルストーン
