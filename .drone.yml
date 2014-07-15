@@ -2,6 +2,7 @@ image: vvakame/review
 script:
   - ruby --version
   - gem list review
+  - npm install -g grunt-cli
   - npm install
   - grunt clean pdf
 notify:
