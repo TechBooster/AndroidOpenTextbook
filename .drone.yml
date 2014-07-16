@@ -3,6 +3,8 @@ env:
   - LANG="en_US.UTF8"
   - LC_ALL="en_US.UTF-8"
 script:
+  - echo $LANG
+  - echo $LC_ALL
   - ruby --version
   - gem list review
   - npm install -g grunt-cli
