@@ -1,6 +1,7 @@
 image: vvakame/review
 env:
-  - LANG=en_US.UTF8
+  - LANG="en_US.UTF8"
+  - LC_ALL="en_US.UTF-8"
 script:
   - ruby --version
   - gem list review
