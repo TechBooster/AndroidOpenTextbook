@@ -15,7 +15,7 @@ LinearLayout    絶対配置。画面の左上を中心にして、ビューを�
 RelativeLayoutは、相対配置ともいわれます。
 それぞれのパーツを配置していくときに、基準となるビューを決めながら配置をしていきます。それでは実際に作成しながら進めていきましょう。
 
-新規に作成したAndroidプロジェクトのXMLレイアウトは、「fragment_main.xml」ですが、ここにはあらかじめRelativeLayoutが記述されていますので、このまま使っていきましょう。
+新規に作成したAndroidプロジェクトのXMLレイアウトは、「fragment_main.xml」ですが、ここにはあらかじめRelativeLayoutが記述されていますので、このまま使っていきましょう（@<img>{rltv-default}）。
 
 
 //image[rltv-default][]{
@@ -27,7 +27,7 @@ RelativeLayoutは、相対配置ともいわれます。
 RelativeLayoutは相対配置ですから、基準となるビューが必要です。
 まずは、基準を親ビューにすることを考えます。
 
-@<img>{rltv-default}にある、すでに書かれているRelativeLayoutを使い、その中にImageViewを入れます。
+@<img>{rltv-default}にある、すでに書かれているRelativeLayoutを使い、その中にImageViewを入れます（@<list>{rltv-imagecenter}）。
 この場合の確認は、シミュレータや実機でなくても、Graphycal Layoutでもかまいません。
 
 //listnum[rltv-imagecenter][fragment_main.xml]{
@@ -48,7 +48,7 @@ RelativeLayoutは相対配置ですから、基準となるビューが必要で
 //}
 
 1〜9行目と、14行目は、あらかじめ書かれているコードです。
-中に書かれていたTextViewを一旦削除し、ImageViewを追加しましょう。
+中に書かれていたTextViewを一旦削除し、ImageViewを追加しましょう（@<img>{rltv-imageonly}）。
 
 
 
@@ -57,7 +57,7 @@ RelativeLayoutは相対配置ですから、基準となるビューが必要で
 
 ==== 親ビューの中央に配置する
 
-次に、@<img>{rltv-imagecenter}のように、画像を中央に配置するために、@<list>{rltv-imagecenter}のImageViewを次のようにします。
+次に、@<img>{rltv-imagecenter}のように、画像を中央に配置するために、@<list>{rltv-imagecenter}のImageViewを次のようにします（@<list>{rltv-centerinparent}）。
 
 //list[rltv-centerinparent][5行目に配置の指示を追加した]{
 <ImageView
@@ -73,14 +73,15 @@ RelativeLayoutは相対配置ですから、基準となるビューが必要で
 //footnote[boolean-default][値がtrueかfalseの場合、デフォルト値はfalseですので、通常はtrueを指定する場合のみ書きます]
 
 
+@<img>{rltv-imagecenter}のように、ドロイドくんが中央に配置されたら成功です。
+
+
 //image[rltv-imagecenter][]{
 //}
 
 
 //image[rltv-imagecenter-o][親ビューに対して中央に配置されている]{
 //}
-
-@<img>{rltv-imagecenter}のように、ドロイドくんが中央に配置されたら成功です。
 
 ==== 親ビューの端にそろえて配置する
 
@@ -91,7 +92,7 @@ RelativeLayoutは相対配置ですから、基準となるビューが必要で
 //image[rltv-allposition][親ビューの端にそろえてさまざまな場所に配置する]{
 //}
 
-@<list>{rltv-centerinparent}の5行目に追加した「android:layout_centerInParent="true" 」を、@<table>{rltv-parentposition}の属性を参考にしながら書き換えていきます。
+前述の@<list>{rltv-centerinparent}の5行目に追加した「android:layout_centerInParent="true" 」を、@<table>{rltv-parentposition}の属性を参考にしながら書き換えていきます。
 
 //table[rltv-parentposition][親ビューに対する配置を決める属性一覧]{
 android:layout_centerInParent   親ビューの中央に配置する
@@ -116,7 +117,7 @@ android:layout_alignParentBottom    親ビューの下側にそろえて配置�
 //image[rltv-sample][]{
 //}
 
-先ほどと同じように、すでに書かれているRelativeLayoutを使い、その中にImageViewとTextViewを入れ、確認します。
+先ほどと同じように、すでに書かれているRelativeLayoutを使い、その中にImageViewとTextViewを入れ、確認します（@<list>{rltv-normal}）。
 
 //listnum[rltv-normal][fragment_main.xml]{
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -139,11 +140,11 @@ android:layout_alignParentBottom    親ビューの下側にそろえて配置�
 </RelativeLayout>
 //}
 
+@<list>{rltv-normal}通りに記述すると@<img>{rltv-double}のように、画像とテキストが重なってしまいます。
 
 //image[rltv-double][]{
 //}
 
-そうすると、@<img>{rltv-double}のように、画像とテキストが重なってしまいます。
 RelativeLayoutで囲んだものは、@<b>{配置に関する設定をしなければ、中のビューは常に同じ場所に配置され、重なって表示されてしまう}という特性があるということを覚えておきましょう。
 
 RelativeLayoutにおいて今回のような配置にする場合は、「画像を基準として、その下にテキストを配置する」という考え方をします。
@@ -151,9 +152,9 @@ RelativeLayoutにおいて今回のような配置にする場合は、「画像
 ==== 基準とするものにid名をつける
 
 基準とするものについては、目印として名前をつけます。
-@<list>{rltv-normal}のImageViewを次のようにします。
+@<list>{rltv-normal}のImageViewを次のようにします（@<list>{rltv-normal2}）。
 
-//listnum[][5行目にidを追加した]{
+//listnum[rltv-normal2][5行目にidを追加した]{
 <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -161,18 +162,18 @@ RelativeLayoutにおいて今回のような配置にする場合は、「画像
         android:id="@+id/droid" />
 //}
 
-「android:id」という属性を追加しました。値は、「@+id/droid」と書き、id名は「droid」になります。
+@<list>{rltv-normal2}では「android:id」という属性を追加しました。値は、「@+id/droid」と書き、id名は「droid」になります。
 
 これで、@<b>{このImageViewに「droid」という名前をつけた}ということになります。
 
 ==== 基準となるものに対して、どこに配置するかを指定する
 
-次に、画像の下に配置するテキストについてです。
-これは、テキストに対して、@<b>{「droid」という名前のついたビューの下にテキストを配置する}という指示をします。
+引き続き、画像の下にテキストを配置しましょう。
+これは表示するテキストに対して、@<b>{「droid」という名前のついたビューの下にテキストを配置する}という指示をします。
 
-@<list>{rltv-normal}のTextViewを次のようにします。
+TextViewを次のように変更します（@<list>{rltv-normal3}）。
 
-//listnum[][5行目に配置の指示を追加した]{
+//listnum[rltv-normal3][5行目に配置の指示を追加した]{
 <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -180,7 +181,7 @@ RelativeLayoutにおいて今回のような配置にする場合は、「画像
         android:layout_below="@id/droid" />
 //}
 
-「android:layout_below」という属性を追加しました。値は、「@id/droid」と書き@<fn>{idname}、「droid」というid名を参照するものになります@<fn>{idjava}。
+「android:layout_below」という属性を追加しました。値は、「@id/droid」と書き@<fn>{idname}、「droid」というid名@<fn>{idjava}を参照するものになります。
 
 //footnote[idname][「@」と「id」の間に「+」があるかどうかに注意してください。「+」がある場合は「id名をつける」という意味になりますし、ない場合は「id名を参照する」という意味になります]
 
@@ -193,9 +194,9 @@ RelativeLayoutにおいて今回のような配置にする場合は、「画像
 ==== ドロイドくんを中央に置き、そのまわりにテキストを配置する
 
 次は、ドロイドくんの画像を画面の中央に置き、そのまわりにテキストを配置します。
-前項で指定したImageViewについて、画面の中央に配置するように6行目に「android:layout_centerInParent="true"」を追加します。
+前述したImageViewについて、画面の中央に配置するように6行目に「android:layout_centerInParent="true"」を追加します（@<list>{rltv-normal4}）。
 
-//listnum[][6行目に配置を指示する属性を追加した]{
+//listnum[rltv-normal4][6行目に配置を指示する属性を追加した]{
 <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -204,9 +205,9 @@ RelativeLayoutにおいて今回のような配置にする場合は、「画像
         android:layout_centerInParent="true" />
 //}
 
-また、テキストも追加しましょう。
+また、テキストも追加しましょう(@<list>{rltv-textalign})。
 
-//listnum[rltv-textalign][先ほど作ったテキスト以外に、さらにテキストを追加した]{
+//listnum[rltv-textalign][先ほど作ったテキスト以外に、さらにテキストを追加する]{
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -218,7 +219,7 @@ RelativeLayoutにおいて今回のような配置にする場合は、「画像
         android:text="上側に配置します" />
 //}
 
-@<list>{rltv-textalign}の5行目の「android:layout_below="@id/droid"」は、@<b>{「droid」というid名がついたビューの下に配置する}という意味でした。
+@<list>{rltv-textalign}の5行目の「android:layout_below="@id/droid"」は、@<b>{「droid」というid名がついたビューの下に配置する}という意味です。
 それ以外にも、基準となるビューに対してどこに配置するかを指定する属性があります。
 
 //table[rltv-tagposition][基準となるビューに対してどこに配置するかを決める属性一覧]{
@@ -234,7 +235,13 @@ android:layout_alignBottom  下端をそろえて配置する
 
 値は、すべてid名となります。
 
-@<list>{rltv-textalign}の2つめのTextViewを、画像の上側に配置するように変更します。
+#@# 値は何を指しているのだろう？
+
+#@# TextViewとテキスト、使い分けてる？いない？統一したほうがいい
+
+@<list>{rltv-textalign}で追加した2つめのTextViewを、画像の上側に配置するように変更します（@<list>{rltv-textalign-above}）
+
+#@# 基本的に過去形を使わないで書き直す。
 
 //listnum[rltv-textalign-above][10行目に上側に配置する属性を追加した]{
     <TextView
@@ -342,7 +349,7 @@ vertical    中のコンテンツを縦方向に並べる
 </LinearLayout>
 //}
 
-「android:orientation="horizontal"」が指定されていますので、テキストとボタンは横並びに配置されます。
+「android:orientation="horizontal"」を指定することで、テキストとボタンは横並びに配置されます（@<img>{lnr-horizontal}）。
 
 
 //image[lnr-horizontal][]{
@@ -374,15 +381,15 @@ vertical    中のコンテンツを縦方向に並べる
     android:text="登録する5" />
 //}
 
-そうすると、スマートフォンの横幅には入りきらないので、実際には@<img>{lnr-btn5}のように表示されます。
+ボタンが多すぎるとスマートフォンの横幅には入りきらないので、実際には@<img>{lnr-btn5}のように表示されます。
 
 
 //image[lnr-btn5][「登録する4」はギリギリ入っているが改行されて崩れる。「登録する5」は表示されない]{
 //}
 
-こうならないために、LinearLayoutを使うときには、中のコンテンツの量に注意しましょう。
+このようにレイアウトが崩れないために、LinearLayoutを使うときには、レイアウトに含まれるコンテンツの量に注意しましょう。
 
-次に、縦並びです。
+次に、縦並びを試してみましょう。
 @<list>{lnr-sample}の5行目を@<list>{lnr-vertical}のように変えると、コンテンツが縦方向に並ぶため、テキストとボタンは縦並びに配置されます。
 
 //list[lnr-vertical][]{
@@ -393,15 +400,15 @@ android:orientation="vertical"
 //image[lnr-vertical][]{
 //}
 
-この場合は、たくさんのビューを配置すると縦方向にどんどん並んでいきます。
+@<img>{lnr-vertical}で確認できるように、たくさんのビューを配置すると縦方向にどんどん並んでいきます。
 
 
 === 領域の大きさを比率で指定する
 
-LinearLayoutの大きな特徴は、領域の大きさを比率で指定できることです。
+LinearLayoutの大きな特徴は、領域の大きさを比率で指定できることです（@<list>{lnr-scale}）。
 たとえば、3つのボタンを横方向に並べます。
 
-//listnum[][]{
+//listnum[lnr-scale][]{
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -422,12 +429,12 @@ LinearLayoutの大きな特徴は、領域の大きさを比率で指定でき�
 </LinearLayout>
 //}
 
+「android:layout_width」がwrap_contentですので、指定されたテキストの文字数分しか横幅を持ちません（@<img>{lnr-btn3}）。
 
 //image[lnr-btn3][]{
 //}
 
-「android:layout_width」がwrap_contentですので、指定されたテキストの文字数分しか横幅を持ちません。
-それぞれのボタンを、この横幅いっぱいに均等配列（3等分に配置）したい場合、それぞれのボタンを@<list>{lnr-layoutweight}のように書き換えます。
+それぞれのボタンを横幅いっぱいに均等配列（3等分に配置）したい場合、ボタン要素を@<list>{lnr-layoutweight}のように書き換えます。
 
 //listnum[lnr-layoutweight][]{
 <Button
@@ -438,20 +445,19 @@ LinearLayoutの大きな特徴は、領域の大きさを比率で指定でき�
 //}
 
 2行目の「android:layout_width」を「0dp」にし、4行目に「android:layout_weight="1"」を追加しました。
-3つのボタンすべてをこのように変更すると、横幅いっぱいに3等分されて配置されます。
-
+3つのボタンすべてにこの変更を適用すると、横幅いっぱいに3等分されて配置されます（@<img>{lnr-btn3-equall}）。
 
 //image[lnr-btn3-equall][]{
 //}
 
-「android:layout_weight="1"」とは、割合を決める属性です。
+ここで利用した「android:layout_weight="1"」とは、割合を決める属性です。
 すべてに1を設定している場合、A：B：Cの割合が、1：1：1であることになります。
 また「android:layout_width」を「0dp」にするのは、いってみれば、「横幅における、ビューを占める領域の設定を無効にする」ということに近い意味になります。
 
 では次に、A：B：Cの割合を、1：2：4にしてみましょう。
-それぞれの「android:layout_weight」の値を「1」「2」「4」に変えるだけでいいですね。
+それぞれの「android:layout_weight」の値を「1」「2」「4」に変えるだけでいいですね（@<list>{lnr-layoutweight2}）。
 
-//listnum[][]{
+//listnum[lnr-layoutweight2][]{
     <Button
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -470,12 +476,12 @@ LinearLayoutの大きな特徴は、領域の大きさを比率で指定でき�
 //}
 
 
-//image[lnr-btn3-124][A：B：Cの割合が1：2：4になった]{
+//image[lnr-btn3-124][A：B：Cの割合を1：2：4に変更する]{
 //}
 
-横方向について設定をしましたが、これは縦方向についても同じことができます。
-画面全体を使って、@<img>{lnr-verticalbtn}のように、縦方向にボタンを並べ、ボタンの高さがA：B：C：D＝1：2：2：4になるようにしてみましょう。
+@<img>{lnr-btn3-124}では横方向について設定をしましたが、これは縦方向についても同じことができます。
 
+つぎは画面全体を使って、@<img>{lnr-verticalbtn}のように、縦方向にボタンを並べ、ボタンの高さがA：B：C：D＝1：2：2：4になるようにしてみましょう。
 
 //image[lnr-verticalbtn][]{
 //}
@@ -485,7 +491,7 @@ LinearLayoutの大きな特徴は、領域の大きさを比率で指定でき�
 
 たとえば、@<img>{lnr-verticalbtn}のAとDはコンテンツの成り行きの高さにあわせます（android:height="wrap_content"）。
 そうすると、BとCで残った領域を比率によって配分することになります。
-@<list>{lnr-weightarea}のように、B：C＝1：3にすると、@<img>{lnr-weightarea}のように表示されます。
+@<list>{lnr-weightarea}のとおり、BとCの比率をB：C＝1：3に変更すると、@<img>{lnr-weightarea}のように表示されます。
 
 //listnum[lnr-weightarea][]{
     <Button
@@ -514,11 +520,10 @@ LinearLayoutの大きな特徴は、領域の大きさを比率で指定でき�
 
 == いろいろな行ぞろえ/列ぞろえを決めるGravity
 
-さまざまなパーツを内包したLinearLayoutや、個々のビューに「そろえ」を指定することができるGravityを知っておきましょう。
-Gravityとは、重力の意味です。
+Gravityとは、重力の意味です。Androidでは、さまざまなパーツを内包したLinearLayoutや、個々のビューに「揃え（そろえ）」を指定することができる要素です。
 「そろえ」という説明をしましたが、@<b>{ビューに重力をかけて、配置する位置を決める}というと、イメージしやすいかもしれません。
 
-Gravityには2種類あります。
+実際に利用できるGravityには2種類あります。
 
 //table[][]{
 android:gravity 親となるビューに指定することで、中に入るコンテンツのそろえを設定する
@@ -576,14 +581,14 @@ center  画面の中央にそろえる
 //image[gravity-simple][親のLinearLayoutに対するandroid:gravityの指定]{
 //}
 
-また、@<img>{gravity-simple}にはないのですが、右下に配置したいときには、「android:gravity=”right|bottom”」といった具合に、値を「 |（パイプ）」でつなぐと、複数指定することができます。
+右下に配置したいときには、「android:gravity="right|bottom"」といった具合に、値を「 |（パイプ）」でつなぐと、複数指定することができます。
 
-コードで覚えるとわかりづらい人は、イメージで覚えましょう。
-このgravityは、先ほども述べたとおり、@<b>{重力}の意味があります。親となるLinearLayoutにどのような重力をかけるか、ということを考えるとイメージしやすいのではないでしょうか。
+コードで覚えるときに想像しづらい人はなるべく自分のなかにイメージを持てるように工夫するといいでしょう。
+たとえば、Gravityは、先ほども述べたとおり、@<b>{重力}の意味があります。親となるLinearLayoutにどのような重力をかけるか、ということを考えるとイメージしやすいかもしれません。
 
-また、この重力は、ButtonやTextViewといったビューにも指定できます。
+またGravityは、レイアウトだけでなくButtonやTextViewといったビューにも指定できます。
 
-たとえば、@<list>{gravity-simple}のBのボタンをTextViewに変えました。このTextViewについて、横方向にmatch_parentにします。
+たとえば、@<list>{gravity-simple}のBのボタンをTextViewに変えました。このTextViewについて、横方向にmatch_parentにします（@<list>{gravity-textnormal}）。
 
 //listnum[gravity-textnormal][]{
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -611,13 +616,13 @@ center  画面の中央にそろえる
 </LinearLayout>
 //}
 
-そうすると、横方向にwrap_contentであるA、C、Dのボタンは、親のLinearLayoutの「右ぞろえ（@<list>{gravity-textnormal}の6行目の「android:gravity="right"」）」を受けてすべて右端に寄っていますが、TextViewだけmatch_parentなために、横幅いっぱいに領域が伸びています@<img>{gravity-text100per}。
+そうすると、横方向にwrap_contentであるA、C、Dのボタンは、親のLinearLayoutの「右ぞろえ（@<list>{gravity-textnormal}の6行目の「android:gravity="right"」）」を受けてすべて右端に寄っていますが、TextViewだけmatch_parentなために、横幅いっぱいに領域が伸びています（@<img>{gravity-text100per}）。
 
 
 //image[gravity-text100per][]{
 //}
 
-ここで、TextViewに「android:gravity="right"」を付け加えると、テキストが右寄せになります@<img>{gravity-text100per-right}。
+ここで、TextViewに「android:gravity="right"」を付け加えると、テキストが右寄せになります（@<img>{gravity-text100per-right}）。
 
 //listnum[][]{
 <TextView
@@ -631,8 +636,8 @@ center  画面の中央にそろえる
 //image[gravity-text100per-right][]{
 //}
 
-これらのことから、「android:gravity」は、横方向であっても縦方向であっても「match_parent」を使っている方向に対して有効だ、ということがいえます@<fn>{gravity-match}。
-また、相対的にレイアウトを考えるRelativeLayout自体には使えないことも想像できるでしょう。
+ここまで試してみると「android:gravity」は、横方向であっても縦方向であっても「match_parent」を使っている方向に対して有効だとわかります@<fn>{gravity-match}。
+また、相対的にレイアウトを考えるRelativeLayout自体にはandroid:gravityが使えないことも想像できるでしょう。
 
 //footnote[gravity-match][この場合、厳密には、TextViewのandroid:layout_widthをwrap_contentにしても、右寄せになります。わかりやすい例として、match_parentにしています]
 
@@ -670,9 +675,9 @@ android:layout_gravityは、それぞれのビューに指定することで、�
 </LinearLayout>
 //}
 
-この中で、Bのボタンのみを右寄せにしたい場合、Bのコードに「android:layout_gravity="right"」を追加します。
+ここでBのボタンのみを右寄せに変更したい場合、ボタン「B」のコード（属性）に「android:layout_gravity="right"」を追加します。
 
-//listnum[][4行目を追加した]{
+//listnum[][android:layout_gravityを追加する]{
 <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -684,24 +689,28 @@ android:layout_gravityは、それぞれのビューに指定することで、�
 //image[layoutgravity-right-b][]{
 //}
 
-gravity関連については、実際にレイアウトを組んでいく上で「こういうときにはどうするべきか」というのをその都度考え、実装していくのがよいでしょう。
+android:gravity属性値については、実際にレイアウトを組んでいく上で「こういうときにはどうするべきか」というのをその都度考え、実装していくのがよいでしょう。
+
+#@# 「こういうときにはどうするべきか」を具体例で置き換え
+
 
 == Androidのレイアウト方法
 
-この章では、Androidの基本的なレイアウト方法を学びました。
+ここまでで、Androidの基本的なレイアウト方法を学びました。
 RelativeLayout/LinearLayoutは、それぞれの考え方が違いますが、さまざまな画面サイズの端末に簡単に対応できる、という点では共通しています。
 
 RelativeLayoutであれば、親ビューを基準にしたり、もしくは任意のビューを基準にして配置します。
 LinearLayoutであれば、ビューの占める領域を比率によって指定することができます。
 これらは、HTML/CSSによるWebサイトのレイアウトや、iPhoneアプリの画面レイアウトとはまったく違った考え方を持っていて、画面サイズがどんなに変わってもそのときに応じて配置できるというのが特徴です。
 
-これは、AndroidというOSはオープンソースであり、どのような画面サイズの端末にも入れることができる、ということにもつながります。中には、縦横比すらまったく違うような、正方形のような画面サイズのものもあるでしょう。
+これは、AndroidというOSはオープンソースであり、多くのキャリア（携帯事業者）やメーカーが利用しており、どのような画面サイズの端末でも動く、ということにもつながります。
+極端なものでは、縦横比すらまったく違うような、正方形のような画面サイズのものもあるでしょう。
 
-レイアウトを作成するときには、画面サイズが変わってもある程度は許容できるようなレイアウトを心がけましょう。
+多種多様な画面サイズがある中、すべてで完璧に動作させることは難しいですが、レイアウトを作成する段階で、画面サイズの変化に柔軟に対応できるように心がけましょう。
 
 == 実習
 
-次のレイアウトを作成しましょう。
+いままでの内容の復習として次のレイアウトを作成してみましょう。
 
 //image[sample][]{
 //}

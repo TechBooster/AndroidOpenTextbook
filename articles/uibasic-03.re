@@ -1,15 +1,16 @@
 = XMLを使ってパーツを作る
 
-Graphical Layoutではドラッグアンドドロップでだれでもレイアウトを作ることができます。しかし、細かいレイアウトの設定は、XMLを使って作れるようにならなければなりません。
+Graphical Layoutではドラッグアンドドロップでだれでもレイアウトを作ることができます。しかし、Graphical Layoutでは細かいレイアウトの設定は困難です。
+より細かい設定はXMLを使って作ります。
 
-この節では、XMLを使ってよく使うパーツを作れるようになりましょう。
+この節では、XMLを使って一般的によく使うパーツを作れるようになりましょう。
 
 == XMLレイアウトがどんなものかを知る
 
 まず、XMLレイアウトがどんなものかを知るために、あらかじめ配置されているXMLをカスタマイズしていきます。
 
 新規Androidプロジェクトを作成します。
-そして、立ち上がった「fragment_main.xml」を開きます。Graphical Layoutを見ると、「Hello world!」が表示されています。
+そして、立ち上がった「fragment_main.xml」を開きます。Graphical Layoutを見ると、「Hello world!」が表示されています（@<img>{201}）。
 
 
 //image[201][Graphical Layoutを見る]{
@@ -17,13 +18,13 @@ Graphical Layoutではドラッグアンドドロップでだれでもレイア�
 
 下のタブを「fragment_main.xml」に切り替えてみましょう。
 
-ここに書かれているのが、レイアウトを構成するXMLです。
+ここに書かれているのが、レイアウトを構成するXMLです（@<img>{202}）。
 
 
 //image[202][レイアウトを構成するXMLが書かれている]{
 //}
 
-テキストが表示されている部分のXMLは、次のようになっています。
+テキストが表示されている部分のXMLは、次のようになっています（@<list>{201}）。
 
 //listnum[201][テキストが表示されている部分のXML]{
 <TextView
@@ -34,17 +35,18 @@ Graphical Layoutではドラッグアンドドロップでだれでもレイア�
 
 === テキストの文字列を変更する
 
-4行目の「android:text=””」の中で、表示する文字列を指定しています。ここでは、@stringといって他のファイルを参照するように指定されていますが、いったん無視して、好きなテキストに変えてみます。
+4行目の「android:text=""」の中で、表示する文字列を指定しています。ここでは、@stringといって他のファイルを参照するように指定されていますが、いったん無視して、好きなテキストに変えてみます（@<list>{202}）。
 
-//listnum[202][4行目を追加した]{
+//listnum[202][android:textを編集する]{
 <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="XMLレイアウトの基礎" />
 //}
 
-確認方法は、AVDでも実機でもどちらでもかまいません。簡易的な確認であれば、Graphical Layoutでもできます@<fn>[easy]。
-//footnote[easy][レイアウトが複雑になってきたり、プログラミングによってレイアウトを表示させたりするものは、Graphical Layoutでは確認できません。そのときはAVDや実機を使って確認するようにしましょう。]
+確認方法は、AVD（仮想デバイス）でも実機でもどちらでもかまいません。簡易的な確認であれば、Graphical Layoutでもできます@<fn>[easy]（@<img>{203}）。
+
+//footnote[easy][レイアウトが複雑になってきたり、プログラミングによってレイアウトを表示させたりするものは、Graphical Layoutでは確認できません。そのときはAVDや実機を使って確認するようにしましょう]
 
 
 //image[203][出力結果。Graphical Layoutで確認した場合]{
@@ -55,7 +57,7 @@ Graphical Layoutではドラッグアンドドロップでだれでもレイア�
 === テキストの色や大きさを変更する
 
 では次に、テキストの色や大きさを変更してみましょう。
-先ほどの@<list>{202}に、次の2行を追加します。
+先ほどの@<list>{202}に、次の2行を追加します（@<list>{203}）。
 
 //listnum[203][5〜6行目を追加した]{
 <TextView
@@ -67,9 +69,9 @@ Graphical Layoutではドラッグアンドドロップでだれでもレイア�
 //}
 
 「android:textColor」がテキストの色を指定する属性で、「#ff0000（赤色）」を指定しました。
-「android:textSize」はテキストの大きさを指定する属性で、「22sp」を指定しました。
+「android:textSize」はテキストの大きさを指定する属性で、「22sp」を指定しました（@<img>{204}）。
 これらを追加することによって、どのような表示になるかはだいたい想像がつきますよね@<fn>{imagine}。
-//footnote[imagine][XMLでレイアウトを作るときには、必ず「このコードを書くとどうなるかな」というのを想像するようにしましょう。コードから、実際の表示がどうなるかというのを、自分の中でイメージできることが大切なのです。]
+//footnote[imagine][XMLでレイアウトを作るときには、必ず「このコードを書くとどうなるかな」というのを想像するようにしましょう。コードから、実際の表示がどうなるかというのを、自分の中でイメージできることが大切なのです]
 
 
 //image[204][出力結果。テキストが赤色になり、大きくなった]{
@@ -81,7 +83,7 @@ Graphical Layoutではドラッグアンドドロップでだれでもレイア�
 
 == XMLの書き方
 
-XMLは、次のような要素で構成されています。
+XMLは、次のような要素で構成されています（@<img>{205}）。
 
 
 //image[205][テキストを表示させるXML]{
@@ -113,7 +115,7 @@ SeekBar シークバーを表示する
 たとえば、テキストを表示するTextViewであれば、色（textColor）や大きさ（textSize）の設定ができますが、画像を表示するImageViewだと、それらの設定はありません。
 
 各ビューに設定できる属性は、それぞれにおいてかなりの数があります。
-どのような属性が指定できるかは、コードを書いている中で「android:」と打っていくと、指定可能な候補一覧が表示されますので、それを見ておくとよいでしょう。
+どのような属性が指定できるかは、コードを書いている中で「android:」と入力するとオートコンプリート機能によって指定可能な候補一覧が表示されますので、それを見ておくとよいでしょう（@<img>{206}）。
 
 
 //image[206][TextViewで指定可能な属性の候補が表示される]{
@@ -122,7 +124,7 @@ SeekBar シークバーを表示する
 === 値
 
 値は、各属性によって設定できるものが決まっています。
-これも、設定できるものが選べる場合は、属性と同じように候補一覧が表示されます@<fn>{candidate}ので、見ておくとよいでしょう。
+これも、設定できるものが選べる場合は、属性と同じように候補一覧が表示されます@<fn>{candidate}ので、見ておくとよいでしょう（@<img>{207}）。
 
 //footnote[candidate][数値を指定するものは、候補には出てきません。自分で値を入力しないといけないので注意してください。]
 
@@ -135,7 +137,7 @@ SeekBar シークバーを表示する
 それでは、よく使うパーツを詳しく説明していきます。
 これらのパーツは、何も見なくても@<fn>{notsee}XMLで作成できるようにしておくことが望ましいです。
 
-//footnote[notsee][とはいえ、すべてを覚える必要はありません。ADTでは候補一覧が表示されますので、この機能はヒントとして積極的に使っていきましょう。]
+//footnote[notsee][とはいえ、すべてを覚える必要はありません。ADTではオートコンプリート機能により候補一覧が表示されますので、この機能はヒントとして積極的に使っていきましょう。]
 
  * ボタン
  * テキスト
@@ -144,7 +146,7 @@ SeekBar シークバーを表示する
 
 === ボタン
 
-ボタンを表示するときには、次のようなXMLを書きます。
+ボタンを表示するときには、次のようなXMLを書きます（@<list>{button-normal}、@<img>{button-normal}）。
 
 //listnum[button-normal][]{
 <Button
@@ -157,7 +159,7 @@ SeekBar シークバーを表示する
 //image[button-normal][ボタン表示]{
 //}
 
-デザインのカスタマイズを何もしていない、デフォルトの状態のこのボタンは、タップすると色が変わり、「タップされた」という状態をユーザーにフィードバックしています。
+デザインのカスタマイズを何もしていない、デフォルトの状態のこのボタンは、タップすると色が変わり、「タップされた」という状態をユーザーにフィードバックしています（@<img>{button1-1-pressed-4}、@<img>{button1-1-pressed-kitkat}）。
 
 
 //image[button1-1-pressed-4][Android 4.3までは青くなる]{
@@ -167,7 +169,7 @@ SeekBar シークバーを表示する
 //image[button1-1-pressed-kitkat][Android 4.4では少し色が濃くなる]{
 //}
 
-@<list>{button-normal}の4行目の「android:text」という属性が、ボタン内に表示するテキストです。
+前述の@<list>{button-normal}の4行目の「android:text」という属性が、ボタン内に表示するテキストです。
 
 @<list>{button-normal}の2行目の「android:layout_width」と3行目の「android:layout_height」は、ボタンだけではなくどのビューにも共通して必要な属性です。
 それぞれのビューが、横方向（layout_width）または縦方向（layout_height）に対してどれぐらいの領域を占めるかという設定です。
@@ -175,24 +177,27 @@ SeekBar シークバーを表示する
 
 //footnote[matchparent][APIレベルxx以前は、「fill_parent」が使われていました。古いアプリではそれが使われていることもあります。]
 
-//table[][]{
+#@# XXがあった。要注意
+
+//table[viewlayout][ビューのレイアウト指定]{
 値       説明
 wrap_content    ビューを占める領域は、そのビューがもっているサイズのみにとどまる
 match_parent    ビューを占める領域は、縦または横の画面サイズいっぱいまで広がる
 //}
 
-言葉に書くとむずかしいですね。
-実際にどうなるかを設定して確認してみましょう。
+説明をみるだけでは理解が追いつかないかもしれません。
+実際にどうなるか設定して確認してみましょう。
 
 ==== wrap_content
 
-wrap_contentを設定した場合、ビューを占める領域は、そのビューがもっているサイズのみにとどまります。つまり、「Button」という文字が設定されているボタンであれば、「Button」という文字のまわりに一定の余白がとられ、それらをひっくるめたものがビューの領域となります。
+wrap_contentを設定した場合、ビューを占める領域は、そのビューがもっているサイズのみにとどまります。
+つまり、「Button」という文字が設定されているボタンであれば、「Button」という文字のまわりに一定の余白がとられ、それらをひっくるめたものがビューの領域となります（@<img>{button-normal}）。
 
 
 //image[button-normal][ビューを幅としたボタン]{
 //}
 
-確認のため、ボタン内に表示するテキストを変更してみます。
+確認のため、ボタン内に表示するテキストを変更してみます（@<list>{button-normal-textedit}）。
 
 //listnum[button-normal-textedit][]{
 <Button
@@ -201,18 +206,18 @@ wrap_contentを設定した場合、ビューを占める領域は、そのビ�
         android:text="登録して送信する" />
 //}
 
+変更するとボタン全体の横幅が、テキストの文字数にあわせて伸びました（@<img>{button-wrapcontent}）。
 
 //image[button-wrapcontent][ボタンの文言を変更すると、それにあわせてボタンの横幅が伸びた]{
 //}
 
-ボタン全体の横幅が、テキストの文字数にあわせて伸びました。
 このように、ビューがもっているサイズにあわせたいときは、「wrap_content」を設定します。
 
 
 ==== match_parent
 
-@<list>{button-normal}では、android:layout_widthもandroid:layout_heightも、両方とも「wrap_content」が設定されていました。
-2行目のandroid:layout_widthを「match_parent」に変更してみます。
+前述の@<list>{button-normal}では、android:layout_widthもandroid:layout_heightも、両方とも「wrap_content」が設定されていました。
+2行目のandroid:layout_widthを「match_parent」に変更してみます（@<list>{button-matchparent}）。
 
 //listnum[button-matchparent][]{
 <Button
@@ -221,11 +226,11 @@ wrap_contentを設定した場合、ビューを占める領域は、そのビ�
         android:text="Button" />
 //}
 
+横方向に、画面サイズいっぱいまで広げる設定をしましたので、ボタンは@<img>{button-matchparent}のように横幅いっぱいまで広がります。
 
 //image[button-matchparent][]{
 //}
 
-横方向に、画面サイズいっぱいまで広げる設定をしましたので、ボタンは@<image>{button-matchparent}のように横幅いっぱいまで広がります。
 
 では今度は、@<list>{button-matchparent-height}のように、android:layout_widthを「wrap_content」に戻し、android:layout_heightを「match_parent」に設定してみましょう。
 
@@ -236,11 +241,11 @@ wrap_contentを設定した場合、ビューを占める領域は、そのビ�
         android:text="Button" />
 //}
 
+今度は縦方向に、画面サイズいっぱいまで広がりました（@<img>{button-matchparent-height}）。
 
 //image[button-matchparent-height][]{
 //}
 
-今度は縦方向に、画面サイズいっぱいまで広がりました。
 
 実際のアプリケーションでは、ボタンをこのように縦方向の画面サイズいっぱいまで広げるようなレイアウトはほとんどありませんが、他のビューでは必要になることもありますので、覚えておきましょう。
 
@@ -257,6 +262,13 @@ wrap_contentを設定した場合、ビューを占める領域は、そのビ�
 //}
 
 
+@<list>{imageview-normal}の4行目の「android:src」は、resフォルダの「drawable-xxxxx」フォルダ内に入っている画像リソースのファイル名を設定する属性です。
+
+画像の拡張子は、pngです。
+
+ic_launcher.png@<fn>{launchericon}は、resフォルダの「drawable-mdpi」「drawable-hdpi」「drawable-xhdpi」という3つのフォルダの中に1つずつ入っています（@<img>{imageview-res}）。
+内容は同じですが、それぞれの画面解像度に合ったサイズのものが入っています（@<img>{imageview-imagesize}）。
+
 //image[imageview-normal][drawable-xhdpiフォルダにあるic_launcher.pngを表示した]{
 //}
 
@@ -264,11 +276,6 @@ wrap_contentを設定した場合、ビューを占める領域は、そのビ�
 //image[imageview-res][resフォルダ内のdrawableフォルダ]{
 //}
 
-@<list>{imageview-normal}の4行目の「android:src」は、resフォルダの「drawable-xxxxx」フォルダ内に入っている画像リソースのファイル名を設定する属性です。
-
-画像の拡張子は、pngです。
-
-ic_launcher.png@<fn>{launchericon}は、resフォルダの「drawable-mdpi」「drawable-hdpi」「drawable-xhdpi」という3つのフォルダの中に1つずつ入っています（@<image>{imageview-res}）。内容は同じですが、それぞれの画面解像度に合ったサイズのものが入っています。
 
 //footnote[launchericon][プロジェクトにあらかじめ準備されている、ランチャーアイコンの画像。同じ名前、同じ大きさで上書きすれば、ランチャーアイコンを変更できる。]
 
@@ -276,13 +283,13 @@ ic_launcher.png@<fn>{launchericon}は、resフォルダの「drawable-mdpi」「
 //image[imageview-imagesize][各drawableフォルダにはそれぞれの画面密度にあった大きさの画像リソースが入っている]{
 //}
 
-「android:src」の指定では、「@drawable」をつけて、@<b>{drawableというフォルダ内を参照}します。しかしここでは「@drawable-xhdpi/ic_launcher」のように画面密度は書きません。
+「android:src」の指定では、「@drawable」をつけて、@<b>{drawableというフォルダ内を参照}します。しかしここでは「@drawable-xhdpi/ic_launcher」のように画面密度は書きません（@<list>{drawable}）。
 
-//list[][参照フォルダに画面密度は入れない]{
+//list[drawable][参照フォルダに画面密度は入れない]{
 android:src="@drawable/ic_launcher"
 //}
 
-なぜなら端末ごとに、どの画面密度なのかは一意に決まっていて、@<b>{Android側で自動で判別することができる}からです。
+なぜなら端末ごとに、どの画面密度なのかは一意に決まっていて、Androidアプリで利用する画面密度を@<b>{自動で判別する}からです。
 例えば、Galaxy S3 の端末はxhdpiに属します。このときに画像を参照するフォルダは「drawable-xhdpi」ですが、コードで書くのは「@drawable/ic_launcher」でよいのです。
 
 逆に、画面密度を指定してしまうと、他の画面密度の違ういろいろな端末から見たときに、表示がおかしくなってしまう恐れがあるので注意しましょう。
@@ -300,9 +307,9 @@ Android全体のルールは、ガイドラインのIconographyの項@<fn>{icono
 
 === テキストフィールド
 
-入力エリアを表示するときには、次のようなXMLを書きます。
+入力エリアを表示するときには、次のようなXMLを書きます（@<list>{textfield-normal}）。
 
-//listnum[textfield-normal][]{
+//listnum[textfield-normal][EditTextコンポーネント]{
 <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
@@ -311,7 +318,7 @@ Android全体のルールは、ガイドラインのIconographyの項@<fn>{icono
 これだけで、最低限の入力エリアを作成することができます。
 
 
-//image[textfield-normal][no title]{
+//image[textfield-normal][テキストフィールドを表示する]{
 //}
 
 @<img>{textfield-normal}では、「android:layout_width="match_parent"」となっているので、入力エリアが横幅いっぱいに配置されます。
@@ -319,9 +326,9 @@ Android全体のルールは、ガイドラインのIconographyの項@<fn>{icono
 
 
 文字数によって横幅を指定したいときは、@<list>{textfield-normal-ems}のようにandroid:layout_widthをmatch_parentにして、「android:ems」を追加します。
-「android:ems」には、文字にして何文字分か？という数値を設定します。
+「android:ems」には、文字にして何文字分か？という数値を設定します（@<img>{textfield-normal-ems}）。
 
-//listnum[textfield-normal-ems][]{
+//listnum[textfield-normal-ems][文字数による横幅指定]{
 <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -329,7 +336,7 @@ Android全体のルールは、ガイドラインのIconographyの項@<fn>{icono
 //}
 
 
-//image[textfield-normal-ems][]{
+//image[textfield-normal-ems][文字数による横幅指定]{
 //}
 
 この場合は10文字分の横幅になります。
@@ -342,7 +349,7 @@ Android全体のルールは、ガイドラインのIconographyの項@<fn>{icono
 
 複数行入力させるような内容の部分ではこれでもよいのですが、通常の入力フォームでは、名前やメールアドレス、パスワードなどを入力することが多いので、これではあまり使い勝手がよくありません。
 
-こういったときには入力制限を設定することが必要で、改行をできないようにする場合は、「android:inputType="text"」を追加します。
+こういったときには入力制限を設定することが必要で、改行をできないようにする場合は、「android:inputType="text"」を追加します（@<list>{textfield-normal-ems-nobr}、@<img>{textfield-normal-ems-nobr}）。
 
 //listnum[textfield-normal-ems-nobr][]{
 <EditText
@@ -357,7 +364,7 @@ Android全体のルールは、ガイドラインのIconographyの項@<fn>{icono
 //}
 
 「android:inputType」という属性は、その他にもいろいろな入力制限を設定することができます。
-たとえば、「android:inputType="textPassword"」を追加すると、前章にも出てきたパスワード入力用のテキストフィールドになります。
+たとえば、「android:inputType="textPassword"」を追加すると、前章にも出てきたパスワード入力用のテキストフィールドになります（@<list>{textfield-normal-ems-pass}、@<list>{textfield-normal-ems-pass}）。
 
 //listnum[textfield-normal-ems-pass][]{
 <EditText
@@ -373,7 +380,7 @@ Android全体のルールは、ガイドラインのIconographyの項@<fn>{icono
 
 「android:inputType」については、場合に応じて必要な入力制限を設定するようにしましょう。
 @<table>{inputtype}に、よく使われるものを挙げておきます。
-すべての値は、ガイドラインのTextView > android:inputType @<fn>{inputtype} の項を参照してください。
+すべての値は、ガイドラインのTextView > android:inputType@<fn>{inputtype}の項を参照してください。
 
 //footnote[inputtype][https://developer.android.com/reference/android/widget/TextView.html#attr_android:inputType]
 
@@ -414,7 +421,7 @@ phone   電話番号を入力する
 
 //footnote[placeholder][HTMLでもテキストフィールドに説明テキストを入れることができます。HTMLの場合は、placeholderという属性になります。<input type=”text” placeholder=”Eメールアドレスを入力”>]
 
-//list[][]{
+//list[android_hint][android:hintを利用する]{
 <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -423,10 +430,10 @@ phone   電話番号を入力する
 //}
 
 
-//image[textfield-hint][]{
+//image[textfield-hint][android:hintを利用する]{
 //}
 
-このように、入力エリア内に説明のテキストラベルを入れてもいいのですが、ユーザーの操作性からすると、少し問題もあります。
+@<list>{android_hint}や@<img>{textfield_hint}のように、入力エリア内に説明のテキストラベルを入れてもいいのですが、ユーザーの操作性からすると、少し問題もあります。
 入力前の状態（@<img>{textfield-form-before}と@<img>{textfield-dropbox-login}）を比べてもあまり差がわからないかもしれませんので、入力後の状態を見てみましょう。
 
 
