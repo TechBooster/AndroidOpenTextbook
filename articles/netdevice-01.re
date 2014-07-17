@@ -76,7 +76,7 @@ BluetoothAdapter btAdapter = BluetoothAdapter.getDefaultAdapter();
 Bluetoothの有効/無効状態の取得にはBluetoothAdapterクラスのisEnabledメソッドを使用します。Bluetoothを有効にするにはインテントに「ACTION_REQUEST_ENABLE」を指定してstartAcitivityForResultメソッドを実行します。アプリケーションの実行時、システムはユーザに自動でBluetooth許可リクエストダイアログを表示し、ユーザがダイアログのボタンを押下するとonActivityResultメソッドがコールバックされます。
 Bluetoothが有効になった場合は、このメソッドの引数resultCodeにActivity.RESULT_OKが返ってきます。
 
-//image[netdevice-01-01][Bluetooth許可リクエストダイアログ（有効設定）]{
+//image[01][Bluetooth許可リクエストダイアログ（有効設定）]{
 //}
 
 
@@ -127,7 +127,7 @@ Bluetoothが有効になった場合は、このメソッドの引数resultCode�
 Bluetoothで接続しデータの送受信を行うためには、接続する２台の機器があらかじめ接続設定が完了している状態でなければいけません。この接続設定のことを「ペアリング」と呼びます。
 Androidではペアリングしていない別のBluetooth機器と初めて接続する際、自動的に双方の機器にペアリング要求ダイアログが表示されます。
 
-//image[netdevice-01-02][Bluetoothペアリング要求ダイアログ]{
+//image[02][Bluetoothペアリング要求ダイアログ]{
 //}
 
 ダイアログで接続先で表示しているPINコードを入力することでペアリングが完了します。この処理はすべてAndroidのシステムで行われるので、アプリケーション開発時に実装する必要はありません。
@@ -182,7 +182,7 @@ BluetoothSocketクラスのconnectメソッドで接続処理が実行されま�
 
 別のBluetooth機器からのデバイス検索に対して自端末を発見可能な状態にするには、「ACTION_REQUEST_DISCOVERABLE」を指定したインテントをstartAcitivityForResultメソッドで発行します。するとBluetooth許可リクエストダイアログを表示されるのでユーザが許可することにより一定時間応答できる状態になります。
 
-//image[netdevice-01-03][Bluetooth許可リクエストダイアログ(発見可能)]{
+//image[03][Bluetooth許可リクエストダイアログ(発見可能)]{
 //}
 
 発見可能な状態でいる時間をインテントに設定することもできます。その場合、インテントの付加情報としてEXTRA_DISCOVERABLE_DURATIONに時間（秒）を設定します。

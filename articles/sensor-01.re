@@ -13,7 +13,7 @@
 蛍光灯などが切ってあっても、人が通ると自動的に点くようになっているのは、人感センサーを
 使っています。このようにセンサーは意外と身近な所で使用されています。最近のセンサーは
 MEMS@<fn>{mems}で構成され、超小型化されているのが特徴です。
-//image[sensor-01-mems][半導体プロセスを用いて作成されたギア（左下）とダニ（右上）の電子顕微鏡写真(Wikipediaより)]{
+//image[mems][半導体プロセスを用いて作成されたギア（左下）とダニ（右上）の電子顕微鏡写真(Wikipediaより)]{
 //}
 
 Androidには複数のハードウェアセンサーが搭載されていますが、さらにそれらをまとめた
@@ -35,7 +35,7 @@ Androidでは多くのセンサー情報が取得できますが、実際のハ�
 //footnote[sensor_ref][@<href>{http://developer.android.com/reference/android/hardware/Sensor.html}]
 
 リファレンスによると、現在のAPI Level 20で使用可能なセンサーの一覧は以下のようになります。
-//image[sensor-01-list][センサー一覧]{
+//image[list][センサー一覧]{
 //}
 
 == センサー情報の取得
@@ -118,7 +118,7 @@ public class SensorActivity extends Activity implements SensorEventListener {
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         mSensor[0] = (TextView) findViewById(R.id.sensor_0_text);
         mSensor[1] = (TextView) findViewById(R.id.sensor_1_text);
-        mSensor[2] = (TextView) findViewById(R.id.sensor_2_text);    
+        mSensor[2] = (TextView) findViewById(R.id.sensor_2_text);
     }
 
     @Override
@@ -136,7 +136,7 @@ public class SensorActivity extends Activity implements SensorEventListener {
         super.onPause();
         // センサーを無効にする
         if (mSensorManager != null) {
-            mSensorManager.unregisterListener(this);          
+            mSensorManager.unregisterListener(this);
         }
     }
 
@@ -156,7 +156,7 @@ public class SensorActivity extends Activity implements SensorEventListener {
 
 @<list>{register}の"SensorManager.SENSOR_DELAY_NORMAL"はセンサーの取得の遅延設定値です。
 この設定値は使用する目的によって設定します。
-//image[sensor-01-delay][センサーの遅延設定]{
+//image[delay][センサーの遅延設定]{
 //}
 
 === センサー値の取得
@@ -210,7 +210,7 @@ y軸の加速度が重力加速度の約9.8に近い値になっています。�
 す。これは遅延設定の値によって変化の速さが変わります。端末を振ったりすれば当然値も変化するので、
 遅延設定を変えてみたりして、数値の変化の度合いを確認してみてください。
 
-//image[sensor-01-accel][加速度センサーの取得]{
+//image[accel][加速度センサーの取得]{
 //}
 
 === 複数センサーを取得
@@ -336,7 +336,7 @@ public void onSensorChanged(SensorEvent event) {
         //  radianToDegree(mOrientation[0])  Z軸方向, Azimuth
         //  radianToDegree(mOrientation[1])  X軸方向, Pitch
         //  radianToDegree(mOrientation[2])  Y軸方向, Roll
-        
+
         mSensor[0].setText(String.valueOf(radianToDegree(mOrientation[0])));
         mSensor[1].setText(String.valueOf(radianToDegree(mOrientation[1])));
         mSensor[2].setText(String.valueOf(radianToDegree(mOrientation[2])));
@@ -353,7 +353,7 @@ public void onSensorChanged(SensorEvent event) {
 言葉で説明するのはわかりづらいので、ぜひ動かしてみてください。センサーの大半は動かして
 学習することで理解できます。
 
-//image[sensor-01-orientation][傾きセンサー]{
+//image[orientation][傾きセンサー]{
 //}
 
 
@@ -364,7 +364,7 @@ API-Level 20で規定されているセンサーをざっとですが整理し�
 ==== @<b>{加速度センサー (Acceleration sensor)}
 
 x軸、y軸、z軸のそれぞれの加速度を表します。単位は(m/s^2)
-//image[sensor-01-axis_device][加速度センサーの軸]{
+//image[axis_device][加速度センサーの軸]{
 //}
 
 ==== @<b>{周囲温度センサー (Temperature Sensor)}
@@ -383,7 +383,7 @@ x軸、y軸、z軸方向の磁気の強さをキャリブレーション無し�
 
 x軸、y軸、z軸の回転の速度、角速度を表します。単位は(rad/s)
 例えば時計の秒針の角速度は、60秒で一回転(360度)なので、6度/秒です。rad = 度 × π/180となります。
-//image[sensor-01-gyro][角速度]{
+//image[gyro][角速度]{
 //}
 
 ==== @<b>{心拍センサー (Heart Rate)}
@@ -457,7 +457,7 @@ x軸、y軸、z軸のそれぞれの加速度を重力加速度を差し引い�
 端末に搭載されているセンサーをすべて列挙して取得し、センサーのハードウェア情報を取得してみます。
 センサーから取得できるハードウェア情報は以下になります。
 
-//image[sensor-01-hard][センサーのハードウェア情報]{
+//image[hard][センサーのハードウェア情報]{
 //}
 
 全センサーの取得には"Sensor.TYPE_ALL"を指定すると、センサーのリストとして取得できます。
@@ -485,10 +485,10 @@ x軸、y軸、z軸のそれぞれの加速度を重力加速度を差し引い�
 以下のスクリーンショットは見やすくするため、アプリ画面で表示させています。
 これはNexus5でのセンサーのハードウェアの例です。またNexus5では18種類もの
 センサーが搭載されていることもセンサーリストの数を取得するとわかります。
-//image[sensor-01-accelerometer][加速度センサー]{
+//image[accelerometer][加速度センサー]{
 //}
 
-//image[sensor-01-proximity][近接センサー]{
+//image[proximity][近接センサー]{
 //}
 
 == センサー利用上の注意
@@ -529,12 +529,12 @@ x軸、y軸、z軸のそれぞれの加速度を重力加速度を差し引い�
 センサーのハードウェアが違えば、精度や上限・下限も異なる場合があります。センサー
 の値の範囲を気にする必要がある場合もあります。例えば先程のNexus5と中華系の端末
 を近接センサーで比較してみると、以下のようになっていたりします。
-@<img>{sensor-01-proximity}と比較すると、MaxRangeが異なります。このように
+@<img>{proximity}と比較すると、MaxRangeが異なります。このように
 端末によって細かい部分が異なる場合があるので、複数の端末で正常に動作するかどうか
 きちんと確認する必要があります。（中華系端末にはMaxFifo,ReservedFifoはAPIレベル
 により存在しない）
 
-//image[sensor-01-panda][ある中華端末の場合]{
+//image[panda][ある中華端末の場合]{
 //}
 
 このような場合は、機種ごとに対応したり、値を正規化して相対値として
@@ -557,7 +557,7 @@ x軸、y軸、z軸のそれぞれの加速度を重力加速度を差し引い�
 するものとになります（もちろんハードウェアとして実装されていても構わないはずです）。
 これを相関図として整理すると以下のようになります@<fn>{sensor_category}。
 
-//image[sensor-01-category][センサーのカテゴリ分け]{
+//image[category][センサーのカテゴリ分け]{
 //}
 
 こうして整理してみることで、それぞれのセンサー値がどのように合成されているかわかります。
@@ -568,7 +568,7 @@ x軸、y軸、z軸のそれぞれの加速度を重力加速度を差し引い�
 
 これを表にまとめると以下のようになります。
 
-//image[sensor-01-spec][センサーのまとめ]{
+//image[spec][センサーのまとめ]{
 //}
 
 トリガーモードとは、センサーの変化をコールバック関数でどのように伝えるかを示します。
@@ -627,14 +627,14 @@ boolean status = mSensorManager.registerListener(this, mStepDetector, SensorMana
 未知数として、位置(x, y, z)と時刻tの4つを得るためには4つ以上の衛星の情報が必要と
 いうことになります。
 
-//image[sensor-01-gps][GPS衛星による位置測位のイメージ]{
+//image[gps][GPS衛星による位置測位のイメージ]{
 //}
 
 地球表面は２次元としても構わないように思えますが、３次元としての高度が必要な理由は
 高い山などに登ると、登った距離と実際の水平方向の距離にズレが生じてしまうので、カーナビ
 などではこれを考慮するために３次元測位を行っています。
 
-//image[sensor-01-3axis][高度が必要な理由]{
+//image[3axis][高度が必要な理由]{
 //}
 
 GPSは受信精度が高ければ、正確な位置を10m程度の誤差で測位できますが、いくつかの弱点もあり
@@ -663,26 +663,26 @@ GPSを利用して位置情報を取得しますが、これは通常のセン�
 === Google Play Services Libraryの導入
 
 @<b>{Android SDK Manager}から@<b>{Google Play Services}を選択して、インストールします。
-//image[sensor-01-play_service-01][Google Play Servicesのインストール 1]{
+//image[play_service-01][Google Play Servicesのインストール 1]{
 //}
 
 @<b>{Existing Android Code into Worksapce}を選択します。
-//image[sensor-01-play_service-02][Google Play Servicesのインストール 2]{
+//image[play_service-02][Google Play Servicesのインストール 2]{
 //}
 
 @<b>{Browse}から@<b>{google-play-services_lib}を選択し、@<b>{Copy projects into workspaceにチェック}
 を入れて@<b>{Finish}ボタンを押します。google-play-servicesはAndroid SDKを
 インストールした@<b>{$(ANDORID_SDK)/extras/google/google_play_services}にあります。
-//image[sensor-01-play_service-03][Google Play Servicesのインストール 3]{
+//image[play_service-03][Google Play Servicesのインストール 3]{
 //}
 
 ビルドしてエラーが無いことを確認しておきましょう。
-//image[sensor-01-play_service-04][Google Play Servicesのインストール 4]{
+//image[play_service-04][Google Play Servicesのインストール 4]{
 //}
 
 アプリを作成時のひな形作成した後、Google Play ServicesライブラリをAndroid
 ライブラリとして組み込むすることで使用が可能となります。
-//image[sensor-01-play_service-05][Google Play Servicesのインストール 5]{
+//image[play_service-05][Google Play Servicesのインストール 5]{
 //}
 
 これでGoogle Play Servicesライブラリの導入は完了です。
@@ -711,7 +711,7 @@ LocationClientの取得は以下のようになります。
 protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
-    
+
     // Google Play Serviceが有効かどうかチェックを行う
     final int result = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
     if (result != ConnectionResult.SUCCESS) {
@@ -720,10 +720,10 @@ protected void onCreate(Bundle savedInstanceState) {
     }
 
     // LocationClientの取得
-    mLocationClient = new LocationClient(this, this, this);        
-} 
+    mLocationClient = new LocationClient(this, this, this);
+}
 //}
- 
+
 LocationClientを使用する場合には、2つのコールバックを引数に取るので、リスナーをActivityに設定しておきます。
 //list[gps_listener][リスナーの設定]{
 public class MainActivity extends Activity implements ConnectionCallbacks, OnConnectionFailedListener
@@ -769,12 +769,12 @@ public class MainActivity extends Activity implements ConnectionCallbacks, OnCon
     private LocationClient mLocationClient;
     private Location mLoc;
 
-    
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        
+
         // Google Play ServiceKが実装されているか確認
         final int result = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
         if (result != ConnectionResult.SUCCESS) {
@@ -782,7 +782,7 @@ public class MainActivity extends Activity implements ConnectionCallbacks, OnCon
             finish();
         }
 
-        mLocationClient = new LocationClient(this, this, this);        
+        mLocationClient = new LocationClient(this, this, this);
     }
 
     @Override
@@ -841,7 +841,7 @@ AndroidManifest.xmlにGPSのパーミッションを追加します。
 //}
 
 位置情報を取得した例として、アプリで表示させると以下のようになります。
-//image[sensor-01-location][位置情報取得]{
+//image[location][位置情報取得]{
 //}
 
 さて、これだけだといわゆる緯度経度の数値しか見えないので、イマイチ取得した
@@ -860,7 +860,7 @@ mMapBtn.setOnClickListener(new View.OnClickListener() {
 })
 //}
 
-//image[sensor-01-map][IntentでMap表示]{
+//image[map][IntentでMap表示]{
 //}
 
 === 位置情報の更新
@@ -891,7 +891,7 @@ public void onConnected(Bundle connectionHint) {
 プライオリティの設定は、端末の電池消費に影響します。例としてGalaxyNexusの場合
 は以下のようになるという実験結果があります@<fn>{gps_priority}。
 
-//image[sensor-01-priority][プライオリティと電池消費量]{
+//image[priority][プライオリティと電池消費量]{
 //}
 
  * PRIORITY_HIGH_ACCURACY : 屋外ではGPS、屋内ではWiFiやセル（基地局）を使用する。電池消費量が多くマップアプリ向け
@@ -957,7 +957,7 @@ protected void onPause() {
 時間や位置の変化で更新を伴ない場合は"LocationRequest#requestLocationUpdates"を
 使用するというのが定石となります。
 
-//image[sensor-01-update][位置情報データ]{
+//image[update][位置情報データ]{
 //}
 
 ナビゲーションアプリを作る場合はこの位置情報を元にMapビューなどと組み合わせて
