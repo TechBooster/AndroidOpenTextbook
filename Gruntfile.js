@@ -3,7 +3,7 @@ module.exports = function (grunt) {
 		exec: {
 			clean: {
 				cmd: function () {
-					return "git clean -x -f";
+					return "git clean -x -f && rm -rf articles/book-pdf";
 				}
 			},
 			preprocess: {
