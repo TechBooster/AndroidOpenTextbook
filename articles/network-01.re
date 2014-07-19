@@ -61,12 +61,12 @@ ipconfig
 DNSサーバはこの"tomorrowkey.jp" という値から"49.212.164.150" というIPアドレスを返します。
 これでIPアドレスが分かったので、ブラウザはサーバと通信を始めるのです。
 
-また、この名前解決はターミナル/コマンドプロンプトで実行することもできます。
+また、この名前解決はターミナル/コマンドプロンプトで実行することもできます（@<list>{nslookup}）。
 //list[nslookup][名前解決のコマンド]{
 nslookup "ホスト名"
 //}
 
-次のようにサーバのIPアドレスを取得することができると思います。
+次のようにサーバのIPアドレスを取得できます（@<list>{result-of-nslookup}）。
 
 //list[result-of-nslookup][nslookupの実行結果]{
 $ nslookup tomorrowkey.jp
@@ -100,7 +100,7 @@ Webサーバーからページを取得するときに使われるプロトコ�
 ホストに対して特定のページがほしいとリクエストを送ると、そのページがレスポンスとして返されます。
 
 ブラウザで"http://tomorrowkey.jp/" にアクセスした場合を例にとって、具体的な値を説明します。
-ブラウザはサーバに対して次のようなリクエストを送っています。
+ブラウザはサーバに対して次のようなリクエストを送っています（@<list>{http-request}）。
 
 //list[http-request][HTTPリクエスト]{
 GET / HTTP/1.0
@@ -120,7 +120,10 @@ Host: tomorrowkey.jp
 User-Agentは、ブラウザの種類を表します。
 Hostは、アクセスするホストの名前を指定します。
 
-このリクエストはコマンドプロンプト/ターミナルから実行することができます。//footnote[][Windowsの場合はtelnetがデフォルトで無効になっていますので、コントロールパネルから有効にしてください。詳しくは「Windows telnet」で検索してみてください。]
+このリクエストはコマンドプロンプト/ターミナルから実行することができます（@<list>{request-http-via-telnet}）。
+
+//footnote[][Windowsの場合はtelnetがデフォルトで無効になっていますので、コントロールパネルから有効にしてください。詳しくは「Windows telnet」で検索してみてください。]
+
 //list[request-http-via-telnet][telnetを使ったHTTP通信のリクエスト]{
 telnet tomorrowkey.jp 80
 GET / HTTP/1.0
@@ -130,7 +133,7 @@ Host: tomorrowkey.jp
 //}
 
 最後に改行を2回することを忘れないようにしてください。
-実行してみると次のようなレスポンスが返ってきます。
+実行してみると次のようなレスポンスが返ってきます（@<list>{response-ofhttp-via-telnet}）。
 
 //list[response-ofhttp-via-telnet][telnetを使ったHTTP通信のレスポンス]{
 HTTP/1.1 200 OK
@@ -158,7 +161,7 @@ Content-Type: text/html
 
 == Androidアプリでネットワークを使うために必要なパーミッション
 
-インターネットに接続するにはandroid.permission.INTERNET というパーミッションが必要なので、AndroidManifestに宣言します。
+インターネットに接続するにはandroid.permission.INTERNET というパーミッションが必要なので、AndroidManifestに宣言します（@<list>{internet-permission}）。
 
 //list[internet-permission][インターネットパーミッション]{
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
@@ -209,7 +212,7 @@ Androidを搭載した端末の多くは携帯電話です。様々な場所に�
 Androidで一番低レベルなネットワーク通信方法はSocketを使ったやり方です。
 OSI参照モデルではトランスポート層以下が提供されます。
 HTTPサーバーにアクセスするにはすこし貧弱ですが、HTTP以外のサーバにアクセスすることができるため便利です。
-例えばhttp://tomorrowkey.github.io にアクセスしようとした場合、次のようなプログラムになります。
+例えばhttp://tomorrowkey.github.io にアクセスしようとした場合、次のようなプログラムになります（@<list>{basic_implemention_of_socket}）。
 
 //list[basic_implemention_of_socket][Socketの実装方法]{
 try {
@@ -242,18 +245,18 @@ try {
 //}
 
 === リクエスト
-まずはSocketインスタンスを生成します。
+まずはSocketインスタンスを生成します（@<list>{ake-instance-of-socket}）。
 //list[make-instance-of-socket][Socketインスタンスの生成]{
 Socket socket = new Socket();
 //}
 
 Socketインスタンスができたら、ホスト名とポート番号の接続先を指定します。
-今回はHTTPなので、ポート番号は80番になります。
+今回はHTTPなので、ポート番号は80番になります（@<list>{set-host-and-port-number}）。
 //list[set-host-and-port-number][ホスト名とポート番号の指定]{
 socket.connect(new InetSocketAddress("tomorrowkey.github.io", 80));
 //}
 
-Socketでリクエストする場合、OutputStreamに直接HTTPリクエストを書きます。
+Socketでリクエストする場合、OutputStreamに直接HTTPリクエストを書きます（@<list>{request-with-socket}）。
 //list[request-with-socket][リクエストの送信]{
 OutputStream outputStream = socket.getOutputStream();
 outputStream.write(request.getBytes());
@@ -266,7 +269,7 @@ Socketで通信を行う場合、プロトコルに従った通信内容を自�
 今回はHTTP通信なので、HTTPのプロトコルに従ったリクエストを自分で組み立てます。
 
 Webサーバからページを取得する命令はGETです。
-一番単純なGETリクエストは次のようになります。
+一番単純なGETリクエストは次のようになります（@<list>{get-request}）。
 
 //list[get-request][GETリクエスト]{
 GET / HTTP/1.1
@@ -293,7 +296,7 @@ tomorrowkey.github.io	Hostキーはリクエスト先のホスト名を指定し
 
 === レスポンス
 
-socketからInputStreamを取得してHTTPレスポンスを取得します。
+socketからInputStreamを取得してHTTPレスポンスを取得します（@<list>{get-response-body-with-socket}）。
 
 //list[get-response-body-with-socket][レスポンスの取得]{
 InputStream inputStream = socket.getInputStream();
@@ -307,7 +310,7 @@ while ((length = inputStream.read(buffer)) != -1) {
 レスポンスの取得まで完了したらInputStreamとOutputStreamのcloseメソッドを呼んでStreamを閉じましょう。
 
 === 実行結果
-実行するとlogcatにレスポンスが出力されます。
+実行するとlogcatにレスポンスが出力されます（@<list>{response-of-socket-request}）。
 //list[response-of-socket-request][Socketを使ったリクエストのレスポンス]{
 D/TEST    ( 1371): HTTP/1.1 200 OK
 D/TEST    ( 1371): Server: GitHub.com
@@ -347,7 +350,7 @@ Socketで通信する場合はこの文字列をJavaのオブジェクトに変�
 == HttpURLConnection
 
 Socketではリクエストを自分で組み立てなければなりませんでしたが、HTTP/HTTPSにアクセスする場合もっと便利なクラスがあります。それがHttpURLConnectionです。
-それでは先ほどと同様http://tomorrowkey.github.ioにアクセスしてみましょう。
+それでは先ほどと同様http://tomorrowkey.github.ioにアクセスしてみましょう（@<list>{basic-implemention-of-http-url-connection}）。
 
 //list[basic-implemention-of-http-url-connection][HttpURLConnectionの実装方法]{
 try {
@@ -377,12 +380,12 @@ try {
 
 === リクエスト
 
-アクセスするURLを使いURLオブジェクトを作ります。
+アクセスするURLを使いURLオブジェクトを作ります（@<list>{make-a-instance-of-url}）。
 //list[make-a-instance-of-url][URLオブジェクトの生成]{
 URL url = new URL("http://tomorrowkey.github.io");
 //}
 
-openConnection()メソッドを使い、HttpURLConnectionを取得します。
+openConnection()メソッドを使い、HttpURLConnectionを取得します（@<list>{get-http-url-connection}）。
 //list[get-http-url-connection][HTTPUrlConnectionの取得]{
 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 //}
@@ -390,26 +393,27 @@ HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 
 リクエストはファイルの取得なので、setRequestMethod()メソッドで"GET"を渡します。
 また、setRequestProperty()メソッドを使うことでリクエストヘッダーを設定することができます。
-Hostは設定しなくても自動的に追加させるのですが、あえて追加しました。
+Hostは設定しなくても自動的に追加させるのですが、あえて追加しました（@<list>{set-request-method}）。
 //list[set-request-method][リクエストの設定]{
 connection.setRequestMethod("GET");
 connection.setRequestProperty("Host", "tomorrowkey.github.io");
 //}
 
-connectメソッドでサーバと接続します。
+connectメソッドでサーバと接続します（@<list>{connect-to-the-server}）。
 //list[connect-to-the-server][サーバとの接続]{
 connection.connect();
 //}
 
 === レスポンス
 
-ステータスコードを取得する場合、getResponseCode()メソッドを呼びます
+ステータスコードを取得する場合、getResponseCode()メソッドを呼びます（@<list>{get-status-code-from-http-url-connection}）。
+
 //list[get-status-code-from-http-url-connection][ステータスコードの取得]{
 int responseCode = connection.getResponseCode();
 Log.d("TEST", "responseCode=" + responseCode);
 //}
 
-レスポンスヘッダを取得する場合、getHeaderField()メソッドを呼びます
+レスポンスヘッダを取得する場合、getHeaderField()メソッドを呼びます（@<list>{get-headers-from-http-url-connection}）。
 
 //list[get-headers-from-http-url-connection][レスポンスヘッダの取得]{
 String contentLength = connection.getHeaderField("Content-Length");
@@ -418,7 +422,7 @@ String contentType = connection.getHeaderField("Content-Type");
 Log.d("TEST", "contentType=" + contentType);
 //}
 
-レスポンスボディを取得する場合、getInputStream()メソッドを呼びます
+レスポンスボディを取得する場合、getInputStream()メソッドを呼びます（@<list>{get-body-from-http-url-connection}）。
 //list[get-body-from-http-url-connection][レスポンスボディの取得]{
 InputStream inputStream = connection.getInputStream();
 String body = readToEnd(inputStream);
@@ -427,6 +431,8 @@ Log.d("TEST", "body=" + body);
 InputStreamから文字列に変換する処理はSocketと同じなので、メソッド化しました。
 
 === 実行結果
+
+実行結果は次の通りです（@<list>{response-of-http-url-connection-request}）。
 
 //list[response-of-http-url-connection-request][HttpURLConnectionを使ったリクエストのレスポンス]{
 D/TEST    ( 1231): responseCode=200
@@ -452,7 +458,7 @@ GET / POST
 InputStream / OutputStream
 
 AndroidではApacheのHttpClientが標準で入っているので、HttpClientも使うことができます。
-こちらも先ほどと同様のアクセスをしてみましょう。
+こちらも先ほどと同様のアクセスをしてみましょう（@<list>{basic-implementation-of-http-client}）。
 
 //list[basic-implementation-of-http-client][HttpClientの実装方法]{
 try {
@@ -477,24 +483,25 @@ try {
 //}
 
 === リクエスト
-GETリクエストなので、HttpGetオブジェクトを作ります。引数にはアクセスするURLを指定します。
+GETリクエストなので、HttpGetオブジェクトを作ります。引数にはアクセスするURLを指定します（@<list>{make-a-instance-of-http-get}）。
+
 //list[make-a-instance-of-http-get][HttpGetオブジェクトの生成]{
 HttpGet httpGet = new HttpGet("http://tomorrowkey.github.io");
 //}
 
-ヘッダの指定はaddHeaderメソッドを使います。
+ヘッダの指定はaddHeaderメソッドを使います（@<list>{add-header-to-http-get}）。
 //list[add-header-to-http-get][ヘッダーの追加]{
 httpGet.addHeader("Host", "tomorrowkey.github.io");
 //}
 
 実際に通信を行うのはHttpClientというオブジェクトなので、HttpClientを生成します。
-今回はDefaultHttpClientを使ってHttpClientを生成していますが、AndroidHttpClientを使うこともできます。
+今回はDefaultHttpClientを使ってHttpClientを生成していますが、AndroidHttpClientを使うこともできます（@<list>{make-a-instance-of-http-client}）。
 
 //list[make-a-instance-of-http-client][HttpClientの生成]{
 HttpClient httpClient = new DefaultHttpClient();
 //}
 
-生成したhttpClientのexecute()メソッドにリクエストオブジェクト(httpGet)を渡すことで通信をします。
+生成したhttpClientのexecute()メソッドにリクエストオブジェクト(httpGet)を渡すことで通信をします（@<list>{communicate-with-http-client}）。
 //list[communicate-with-http-client][HttpClientを使った通信]{
 HttpResponse httpResponse = httpClient.execute(httpGet);
 //}
@@ -503,18 +510,20 @@ HttpResponse httpResponse = httpClient.execute(httpGet);
 === レスポンス
 
 
-ステータスコードを取得するには、まずはgetStatusLine()メソッドでステータスラインを取得した後に、getStatusCode()メソッドを呼びます。
+ステータスコードを取得するには、まずはgetStatusLine()メソッドでステータスラインを取得した後に、getStatusCode()メソッドを呼びます（@<list>{get-status-code}）。
+
 //list[get-status-code][ステータスコードの取得]{
 StatusLine statusLine = httpResponse.getStatusLine();
 Log.d("TEST", "Status-Code=" + statusLine.getStatusCode());
 //}
-ステータスラインとはHTTPレスポンスの次の部分を指します。
+
+ステータスラインとはHTTPレスポンスの次の部分を指します（@<list>{status-line}）。
 //list[status-line][ステータスライン]{
 HTTP/1.1 200 OK
 //}
 
 レスポンスヘッダを取得するには、getFirstHeader()メソッドでHeaderオブジェクトを取得します。
-Headerオブジェクトの値を取得するにはgetValue()メソッドを呼びます。
+Headerオブジェクトの値を取得するにはgetValue()メソッドを呼びます（@<list>{get-header}）。
 //list[get-header][ヘッダーの取得]{
 Header contentLengthHeader = httpResponse.getFirstHeader("Content-Length");
 Log.d("TEST", "Content-Length=" + contentLengthHeader.getValue());
@@ -522,7 +531,7 @@ Header contentTypeHeader = httpResponse.getFirstHeader("Content-Type");
 Log.d("TEST", "Content-Type=" + contentTypeHeader.getValue());
 //}
 
-レスポンスボディを取得する場合、getInputStream()メソッドを呼びます
+レスポンスボディを取得する場合、getInputStream()メソッドを呼びます（@<list>{get-response-body}）。
 
 //list[get-response-body][レスポンスボディの取得]{
 InputStream inputStream = httpResponse.getEntity().getContent();
@@ -534,6 +543,8 @@ inputStream.close();
 リクエストとレスポンスのオブジェクトが分かれているので分かりやすいですね。
 
 === 実行結果
+
+実行結果は次の通りです（@<list>{response-of-http-client-request}）。
 
 //list[response-of-http-client-request][HttpClientを使ったリクエストのレスポンス]{
 D/TEST    ( 1295): Status-Code=200
@@ -561,7 +572,7 @@ platform/frameworks/volley - Git at Google https://android.googlesource.com/plat
 
 Volleyは他のライブラリのようにjarファイルが公開されていたり、maven repositoryにホスティングされていません。
 AOSPにソース管理されているので、そこからjarファイルを作る必要があります。
-次のコマンドを実行することでjarファイルをビルドできます。
+次のコマンドを実行することでjarファイルをビルドできます（@<list>{compile-volley}）。
 
 //list[compile-volley][Volleyのビルド]{
 git clone https://android.googlesource.com/platform/frameworks/volley
@@ -571,7 +582,7 @@ ant jar
 
 生成されたjarファイルをlibsディレクトリに入れてソースコードから参照できるようにしましょう。
 
-実際には静的ファイルなのですが、JSONファイルを取得することでAPIアクセスする時のコードを実装しましょう。
+実際には静的ファイルなのですが、JSONファイルを取得することでAPIアクセスする時のコードを実装しましょう（@<list>{download-json-file-with-volley}）。
 //list[download-json-file-with-volley][APIアクセス]{
 mRequestQueue = Volley.newRequestQueue(getApplicationContext());
 
@@ -598,13 +609,13 @@ mRequestQueue.add(new JsonObjectRequest(method, url, requestBody, listener, erro
 === リクエスト
 まずはリクエストキューを作ります。
 この作成されたリクエストキューにリクエストを追加することで、自動的にバックグラウンドで随時リクエストを送ります。
-リトライ処理についてもある程度行ってくれます。
+リトライ処理についてもある程度行ってくれます（@<list>{make-a-instance-of-request-queue}）。
 //list[make-a-instance-of-request-queue][リクエストキューの生成]{
 mRequestQueue = Volley.newRequestQueue(getApplicationContext());
 //}
 
 リクエストキューを生成したので、リクエストを追加します。
-リクエストを追加する際には次のパラメータが必要です。
+リクエストを追加する際には次のパラメータが必要です（@<table>{the-second-line-of-get-request}）。
 
 //table[the-second-line-of-get-request][GETリクエスト2行目]{
 -----------------------
@@ -620,7 +631,8 @@ errorListener	エラーレスポンスリスナー、異常系のステータス
 
 === レスポンス
 サーバーのレスポンスが正常系(200~299)だった場合、第四引数のlistenerのコールバックメソッドが実行されます。
-レスポンスボディは自動的にJSONObjectにパースされ、引数に渡されます。
+レスポンスボディは自動的にJSONObjectにパースされ、引数に渡されます（@<list>{succeed_response-listener}、@<list>{succeed-response}）。
+
 //list[succeed_response-listener][正常系レスポンスリスナー]{
 @Override
 public void onResponse(JSONObject jsonObject) {
@@ -633,7 +645,8 @@ D/TEST    ( 1699): {"users":[{"id":1,"gender":"female","name":"alice"},{"id":2,"
 //}
 
 サーバのレスポンスが異常系(200~299以外)だった場合、第五引数のerrorListenerのコールバックメソッドが実行されます。
-エラーの内容は引数のVolleyErrorオブジェクトに入っています。
+エラーの内容は引数のVolleyErrorオブジェクトに入っています（@<list>{error-response-listener}、@<list>{error-response}）。
+
 //list[error-response-listener][エラー系レスポンスリスナー]{
 @Override
 public void onErrorResponse(VolleyError volleyError) {
@@ -686,19 +699,19 @@ Social IME ～みんなで育てる日本語入力～ http://www.social-ime.com/
 Input Method Editor(IME)は文字入力を補助するソフトウェアです。言葉で説明するとすごく分かりづらいですが、ざっくりとわかりやすく説明すると、キーボードを使って入力するときにひらがなを漢字に変換してくれるソフトウェアです。ソーシャルIMEでは変換するための仕組みをWebAPIとして提供しています。
 
 ソーシャルIMEは簡単に試すことができます。
-例えば次のURLにブラウザでアクセスしてみてください。
+例えば次のURLにブラウザでアクセスしてみてください（@<list>{url-of-social-ime}）。
 
 //list[url-of-social-ime][Social IMEの簡単なリクエスト]{
 http://www.social-ime.com/api/?string=けいたいでんわ
 //}
 
-次のように変換された結果がタブ区切りで表示されます。
+次のように変換された結果がタブ区切りで表示されます（@<list>{result-of-access-to-social-ime}）。
 
 //list[result-of-access-to-social-ime][Social IMEのレスポンス]{
 携帯電話  けいたいでんわ ケイタイデンワ 
 //}
 
-それではこれをAndroidで実装してみましょう。
+それではこれをAndroidで実装してみましょう（@<list>{access-to-social-ime-with-android}）。
 
 //list[access-to-social-ime-with-android][Social IME]{
 try {
