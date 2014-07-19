@@ -19,9 +19,9 @@ Webサーバーと連携して最新のデータを取得したり、他のプ�
 
 == IPアドレス
 
-インターネット上にはたくさんのホストが繋がっています。
-ネットワーク通信する際は、どのホストと通信するか指定する必要があります。
-実は各ホストは異なる番号を持っていて、それをIPアドレス@<fn>{about-IPv6}といいます。
+インターネットにはたくさんのホストが繋がっています。
+ネットワーク通信を行う際は、どのホストと通信するか指定する必要があります。
+各ホストは異なる番号を持っていて、それをIPアドレス@<fn>{about-IPv6}といいます。
 IPアドレスは次のように4つの数字をドットで区切った形式で表します（@<list>{ipaddress}）。
 
 //footnote[about-IPv6][ここで説明しているのはIPv4と呼ばれるものです。容量を大きくしたIPv6というものもあります。詳しくは"IPアドレス枯渇問題"というワードで検索してみてください]
@@ -36,12 +36,12 @@ IPアドレスは次のように4つの数字をドットで区切った形式�
 IPアドレスを調べるには次のコマンドを実行します。
 使用しているOSがMacやLinuxなどのUnix系の場合は次のコマンドをターミナルで実行します（@<list>{ifconfig}）。
 //list[ifconfig][IPアドレスを調べるコマンド(OSX, Linuxなど)]{
-ifconfig
+> ifconfig
 //}
 
 使用しているOSがWindowsの場合は次のコマンドをコマンドプロンプトで実行します（@<list>{ipconfig}）。
 //list[ipconfig][IPアドレスを調べるコマンド(Windows)]{
-ipconfig
+> ipconfig
 //}
 
 == 名前解決
@@ -51,9 +51,10 @@ ipconfig
 ネットワーク通信する際にはIPアドレスの指定が必要と説明しましたが、その時にはどのようにIPアドレスを指定したのでしょう。
 
 それを実現するのが名前解決と呼ばれる技術です。DNSとも呼ばれます。
-ネットワーク通信する際はIPアドレスを指定しなければなりませんが、実際その値は覚えにくく人間に分かりやすいものではありません。
+ネットワーク通信を行う際はIPアドレスを指定しなければなりませんが、実際その値は覚えにくく、人間に分かりやすいものではありません。
+
 名前解決とは人間に分かりやすい文字列の"ホスト名"から"IPアドレス"に変換する処理のことをいいます。
-また、その逆の変換も可能なので、名前解決では"ホスト名"とIPアドレスを相互に変換することができることになります。
+また、その逆の変換も可能なので、名前解決では"ホスト名"とIPアドレスを相互に変換することができます。
 
 さきほどブラウザでWebページにアクセスした時を例に具体的な説明をします。
 ブラウザでは"http://tomorrowkey.jp/" という値を入力しました。これの"tomorrowkey.jp"という部分がホスト名です。
@@ -66,8 +67,7 @@ DNSサーバはこの"tomorrowkey.jp" という値から"49.212.164.150" とい�
 nslookup "ホスト名"
 //}
 
-次のようにサーバのIPアドレスを取得できます（@<list>{result-of-nslookup}）。
-
+実行すると次のようにサーバのIPアドレスを取得できます（@<list>{result-of-nslookup}）。
 //list[result-of-nslookup][nslookupの実行結果]{
 $ nslookup tomorrowkey.jp
 Server:   220.159.212.200
@@ -87,19 +87,20 @@ Address: 49.212.164.150
 大抵のネットワーク通信では、クライアントからサーバーにリクエストを送り、サーバからレスポンスを取得することをセットで考えます。
 
 == プロトコル
-名前解決を使ってIPアドレスを取得することができ、サーバを特定することができました。
-2つのホストが結ばれたとき、どのような内容のデータをやりとりするのでしょうか
-どのようなデータをどのような順番で送るかという"方法"を予め決めておかなければ
-サーバからクライアントに送られてきたデータにどういう意味があるのかクライアントは知ることができません。
+名前解決を使ってIPアドレスを取得でき、サーバを特定しました。
+2つのホストが結ばれたとき、どのような内容のデータをやりとりするのでしょうか。
+
+データをどのような順番で送るかという"方法"をあらかじめ決めておかなければ、
+サーバからクライアントに送られてきたデータにどういう意味があるのか、クライアントは知ることができません。
 その"方法"の総称をプロトコルといいます。
 
 さきほど説明したDNSもプロトコルの一種です。
-DNSは"名前をDNSサーバに渡すことでIPアドレスを返す"という仕組みが予め決められています。
+DNSは"名前をDNSサーバに渡すことでIPアドレスを返す"という仕組みがあらかじめ決められています。
 
 Webサーバーからページを取得するときに使われるプロトコルをHTTPといいます。
 ホストに対して特定のページがほしいとリクエストを送ると、そのページがレスポンスとして返されます。
 
-ブラウザで"http://tomorrowkey.jp/" にアクセスした場合を例にとって、具体的な値を説明します。
+ブラウザで"http://tomorrowkey.jp/" にアクセスした場合を例にとって、具体的な値を説明しましょう。
 ブラウザはサーバに対して次のようなリクエストを送っています（@<list>{http-request}）。
 
 //list[http-request][HTTPリクエスト]{
@@ -111,18 +112,18 @@ Host: tomorrowkey.jp
 1行目にはHTTPアクセスする概要を指定します。
 
 まず最初のパラメータで、アクセスの種類を指定します。
-上記リクエストでは”GET”となっていますが、これはファイルの取得を表します。
+上記リクエストでは"GET"となっていますが、これはファイルの取得を表します。
 スペースで区切って、1行目2つ目のパラメータとして取得するファイルの名前を指定します。
-"/"と書かれていますが、Webサーバでは"/"とリクエストされたものは大抵"index.html" と解釈されます。
+"/"と書かれていますが、Webサーバでは"/"とリクエストされたものは大抵"index.html"と解釈されます。
 さらにスペースで区切った後ろにHTTPのバージョンを書きます。
 
 2行目以降はヘッダーと呼ばれるリクエストする際の付属的な情報を書きます。
 User-Agentは、ブラウザの種類を表します。
 Hostは、アクセスするホストの名前を指定します。
 
-このリクエストはコマンドプロンプト/ターミナルから実行することができます（@<list>{request-http-via-telnet}）。
+このリクエストはコマンドプロンプト/ターミナル@<fn>{telnet}から実行できます（@<list>{request-http-via-telnet}）。
 
-//footnote[][Windowsの場合はtelnetがデフォルトで無効になっていますので、コントロールパネルから有効にしてください。詳しくは「Windows telnet」で検索してみてください。]
+//footnote[telnet][Windowsの場合はtelnetがデフォルトで無効になっていますので、コントロールパネルから有効にしてください。詳しくは「Windows telnet」で検索してみてください]
 
 //list[request-http-via-telnet][telnetを使ったHTTP通信のリクエスト]{
 telnet tomorrowkey.jp 80
@@ -159,11 +160,11 @@ Content-Type: text/html
 
 ブラウザではこのレスポンスの内容を解釈して、Webページを表示しています。
 
-== Androidアプリでネットワークを使うために必要なパーミッション
+== Androidアプリでネットワークを使うために
 
-インターネットに接続するにはandroid.permission.INTERNET というパーミッションが必要なので、AndroidManifestに宣言します（@<list>{internet-permission}）。
+Androidアプリでインターネットに接続するにはandroid.permission.INTERNETというパーミッションが必要です。あらかじめAndroidManifestに宣言します（@<list>{internet-permission}）。
 
-//list[internet-permission][インターネットパーミッション]{
+//list[internet-permission][インターネットパーミッションを追加する]{
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="com.example.sample.network">
 
@@ -175,7 +176,7 @@ Content-Type: text/html
 
 == Androidで使用できる通信方式
 
-Androidが搭載される端末は次のような通信方式を持っています。
+Android搭載端末の多くは次のような通信方式を持っています。
 
  * Mobile
  ** 3G
@@ -196,13 +197,15 @@ Androidが搭載される端末は次のような通信方式を持っていま�
 === ネットワークは不安定
 
 Androidを搭載した端末の多くは携帯電話です。様々な場所に持ち歩く携帯電話なので、必ずしもネットワークに恵まれた場所にいるとは限りません。
-アプリを作るにあたっていつネットワークが切れても問題ないように作らなくてはなりません。
+アプリを作るにあたって、いつネットワークが切れても問題ないように作らなくてはなりません。
 また、ネットワークが切れてしまった場合にユーザーにストレスをかけないような作りを心がけることも重要です。
+
+#@# どのようなつくりがストレスを与えない？
 
 === 電池消費量
 
-電池消費量にも気を配らなくてはなりません。モバイルで電池を消耗しやすい機能の１つがネットワーク通信です。
-できるだけ通信料を減らす、通信回数を減らす、一度まとめてに通信するといった事を心がけると、電池消費にも優しいアプリを作ることができます。
+モバイル環境下では電池消費量にも気を配らなくてはなりません。モバイルで電池を消耗しやすい機能の１つがネットワーク通信です。
+できるだけ通信量を減らす、通信回数を減らす、一度にまとめて通信するといった事を心がけると、電池消費にも優しいアプリを作ることができます。
 
 == メインスレッドと非同期スレッド
 理論値では100Mbpsを越えるネットワークでも環境によっては数百bpsしかでないため、小さいデータのやりとりであっても時間がかかるものだと考えるべきです。
@@ -210,11 +213,11 @@ Androidを搭載した端末の多くは携帯電話です。様々な場所に�
 
 == ソケットプログラミング
 Androidで一番低レベルなネットワーク通信方法はSocketを使ったやり方です。
-OSI参照モデルではトランスポート層以下が提供されます。
-HTTPサーバーにアクセスするにはすこし貧弱ですが、HTTP以外のサーバにアクセスすることができるため便利です。
+Socketを使うことで、OSI参照モデルではトランスポート層以下の機能が提供されます。
+HTTPサーバーにアクセスするにはすこし貧弱ですが、HTTP以外のサーバにもアクセスできるため便利です。
 例えばhttp://tomorrowkey.github.io にアクセスしようとした場合、次のようなプログラムになります（@<list>{basic_implemention_of_socket}）。
 
-//list[basic_implemention_of_socket][Socketの実装方法]{
+//list[basic_implemention_of_socket][Socketの実装方法の例]{
 try {
   // リクエスト
   Socket socket = new Socket();
@@ -244,7 +247,9 @@ try {
 }
 //}
 
-=== リクエスト
+どのような処理をしているか、順番に見ていきましょう。
+
+=== リクエストを送信する
 まずはSocketインスタンスを生成します（@<list>{ake-instance-of-socket}）。
 //list[make-instance-of-socket][Socketインスタンスの生成]{
 Socket socket = new Socket();
@@ -277,15 +282,17 @@ Host: tomorrowkey.github.io
 
 //}
 
-1行目には大まかなリクエスト内容を送ります
+1行目には大まかなリクエスト内容を送ります（@<table>{the-first-line-of-get-request}）。
+
 //table[the-first-line-of-get-request][GETリクエスト1行目]{
 -----------------------
 GET				ファイルを取得する
-/					"/"というファイルを取得する。"/"とリクエストすると、大抵のWebサーバでは"/index.html" と解釈されます。
+/					"/"というファイルを取得する。"/"とリクエストすると、大抵のWebサーバでは"/index.html" と解釈されます
 HTTP/1.1	HTTP/1.1というプロトコル（手続き方法）を使います
 //}
 
-2行目からはリクエストヘッダ（リクエスト時の付属情報）を送信します
+2行目からはリクエストヘッダ（リクエスト時の付属情報）を送信します（@<table>{the-second-line-of-get-request}）。
+
 //table[the-second-line-of-get-request][GETリクエスト2行目]{
 -----------------------
 Host:									ヘッダのキーです
@@ -294,7 +301,7 @@ tomorrowkey.github.io	Hostキーはリクエスト先のホスト名を指定し
 
 リクエストの最後に改行を2回送るとリクエスト完了となります。
 
-=== レスポンス
+=== レスポンスを受け取る
 
 socketからInputStreamを取得してHTTPレスポンスを取得します（@<list>{get-response-body-with-socket}）。
 
@@ -345,7 +352,7 @@ D/TEST    ( 1371): </html>
 
 HTTPレスポンスのheaderとbody両方が出力されました。
 Socketで通信する場合はこの文字列をJavaのオブジェクトに変換する処理が必要です。
-リクエストを自分で組み立てないといけなかったり、レスポンスが生データのままなので大変ですが、とても自由度が高いのが特徴です。
+Socket通信はリクエストを自分で組み立てないといけなかったり、レスポンスが生データのままなので大変ですが、とても自由度が高いのが特徴です。
 
 == HttpURLConnection
 
@@ -378,7 +385,9 @@ try {
 }
 //}
 
-=== リクエスト
+HttpURLConnectionでは、どのような処理をしているか順番に見ていきましょう。
+
+=== リクエストを送信する
 
 アクセスするURLを使いURLオブジェクトを作ります（@<list>{make-a-instance-of-url}）。
 //list[make-a-instance-of-url][URLオブジェクトの生成]{
@@ -389,11 +398,11 @@ openConnection()メソッドを使い、HttpURLConnectionを取得します（@<
 //list[get-http-url-connection][HTTPUrlConnectionの取得]{
 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 //}
-注意しなければならないのが、URL.openConnection()の戻り値はURLConnectionなのでHttpURLConnectionにパースしなければならないということです。
+注意点として、URL.openConnection()メソッドの戻り値はURLConnectionなのでHttpURLConnectionにパース（変換）しなければならないということです。
 
 リクエストはファイルの取得なので、setRequestMethod()メソッドで"GET"を渡します。
-また、setRequestProperty()メソッドを使うことでリクエストヘッダーを設定することができます。
-Hostは設定しなくても自動的に追加させるのですが、あえて追加しました（@<list>{set-request-method}）。
+また、setRequestProperty()メソッドを使うことでリクエストヘッダーを設定できます。
+Hostは設定しなくても自動的に追加させるのですが、説明上、あえて追加しました（@<list>{set-request-method}）。
 //list[set-request-method][リクエストの設定]{
 connection.setRequestMethod("GET");
 connection.setRequestProperty("Host", "tomorrowkey.github.io");
@@ -404,7 +413,7 @@ connectメソッドでサーバと接続します（@<list>{connect-to-the-serve
 connection.connect();
 //}
 
-=== レスポンス
+=== レスポンスを受け取る
 
 ステータスコードを取得する場合、getResponseCode()メソッドを呼びます（@<list>{get-status-code-from-http-url-connection}）。
 
@@ -428,7 +437,7 @@ InputStream inputStream = connection.getInputStream();
 String body = readToEnd(inputStream);
 Log.d("TEST", "body=" + body);
 //}
-InputStreamから文字列に変換する処理はSocketと同じなので、メソッド化しました。
+InputStreamから文字列に変換する処理はSocketと同じなので、効率化のためメソッド化しています。
 
 === 実行結果
 
@@ -482,7 +491,9 @@ try {
 }
 //}
 
-=== リクエスト
+HttpClientでは、どのような処理になるのか順番に見ていきましょう。
+
+=== リクエストを送信する
 GETリクエストなので、HttpGetオブジェクトを作ります。引数にはアクセスするURLを指定します（@<list>{make-a-instance-of-http-get}）。
 
 //list[make-a-instance-of-http-get][HttpGetオブジェクトの生成]{
@@ -497,6 +508,8 @@ httpGet.addHeader("Host", "tomorrowkey.github.io");
 実際に通信を行うのはHttpClientというオブジェクトなので、HttpClientを生成します。
 今回はDefaultHttpClientを使ってHttpClientを生成していますが、AndroidHttpClientを使うこともできます（@<list>{make-a-instance-of-http-client}）。
 
+#@# DefaultHttpClientとAndroidHttpClientの違いに触れてください。
+
 //list[make-a-instance-of-http-client][HttpClientの生成]{
 HttpClient httpClient = new DefaultHttpClient();
 //}
@@ -507,8 +520,7 @@ HttpResponse httpResponse = httpClient.execute(httpGet);
 //}
 通信したレスポンスはHttpResponseというクラスで戻り値に返ってきます。
 
-=== レスポンス
-
+=== レスポンスを受け取る
 
 ステータスコードを取得するには、まずはgetStatusLine()メソッドでステータスラインを取得した後に、getStatusCode()メソッドを呼びます（@<list>{get-status-code}）。
 
@@ -566,12 +578,12 @@ D/TEST    ( 1295): </html>
 == ライブラリを使ったネットワーク通信
 
 ネットワーク通信をする度にAsyncTaskを継承して、同じようなバックグラウンド処理を書くのは大変です。
-バックグラウンド処理を毎回書かなくてもいいようなライブラリがGoogleから公開されています。名前はVolleyといいます。
+バックグラウンド処理を毎回書かなくてもいいようなライブラリがGoogleから公開されています。名前はVolley@<fn>{volley}といいます。
 
-platform/frameworks/volley - Git at Google https://android.googlesource.com/platform/frameworks/volley/
+//footnote[volley][platform/frameworks/volley - Git at Google https://android.googlesource.com/platform/frameworks/volley/]
 
-Volleyは他のライブラリのようにjarファイルが公開されていたり、maven repositoryにホスティングされていません。
-AOSPにソース管理されているので、そこからjarファイルを作る必要があります。
+Volleyは他のライブラリのようにjarファイルが公開されておらず、また利用が容易なmaven repositoryにホスティングもされていません。
+AOSPでソースコードが管理されているので、そこからjarファイルを作る必要があります。
 次のコマンドを実行することでjarファイルをビルドできます（@<list>{compile-volley}）。
 
 //list[compile-volley][Volleyのビルド]{
@@ -583,6 +595,7 @@ ant jar
 生成されたjarファイルをlibsディレクトリに入れてソースコードから参照できるようにしましょう。
 
 実際には静的ファイルなのですが、JSONファイルを取得することでAPIアクセスする時のコードを実装しましょう（@<list>{download-json-file-with-volley}）。
+
 //list[download-json-file-with-volley][APIアクセス]{
 mRequestQueue = Volley.newRequestQueue(getApplicationContext());
 
@@ -606,7 +619,8 @@ Response.ErrorListener errorListener = new Response.ErrorListener() {
 mRequestQueue.add(new JsonObjectRequest(method, url, requestBody, listener, errorListener));
 //}
 
-=== リクエスト
+=== リクエストを送信する
+
 まずはリクエストキューを作ります。
 この作成されたリクエストキューにリクエストを追加することで、自動的にバックグラウンドで随時リクエストを送ります。
 リトライ処理についてもある程度行ってくれます（@<list>{make-a-instance-of-request-queue}）。
@@ -619,18 +633,18 @@ mRequestQueue = Volley.newRequestQueue(getApplicationContext());
 
 //table[the-second-line-of-get-request][GETリクエスト2行目]{
 -----------------------
-method				リクエストメソッドを指定します
-url						アクセスするURLを指定します
-requestBody		リクエスト時にボディに送るJSONObjectを指定します。
-listener			レスポンスリスナー、正常系のステータスコード(200~299)が戻ってきた場合に実行されます
-errorListener	エラーレスポンスリスナー、異常系のステータスコード(200~299以外)が返ってきた場合に実行されます
+method				リクエストメソッドを指定する
+url						アクセスするURLを指定する
+requestBody		リクエスト時にボディに送るJSONObjectを指定する
+listener			レスポンスリスナー、正常系のステータスコード(200～299)の場合に実行されます
+errorListener	エラーレスポンスリスナー、異常系のステータスコード(200～299以外)の場合に実行されます
 //}
 
-リクエストをリクエストキューに追加すると自動的にバックグラウンドでネットワーク通信が実行されます。
-ネットワーク通信が完了すると引数に渡したコールバック(listener, errorListener)が実行されます。
+リクエストをリクエストキューに追加すると自動的にバックグラウンドでネットワーク通信が行われ、
+ネットワーク通信が完了すると引数に渡したコールバック(listener、errorListener)が実行されます。
 
 === レスポンス
-サーバーのレスポンスが正常系(200~299)だった場合、第四引数のlistenerのコールバックメソッドが実行されます。
+サーバーのレスポンスが正常系(200～299)だった場合、第４引数のlistenerのコールバックメソッドが実行されます。
 レスポンスボディは自動的にJSONObjectにパースされ、引数に渡されます（@<list>{succeed_response-listener}、@<list>{succeed-response}）。
 
 //list[succeed_response-listener][正常系レスポンスリスナー]{
@@ -644,7 +658,7 @@ public void onResponse(JSONObject jsonObject) {
 D/TEST    ( 1699): {"users":[{"id":1,"gender":"female","name":"alice"},{"id":2,"gender":"male","name":"bob"}]}
 //}
 
-サーバのレスポンスが異常系(200~299以外)だった場合、第五引数のerrorListenerのコールバックメソッドが実行されます。
+サーバのレスポンスが異常系(200～299以外)だった場合、第５引数のerrorListenerのコールバックメソッドが実行されます。
 エラーの内容は引数のVolleyErrorオブジェクトに入っています（@<list>{error-response-listener}、@<list>{error-response}）。
 
 //list[error-response-listener][エラー系レスポンスリスナー]{
@@ -669,34 +683,41 @@ D/TEST    ( 1654): Content-Type=null
 D/TEST    ( 1654): Not Found
 //}
 
-Volleyを使うと非同期処理を書かなくてよいのでとても便利です。
+Volleyを使うと非同期処理を書かなくてよいのでとても便利ですね。このようなライブラリを使うと独自で実装するよりも手間が省けます。
+その一方、実装の自由度は低くなりがちなことを覚えておくとよいでしょう。とはいっても、
+一般的なネットワーク通信において、Volleyのようなライブラリは非常に有用です。
 
 == WebAPIにアクセスする
 
 各種オンラインサービスはApplication Programming Interface(API)を公開していることがあります。
-例えばTwitterのAPIを使えば自分だけのオリジナルのTwitterアプリを作ることができます。
-天気予報サービスのAPIを使えば自分好みの天気予報アプリを作ることができます。
-WebAPIを使う上で気をつけなければならないことを挙げます。
+例えばTwitterのAPIを使うと、自分だけのオリジナルのTwitterアプリを作ることができます。
+また天気予報サービスのAPIを使えば、自分好みの天気予報アプリを作れます。
+
+本節では、WebAPIを使う上で気をつけなければならないことを挙げて解説します。
 
 ==== 料金体系
 
 Web APIには様々なものがあり料金体系も様々です。
-完全に無料のものもありますが、大抵は一定期間のアクセス数に応じて制限がかかったり有料になります。
+完全に無料のものもありますが、大抵は一定期間のアクセス数に応じて制限がかかったり、有料になったりします。
 
 ==== 利用規約を読む
 
 すべてのWeb APIには利用規約があり、使用するための条件があります。
-例えば、オープンソースアプリや無料で公開するアプリについては無料でAPIを使うことができるが、広告を掲載したり有償でアプリを公開する場合はAPI使用料を払わないといけないケースがあります。
+例えば、オープンソースアプリや無料で公開するアプリについては無料でAPIを使うことができるが、
+広告を掲載したり有償でアプリを公開する場合はAPI使用料を払わないといけないケースがあります。
+
 他にもAPIを使用するにあたって気をつけなければならないことが利用規約に書いてありますので、必ず使用する前に熟読しましょう。
 もしこの利用規約を守れなかった場合、予告のないサービスの提供の停止や、場合によってはサービス提供元から法的手段の実施などが起こりえます。
 
 == ソーシャルIMEを使ってみよう
 
-ここではソーシャルIMEというサービスを使って入力したひらがなを変換してみましょう。
+ここではソーシャルIME@<fn>{IME}というサービスを使って入力したひらがなを変換してみましょう。
 
-Social IME ～みんなで育てる日本語入力～ http://www.social-ime.com/
+//footnote[IME][Social IME ～みんなで育てる日本語入力～ http://www.social-ime.com/]
 
-Input Method Editor(IME)は文字入力を補助するソフトウェアです。言葉で説明するとすごく分かりづらいですが、ざっくりとわかりやすく説明すると、キーボードを使って入力するときにひらがなを漢字に変換してくれるソフトウェアです。ソーシャルIMEでは変換するための仕組みをWebAPIとして提供しています。
+Input Method Editor(IME)は文字入力を補助するソフトウェアです。言葉で説明するとすごく分かりづらいですが、
+ざっくりとわかりやすく説明すると、キーボードを使って入力するときにひらがなを漢字に変換してくれるソフトウェアです。
+ソーシャルIMEでは変換するための仕組みをWebAPIとして提供しています。
 
 ソーシャルIMEは簡単に試すことができます。
 例えば次のURLにブラウザでアクセスしてみてください（@<list>{url-of-social-ime}）。
@@ -733,21 +754,21 @@ try {
 }
 //}
 
-基本的には前節でHttpURLConnectionを使ったアクセスと同じです。
+基本的には前述したHttpURLConnectionを使ったアクセスと同じです。
 
 気をつけなければならないのは、byte配列から文字列にする際に指定する文字コードです。
-Social IMEでは特に指定しなければレスポンスは"EUC-JP"という文字コードでレスポンスします。
+ソーシャルIMEでは特に指定しなければレスポンスは"EUC-JP"という文字コードでレスポンスを返すプロトコルを採用しています。
 受け取ったbyte配列からそのまま文字列を生成すると文字化けを起こしてしまうので、文字コードを指定します。
-Web APIを使う際に文字化けを起こしてしまうことはよくあるので注意しましょう。
+WebAPIを使う際に文字化けを起こしてしまうことはよくあるので注意しましょう。
+
+WebAPIごとにリクエスト、レスポンスのフォーマットが異なるため、仕様に合わせてリクエストを組み立て、レスポンスをパースしてください。
 
 == まとめ
 
 さまざまな方法を使ってサーバーからファイルを取得する方法を実装しました。
 やり方がたくさんあってどれを使っていいか迷うかもしれませんが、それぞれの実装方法の特徴とやりたいことを比較して、最適な方法を選択してください。
 
-なにかアプリを作りたいけど、アイデア浮かばない！というときにWebAPIを眺めていると、あのAPIとこのAPIを組み合わせれば面白いことができるぞ！なんて思いつくことがあります。大抵のWebAPIはHTTP通信ができれば使えるので、おもしろいWebAPIを見つけて奇抜なアプリを作りましょう！
-
-
-
-
+なにかアプリを作りたいけど、アイデア浮かばない！というときにWebAPIを眺めていると、
+あのAPIとこのAPIを組み合わせれば面白いことができるぞ！なんて思いつくことがあります。
+大抵のWebAPIはHTTP通信ができれば使えるので、おもしろいWebAPIを見つけて奇抜なアプリを作りましょう！
 
