@@ -247,7 +247,7 @@ accept メソッドで受付待ち状態のときは処理が一定時間中断�
 
 == プロファイルのサポート
 
-Bluetoothには様々なプロファイルが存在します。これらすべてのプロファイルをAndroid SDKに含まれるAPIから使用（Bluetooth機器からのデータの取得やBluetooth機器のコントロール）ができるわけではありません。
+Bluetoothにはさまざまなプロファイルが存在します。これらすべてのプロファイルをAndroid SDKに含まれるAPIから使用（Bluetooth機器からのデータの取得やBluetooth機器のコントロール）ができるわけではありません。
 AndroidではAndroid 3.0（HonneyComb : API Level 11）以降では、「HSP」、「HFP」と「A2DP」対応のBluetooth機器からの情報、Android 4.0（IceCreamSandwich : API Level 14）以降では「HDP」対応のBluetooth機器から情報を取得できるようになりました。
 
 各プロファイルの概要を説明します。
