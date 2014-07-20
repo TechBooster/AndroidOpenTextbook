@@ -99,7 +99,7 @@ android-async-httpのjarファイルは@<href>{http://loopj.com/android-async-ht
 
 === ライブラリを用いない場合のコード
 
-まずはライブラリを使わない場合のコードをおさらいしてみましょう。@<list>{scratch}はネットワーク章で実装したHttpURLConnectionを用いるコードからログ出力を取り除いたものです。接続の準備やデータの取得、後処理など沢山の処理を記述しています。また、このコードはUIスレッドでは実行できないため、AsyncTask等を用いて別のスレッドで呼び出す必要があります。
+まずはライブラリを使わない場合のコードをおさらいしてみましょう。@<list>{scratch}はネットワーク章で実装したHttpURLConnectionを用いるコードからログ出力を取り除いたものです。接続の準備やデータの取得、後処理などたくさんの処理を記述しています。また、このコードはUIスレッドでは実行できないため、AsyncTask等を用いて別のスレッドで呼び出す必要があります。
 
 //list[scratch][HttpURLConnection]{
 private void scratch() {
