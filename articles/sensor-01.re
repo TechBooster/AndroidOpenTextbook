@@ -955,7 +955,7 @@ public void onConnected(Bundle connectionHint) {
  * PRIORITY_NO_POWER : 正確性はその時の状態に依存
 
 厳密にはリファレンスと異なりますが、この辺は機種依存性もあるので
-一概には言えません。公称と実験結果では差がありそうです。
+一概にはいえません。公称と実験結果では差がありそうです。
 
 //footnote[gps_priority][Googl I/O 2013講演資料より @<href>{http://y-anz-m.blogspot.jp/2013/05/google-io-2013-android-beyond-blue-dot.html}]
 
