@@ -54,7 +54,7 @@ NDKを用いる事でC言語を使ってAndroidアプリケーションで利用
 == Androidフレームワークもライブラリ
 
 @<list>{android.jar}はAndroidアプリケーションを開発するにあたって最初に目にするコードの一つです。
-このコードの中でライブラリを利用している部分がどこかわかるでしょうか。
+このコードの中でライブラリを利用している部分がどこか分かるでしょうか。
 
 //list[android.jar][Androidアプリケーションのソースコード]{
 import android.app.Activity;
@@ -125,7 +125,7 @@ private void scratch() {
 
 === android-async-httpを用いたコード
 
-次はandroid-async-httpを用いたコードを見てみましょう。android-async-httpは主に非同期的にネットワーク処理を行うAsyncHttpClientクラスと、同期的にネットワーク処理を行うSyncHttpClientクラスを提供しています。@<list>{library}ではAsyncHttpClientを使って非同期のリクエスト処理をしています。実装の詳細はここでは深く立ち入りませんが、簡潔にリクエスト処理を記述できている事がわかると思います。
+次はandroid-async-httpを用いたコードを見てみましょう。android-async-httpは主に非同期的にネットワーク処理を行うAsyncHttpClientクラスと、同期的にネットワーク処理を行うSyncHttpClientクラスを提供しています。@<list>{library}ではAsyncHttpClientを使って非同期のリクエスト処理をしています。実装の詳細はここでは深く立ち入りませんが、簡潔にリクエスト処理を記述できている事が分かると思います。
 
 //list[library][HttpURLConnection]{
 private void library() {
