@@ -394,7 +394,7 @@ public class Chapter01_02 extends Chapter01_01 {
 import static android.opengl.GLES20.*;
 //}
 
-//list[static_before}][変更前のコード]{
+//list[static_before][変更前のコード]{
 GLES20.glClearColor(0.0f, 1.0f, 1.0f, 1.0f);
 GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT);
 //}
