@@ -22,7 +22,7 @@
 まず、strings.xmlに文字列の対応表を作成します。name属性を用いて文字列に名前を付けていきます。この時、
 
  * 数字で始まる名前
- * Javaの予約語（例えばswitchなど）
+ * Javaの予約語（たとえばswitchなど）
 
 は使用することができないので注意しましょう。@<list>{stringxml}に、アプリ名とメッセージの対応を記述した例を示します。
 
@@ -37,7 +37,7 @@
 
 ==== レイアウトXML内の文字列を@string/xxxxにする
 
-次に、レイアウトXML内の文字列（TextViewやButtonなど）を置き換えていきます。android:textやandroid:hintなど、文字列を指定する箇所を@string/xxxx形式で指定します。xxxxの部分は、先ほど作成したstrings.xmlのname属性に設定した名前を指定します。例えば、@<list>{layout_string}では、TextViewに「メモ帳アプリ」が表示されます。
+次に、レイアウトXML内の文字列（TextViewやButtonなど）を置き換えていきます。android:textやandroid:hintなど、文字列を指定する箇所を@string/xxxx形式で指定します。xxxxの部分は、先ほど作成したstrings.xmlのname属性に設定した名前を指定します。たとえば、@<list>{layout_string}では、TextViewに「メモ帳アプリ」が表示されます。
 
 //list[layout_string][TextViewの文字列を置き換える]{
 <TextView
@@ -62,7 +62,7 @@ TextViewのsetText()メソッドやAlertDialog.BuilderのsetMessage()メソッ�
 
 レイアウトXMLとJavaプログラムを修正した後、以下の手順で各言語用のstrings.xmlを用意します。
 
- * res/values-<言語コード>フォルダを作ります。例えば英語であればres/values-enフォルダを作成します。
+ * res/values-<言語コード>フォルダを作ります。たとえば英語であればres/values-enフォルダを作成します。
  * res/values/strings.xmlをres/values-<言語コード>フォルダにコピーします。
  * コピーしたstrings.xmlファイルの文字列をその言語に翻訳します。
 
@@ -113,7 +113,7 @@ Javaプログラム中で動的に指定する時は、@<list>{focus_java}のよ
 
 ==== 方向キーに対応する
 
-日本ではあまり見かけませんが、方向キーのある端末もあります。ユーザーは画面を見ることができなくても、Viewの並びを想像することはできるため、方向キーによる操作と想像しているViewの並びを合わせておく必要があります。これに対応するため、フォーカスが当たっている状態で上下左右が押された時、どのViewにフォーカスが移動すべきか指定することができます。@<table>{focus_order}は制御用の属性一覧です。例えば、上キーが押された時@+id/button1にフォーカスを移動させた場合、android:nextFocusUpに@+id/button1を指定します。
+日本ではあまり見かけませんが、方向キーのある端末もあります。ユーザーは画面を見ることができなくても、Viewの並びを想像することはできるため、方向キーによる操作と想像しているViewの並びを合わせておく必要があります。これに対応するため、フォーカスが当たっている状態で上下左右が押された時、どのViewにフォーカスが移動すべきか指定することができます。@<table>{focus_order}は制御用の属性一覧です。たとえば、上キーが押された時@+id/button1にフォーカスを移動させた場合、android:nextFocusUpに@+id/button1を指定します。
 
 //table[focus_order][フォーカスの制御用属性]{
 属性名	意味

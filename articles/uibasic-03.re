@@ -290,7 +290,7 @@ android:src="@drawable/ic_launcher"
 //}
 
 なぜなら端末ごとに、どの画面密度なのかは一意に決まっていて、Androidアプリで利用する画面密度を@<b>{自動で判別する}からです。
-例えば、Galaxy S3 の端末はxhdpiに属します。このときに画像を参照するフォルダは「drawable-xhdpi」ですが、コードで書くのは「@drawable/ic_launcher」でよいのです。
+たとえば、Galaxy S3 の端末はxhdpiに属します。このときに画像を参照するフォルダは「drawable-xhdpi」ですが、コードで書くのは「@drawable/ic_launcher」でよいのです。
 
 逆に、画面密度を指定してしまうと、他の画面密度の違ういろいろな端末から見たときに、表示がおかしくなってしまう恐れがあるので注意しましょう。
 
