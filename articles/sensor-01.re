@@ -48,7 +48,7 @@ Androidでは多くのセンサー情報が取得できますが、実際のハ�
 === センサー情報取得フレームワーク
 
 センサーの利用のために、便利なフレームワークが用意されています。
-使用するクラスは以下の通りです。
+使用するクラスは以下のとおりです。
 
  * Sensor
  * SensorManager
@@ -199,7 +199,7 @@ public class SensorActivity extends Activity implements SensorEventListener {
  * SensorEvent.values[2] : z軸加速度
 
 加速度なので、そのままx,y,xのそれぞれの加速度が取得できます。これを
-コードで取得するには、onSensorChangedに次の通り、追加します（@<list>{sensorchange}）。
+コードで取得するには、onSensorChangedに次のとおり、追加します（@<list>{sensorchange}）。
 
 //list[sensorchange][センサー値変化イベントコールバック]{
   @Override
@@ -300,7 +300,7 @@ AndroidManifest.xmlにandroid:screenOrientation="portrait"を追記します（@
           android:screenOrientation="portrait">
 //}
 
-あとは定石通り、センサーマネージャの登録を行いますが、センサーの登録として
+あとは定石どおり、センサーマネージャの登録を行いますが、センサーの登録として
 "TYPE_ACCELEROMETER"と"TYPE_MAGNETIC_FIELD"を使用します。
 onPauseでの登録破棄も忘れないようにしてください（@<list>{orientation-sensormanager}）。
 
@@ -330,7 +330,7 @@ protected void onResume() {
 
 //footnote[orientation_ref][@<href>{http://developer.android.com/reference/android/hardware/SensorManager.html}]
 
-ソースコードは次の通りです（@<list>{orientation-changed}）。
+ソースコードは次のとおりです（@<list>{orientation-changed}）。
 
 //list[orientation-changed][傾きを求めるイベントコールバック]{
 @Override
@@ -481,7 +481,7 @@ x軸、y軸、z軸のそれぞれの加速度を重力加速度を差し引い�
 == センサーのハードウェア情報の取得
 
 端末に搭載されているセンサーをすべて列挙して取得し、センサーのハードウェア情報を取得してみます。
-センサーから取得できるハードウェア情報は次の通りです（@<img>{hard}）。
+センサーから取得できるハードウェア情報は次のとおりです（@<img>{hard}）。
 
 //image[hard][センサーのハードウェア情報]{
 //}
@@ -731,7 +731,7 @@ google-play-servicesはAndroid SDKを
 === 位置情報の取得
 
 GPSを利用した位置情報取得にはフレームワークが用意されているのでそれを使います。
-使用するクラスは以下の通りです。
+使用するクラスは次のとおりです。
 
  * LocationClient
  * Location

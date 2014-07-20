@@ -61,7 +61,7 @@ OpenGL ESは2014年現在いくつかのバージョンがあり、Android端末
 
 本書では「見本」となるプロジェクトと、読者が「演習」として実装を行う@<em>{skelton}プロジェクトの２種類を用意しています。Skeltonを加工し、各節ごとの課題を進めていきましょう。
 
-各節には基本となる演習と、それを練習課題となる"TRY"、さらに難しく応用的な知識を試される"CHALLENGE"が用意されています。プログラムの方法は幾通りもあるため、どのような方法で実現しても構いません。
+各節には基本となる演習と、それを練習課題となる"TRY"、さらに難しく応用的な知識を試される"CHALLENGE"が用意されています。プログラムの方法は多数あるため、どのような方法で実現しても構いません。
 
 === 演習：OpenGL ES 2.0の初期化を行う
 
@@ -220,7 +220,7 @@ Hello Worldのプログラムから多くの変更がありますが、ひとつ
 
 === 演習１：三角形を描画する
 
-サンプルコードは次の通りです（@<list>{Chapter01_02}）。
+サンプルコードは次のとおりです（@<list>{Chapter01_02}）。
 
 //listnum[Chapter01_02][Chapter01_02.java]{
 import static android.opengl.GLES20.*;
@@ -614,7 +614,7 @@ glUniform4fでアップロードする値を変更すれば、任意の色の描
 
 === 演習２：四角形を描画する
 
-サンプルコードは次の通りです（@<list>{Chapter01_03}）
+サンプルコードは次のとおりです（@<list>{Chapter01_03}）
 
 //listnum[Chapter01_03][Chapter01_03.java]{
 public class Chapter01_03 extends Chapter01_02 {
@@ -672,7 +672,7 @@ VRAMはJavaの仮想マシンとは別に確保されるため、例えば数百
 
 === 演習３：テクスチャを読み込む
 
-サンプルコードは次の通りです（@<list>{Chapter01_04}）。
+サンプルコードは次のとおりです（@<list>{Chapter01_04}）。
 
 //listnum[Chapter01_04][Chapter01_04.java]{
 public class Chapter01_04 extends Chapter01_01 {

@@ -140,7 +140,7 @@ android:layout_alignParentBottom    親ビューの下側にそろえて配置�
 </RelativeLayout>
 //}
 
-@<list>{rltv-normal}通りに記述すると@<img>{rltv-double}のように、画像とテキストが重なってしまいます。
+@<list>{rltv-normal}のとおりに記述すると@<img>{rltv-double}のように、画像とテキストが重なってしまいます。
 
 //image[rltv-double][]{
 //}

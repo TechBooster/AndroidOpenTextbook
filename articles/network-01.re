@@ -441,7 +441,7 @@ InputStreamから文字列に変換する処理はSocketと同じなので、効
 
 === 実行結果
 
-実行結果は次の通りです（@<list>{response-of-http-url-connection-request}）。
+実行結果は次のとおりです（@<list>{response-of-http-url-connection-request}）。
 
 //list[response-of-http-url-connection-request][HttpURLConnectionを使ったリクエストのレスポンス]{
 D/TEST    ( 1231): responseCode=200
@@ -556,7 +556,7 @@ inputStream.close();
 
 === 実行結果
 
-実行結果は次の通りです（@<list>{response-of-http-client-request}）。
+実行結果は次のとおりです（@<list>{response-of-http-client-request}）。
 
 //list[response-of-http-client-request][HttpClientを使ったリクエストのレスポンス]{
 D/TEST    ( 1295): Status-Code=200
