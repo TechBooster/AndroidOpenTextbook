@@ -4,7 +4,7 @@
 
 === 演習：ポリゴンを平行移動させる
 
-このサンプルコードはポリゴンを平行移動させます。順番にみていきましょう（@<list>{Chapter02_01}）。
+このサンプルコードはポリゴンを平行移動させます。順番に見ていきましょう（@<list>{Chapter02_01}）。
 
 //listnum[Chapter02_01][Chapter02_01.java]{
 public class Chapter02_01 extends Chapter01_01 {
