@@ -629,9 +629,9 @@ mRequestQueue = Volley.newRequestQueue(getApplicationContext());
 //}
 
 リクエストキューを生成したので、リクエストを追加します。
-リクエストを追加する際には次のパラメータが必要です（@<table>{the-second-line-of-get-request}）。
+リクエストを追加する際には次のパラメータが必要です（@<table>{the-second-line-of-get-request2}）。
 
-//table[the-second-line-of-get-request][GETリクエスト2行目]{
+//table[the-second-line-of-get-request2][GETリクエスト2行目]{
 -----------------------
 method				リクエストメソッドを指定する
 url						アクセスするURLを指定する
