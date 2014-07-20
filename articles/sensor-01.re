@@ -638,7 +638,7 @@ boolean status = mSensorManager.registerListener(this, mStepDetector, SensorMana
 //}
 
 ただし、バッチ処理が可能かどうかはセンサーの対応によるので、対応している場合のみ
-返り値statusにtrueが返ります。
+戻り値statusにtrueが返ります。
 
 注意点としては、バッチモードで使用されるデータバッファのFIFO(First in First Out)
 はすべてのアプリで共通になるため、「他のアプリで通常のセンサーを使用されてしまうと自分のアプリで思った
