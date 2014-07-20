@@ -250,7 +250,7 @@ try {
 どのような処理をしているか、順番に見ていきましょう。
 
 === リクエストを送信する
-まずはSocketインスタンスを生成します（@<list>{ake-instance-of-socket}）。
+まずはSocketインスタンスを生成します（@<list>{make-instance-of-socket}）。
 //list[make-instance-of-socket][Socketインスタンスの生成]{
 Socket socket = new Socket();
 //}
