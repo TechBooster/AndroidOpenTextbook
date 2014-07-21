@@ -1,10 +1,10 @@
-= ネットワークデバイス（Wi-Fi、Bluetooth）
+= Wi-Fi通信
 
 //lead{
  本章ではAndroidでWi-Fiの設定をする方法、およびWi-Fiの状態を取得する方法について説明します。
 //}
 
-== Wi-Fiの概要
+== Wi-Fiの基礎知識
 
 無線LANの標準規格であるIEEE 802.11シリーズに準拠している無線LANそのもの、および無線LAN機器のことをWi-Fi（Wireless Fidelity）と呼んでいます。
 無線LANとは、有線ケーブルを使わずにアクセスポイントと呼ばれる中継機やルータから発する電波を用いて数m～数十m程度の範囲内でPCや電子機器間、もしくはインターネットへの接続で高速なデータ通信を行う通信技術です。
@@ -117,12 +117,12 @@ Wi-Fi機器の検索をして得られた機器のListから特定のWi-Fi機器
   //SSID
   config.SSID = "\"" + ssid + "\"";
   //このコンフィギュレーションで管理する認証キー
-  config.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.NONE); //WEPの場合
+  config.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.NONE);
   //IEEE 802.11認証アルゴリズム
-  config.allowedAuthAlgorithms.set(WifiConfiguration.AuthAlgorithm.SHARED);//WEPの場合
+  config.allowedAuthAlgorithms.set(WifiConfiguration.AuthAlgorithm.SHARED);
   //認証されたグループの暗号
-  config.allowedGroupCiphers.set(WifiConfiguration.GroupCipher.WEP40);//40ビット長暗号化キー
-  config.allowedGroupCiphers.set(WifiConfiguration.GroupCipher.WEP104);//40ビット長暗号化キー
+  config.allowedGroupCiphers.set(WifiConfiguration.GroupCipher.WEP40);
+  config.allowedGroupCiphers.set(WifiConfiguration.GroupCipher.WEP104);
   //WEP用キー
   config.wepKeys[0] = "\"password\"";
   config.wepTxKeyIndex = 0;
@@ -139,7 +139,7 @@ WEP認証で接続する際にはWifiConfigrationクラスのallowedKeyManagemen
   //このコンフィギュレーションで管理する認証キー
   config.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.WPA_PSK);
   //IEEE 802.11認証アルゴリズム
-  config.allowedAuthAlgorithms.set(WifiConfiguration.AuthAlgorithm.OPEN);//WPA/WPA2の場合
+  config.allowedAuthAlgorithms.set(WifiConfiguration.AuthAlgorithm.OPEN);
   //セキュリティプロトコル
   config.allowedProtocols.set(WifiConfiguration.Protocol.WPA);
   config.allowedProtocols.set(WifiConfiguration.Protocol.RSN);//WPA2
@@ -158,7 +158,8 @@ WPA/WPA2認証で接続する際にはWifiConfigrationクラスのallowedKeyMana
  * 生成したWifiConfigurationで接続する
 
 //list[implemention_of_wifi_con][生成したWifiConfigurationで接続する]{
-  if( manager.addNetwork(config) == -1 ){ //設定済のネットワークに新しいネットワーク情報を追加する
+  //設定済のネットワークに新しいネットワーク情報を追加する
+  if( manager.addNetwork(config) == -1 ){ 
     // 失敗した場合-1となる
     return false;
   };
@@ -171,7 +172,7 @@ WPA/WPA2認証で接続する際にはWifiConfigrationクラスのallowedKeyMana
 Wi-Fiの接続はWifiManagerクラスのaddNetworkメソッドを使用します。戻り値としてネットワークIDが戻ってくるので、この値をenableNetworkメソッドの引数に指定して接続を有効にします。
 saveConfigurationメソッドで接続したWi-Fi機器の設定情報をシステムに保存しておきます。
 
-次に接続中のWi-Fi機器との接続を切断する場合のサンプルコードを示します（@<list>{implemention_of_wifi_discon}）。WifiManagerクラスのdisconnectメソッドを使用することで切断することができます。
+次に接続中のWi-Fi機器との接続を切断する場合のサンプルコードを示します（@<list>{implemention_of_wifi_discon}）。WifiManagerクラスのdisconnectメソッドを使用することで切断できます。
 
 //list[implemention_of_wifi_discon][接続中のWi-Fi機器と切断]{
   WifiManager wm = (WifiManager) getSystemService(Context.WIFI_SERVICE);
@@ -211,15 +212,15 @@ Wi-Fiの接続状態を取得するためのサンプルコードを次に示し
 このWifiInfoクラスに含まれる接続情報の一覧を次に示します（@<table>{wifi_info}）。
 
 //table[wifi_info][取得可能なWi-Fi接続情報]{
-値 説明
+値	説明
 -------------------------------------------------------------
-SSID  無線識別用のID（Service Set Identifier）
-IPアドレス  機器のIPアドレス@<fn>{ad}（論理アドレス）
-MACアドレス 機器のMACアドレス（物理アドレス）
-RSSI  受信信号強度
-BSSID BSS (Basic Service Set)のID（接続しているWi-Fi機器のMACアドレスと同じ）
-ネットワークID  接続時にシステムに与えられたID
-接続状態  Wi-Fiの接続状態
+SSID	無線識別用のID（Service Set Identifier）
+IPアドレス	機器のIPアドレス@<fn>{ad}（論理アドレス）
+MACアドレス	機器のMACアドレス（物理アドレス）
+RSSI	受信信号強度
+BSSID	BSS (Basic Service Set)のID（接続しているWi-Fi機器のMACアドレスと同じ）
+ネットワークID	接続時にシステムに与えられたID
+接続状態	Wi-Fiの接続状態
 //}
 
 Wi-Fiの接続状態については次の種類があります。

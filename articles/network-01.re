@@ -1,4 +1,4 @@
-= ネットワーク
+= ネットワークプログラミング
 
 この章ではHTTPサーバからファイルを取得するさまざまな方法を通してネットワーク通信の仕組みを学びます。
 Webサーバーと連携して最新のデータを取得したり、他のプラットフォームと同期するためにデータを送信したりする際にネットワークの知識が必要になります。
@@ -105,7 +105,9 @@ Webサーバーからページを取得するときに使われるプロトコ�
 
 //list[http-request][HTTPリクエスト]{
 GET / HTTP/1.0
-User-Agent: Mozilla/5.0 (Linux; Android 4.3; Build/LPV79) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/36.0.1985.94 Mobile Safari/537.36
+User-Agent: Mozilla/5.0 (Linux; Android 4.3; Build/LPV79)
+ AppleWebKit/537.36 (KHTML, like Gecko) 
+ Chrome/36.0.1985.94 Mobile Safari/537.36
 Host: tomorrowkey.jp
 //}
 
@@ -283,11 +285,12 @@ Host: tomorrowkey.github.io
 //}
 
 1行目には大まかなリクエスト内容を送ります（@<table>{the-first-line-of-get-request}）。
+"/"とリクエストすると、たいていのWebサーバでは"/index.html" と解釈されます。
 
 //table[the-first-line-of-get-request][GETリクエスト1行目]{
 -----------------------
 GET				ファイルを取得する
-/					"/"というファイルを取得する。"/"とリクエストすると、たいていのWebサーバでは"/index.html" と解釈されます
+/					"/"というファイルを取得する
 HTTP/1.1	HTTP/1.1というプロトコル（手続き方法）を使います
 //}
 
@@ -580,7 +583,7 @@ D/TEST    ( 1295): </html>
 ネットワーク通信をする度にAsyncTaskを継承して、同じようなバックグラウンド処理を書くのは大変です。
 バックグラウンド処理を毎回書かなくてもいいようなライブラリがGoogleから公開されています。名前はVolley@<fn>{volley}といいます。
 
-//footnote[volley][platform/frameworks/volley - Git at Google https://android.googlesource.com/platform/frameworks/volley/]
+//footnote[volley][https://android.googlesource.com/platform/frameworks/volley/]
 
 Volleyは他のライブラリのようにjarファイルが公開されておらず、また利用が容易なmaven repositoryにホスティングもされていません。
 AOSPでソースコードが管理されているので、そこからjarファイルを作る必要があります。
@@ -600,7 +603,8 @@ ant jar
 mRequestQueue = Volley.newRequestQueue(getApplicationContext());
 
 int method = Request.Method.GET;
-String url = "https://raw.githubusercontent.com/TechBooster/AndroidOpenTextbook/master/code/network/assets/sample.json";
+String url = "https://raw.githubusercontent.com/TechBooster/
+    AndroidOpenTextbook/master/code/network/assets/sample.json";
 JSONObject requestBody = null;
 Response.Listener<JSONObject> listener = new Response.Listener<JSONObject>() {
   @Override
@@ -616,7 +620,8 @@ Response.ErrorListener errorListener = new Response.ErrorListener() {
   }
 };
 
-mRequestQueue.add(new JsonObjectRequest(method, url, requestBody, listener, errorListener));
+mRequestQueue.add(new JsonObjectRequest(method,
+     url, requestBody, listener, errorListener));
 //}
 
 === リクエストを送信する
@@ -636,15 +641,18 @@ mRequestQueue = Volley.newRequestQueue(getApplicationContext());
 method				リクエストメソッドを指定する
 url						アクセスするURLを指定する
 requestBody		リクエスト時にボディに送るJSONObjectを指定する
-listener			レスポンスリスナー、正常系のステータスコード(200～299)の場合に実行されます
-errorListener	エラーレスポンスリスナー、異常系のステータスコード(200～299以外)の場合に実行されます
+listener			レスポンスリスナー
+errorListener	エラーレスポンスリスナー
 //}
 
+レスポンスリスナーは、正常系のステータスコード（200～299）の場合に実行されます。またエラーレスポンスリスナーは異常系のステータスコード（200～299以外）の場合に実行されます。
+
+
 リクエストをリクエストキューに追加すると自動的にバックグラウンドでネットワーク通信が行われ、
-ネットワーク通信が完了すると引数に渡したコールバック(listener、errorListener)が実行されます。
+ネットワーク通信が完了すると引数に渡したコールバック（listener、errorListener）が実行されます。
 
 === レスポンス
-サーバーのレスポンスが正常系(200～299)だった場合、第４引数のlistenerのコールバックメソッドが実行されます。
+サーバーのレスポンスが正常系（200～299）だった場合、第４引数のlistenerのコールバックメソッドが実行されます。
 レスポンスボディは自動的にJSONObjectにパースされ、引数に渡されます（@<list>{succeed_response-listener}、@<list>{succeed-response}）。
 
 //list[succeed_response-listener][正常系レスポンスリスナー]{
@@ -655,7 +663,9 @@ public void onResponse(JSONObject jsonObject) {
 //}
 
 //list[succeed-response][正常系なレスポンス]{
-D/TEST    ( 1699): {"users":[{"id":1,"gender":"female","name":"alice"},{"id":2,"gender":"male","name":"bob"}]}
+D/TEST    ( 1699): {"users":[
+    {"id":1,"gender":"female","name":"alice"},
+    {"id":2,"gender":"male","name":"bob"}]}
 //}
 
 サーバのレスポンスが異常系(200～299以外)だった場合、第５引数のerrorListenerのコールバックメソッドが実行されます。

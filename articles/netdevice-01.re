@@ -1,7 +1,7 @@
-= ネットワークデバイス（Wi-Fi、Bluetooth）
+= Bluetooth通信
 
 //lead{
- 本章ではAndroidのBluetoothを搭載したAndroid端末と他のBluetooth搭載機器との間で通信を行う方法について説明します。
+本章ではAndroidのBluetoothを搭載したAndroid端末と他のBluetooth搭載機器との間で通信を行う方法について説明します。
 //}
 
 == Bluetooth通信の基礎知識
@@ -18,15 +18,15 @@ Bluetoothでは通信しようとする機器同士が同じ通信プロトコ�
 一般的なBluetoothプロファイルの一部を紹介します（@<table>{bt_prof}）。
 
 //table[bt_prof][一般的なBluetoothプロファイル]{
-プロファイル名 説明
+プロファイル名	説明
 -------------------------------------------------------------
-SPP Bluetooth機器を仮想シリアルポート化するためのプロファイル
-DUN 携帯電話・PHSを介してインターネットにダイアルアップ接続するためのプロファイル
-HID マウスやキーボードなどの入力装置を無線化するためのプロファイル
-HSP Bluetooth搭載ヘッドセットと通信するためのプロファイル
-HFP 車内やヘッドセットでハンズフリー通話を実現するためのプロファイル
-A2DP  音声をレシーバー付きヘッドフォンに伝送するためのプロファイル
-HDP 健康管理機器同士を接続するためのプロファイル
+SPP	Bluetooth機器を仮想シリアルポート化するためのプロファイル
+DUN	携帯電話・PHSを介してインターネットにダイアルアップ接続するためのプロファイル
+HID	マウスやキーボードなどの入力装置を無線化するためのプロファイル
+HSP	Bluetooth搭載ヘッドセットと通信するためのプロファイル
+HFP	車内やヘッドセットでハンズフリー通話を実現するためのプロファイル
+A2DP	音声をレシーバー付きヘッドフォンに伝送するためのプロファイル
+HDP	健康管理機器同士を接続するためのプロファイル
 //}
 
 
@@ -83,7 +83,7 @@ Bluetoothの有効/無効状態の取得にはBluetoothAdapterクラスのisEnab
 アプリケーションの実行時、システムはユーザに自動でBluetooth許可リクエストダイアログを表示し、ユーザがダイアログのボタンを押下するとonActivityResultメソッドがコールバックされます。
 Bluetoothが有効になった場合は、このメソッドの引数resultCodeにActivity.RESULT_OKが返ってきます（@<img>{01}）。
 
-//image[01][Bluetooth許可リクエストダイアログ（有効設定）]{
+//image[01][Bluetooth許可リクエストダイアログ（有効設定）][scale=0.35]{
 //}
 
 
@@ -118,7 +118,8 @@ Bluetoothが有効になった場合は、このメソッドの引数resultCode�
   public void onReceive(Context context, Intent intent) {
     String action = intent.getAction();
     if (BluetoothDevice.ACTION_FOUND.equals(action)) {
-      BluetoothDevice device = intent .getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+      BluetoothDevice device = 
+        intent .getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
     // BluetoothDeviceオブジェクトからデバイス情報などを取得する処理
         :
     } else if(BluetoothAdapter.ACTION_DISCOVERY_FINISHED.equals(action)) {
@@ -135,7 +136,7 @@ Bluetoothで接続しデータの送受信を行うためには、接続する�
 
 Androidではペアリングしていない別のBluetooth機器と初めて接続する際、自動的に双方の機器にペアリング要求ダイアログが表示されます（@<img>{02}）。
 
-//image[02][Bluetoothペアリング要求ダイアログ]{
+//image[02][Bluetoothペアリング要求ダイアログ][scale=0.35]{
 //}
 
 ダイアログで接続先で表示しているPINコードを入力することでペアリングが完了します。この処理はすべてAndroidのシステムで行われるので、アプリケーション開発時に実装する必要はありません。
@@ -162,7 +163,9 @@ Androidではペアリングしていない別のBluetooth機器と初めて接�
 
 
 //list[createRfcommSocketToServiceRecord][deviceにクライアントとしてSPP接続する]{
-  BluetoothSocket socket = device.createRfcommSocketToServiceRecord(UUID.fromString("00001101-0000-1000-8000-00805F9B34FB")); //SPPのUUIDを指定
+  BluetoothSocket socket = 
+    device.createRfcommSocketToServiceRecord(
+        UUID.fromString("00001101-0000-1000-8000-00805F9B34FB")); //SPPのUUIDを指定
   socket.connect();// 接続実行
 
   InputStream in= socket.getInputStream();　// データ受信
@@ -179,7 +182,7 @@ Bluetoothでは、「接続する機器同士が同じサービス（プロフ�
 
 TCP/IPのソケット通信では接続先のIPアドレスとポート番号を指定して接続をしますが、Bluetooth通信では接続先のMACアドレスとUUIDを指定して接続します。
 
-//footnote[sdp][Service Discovery Protocolとは相手の機器がどのようなサービスをサポートしているのかを検索するのに利用されるプロトコルです。]
+//footnote[sdp][Service Discovery Protocolとは相手の機器がどのようなサービスをサポートしているのかを検索するのに利用されるプロトコルです]
 
 サンプルプログラム中のcreateRfcommSocketToServiceRecordメソッドは、RFCOMMチャンネルで接続を可能にするためのソケットオブジェクトを作成します。引数には特定のサービス（プロファイル）のUUIDを指定します。
 今回はSPPで接続するのでUUIDは "00001101-0000-1000-8000-00805F9B34FB" を用います@<fn>{rfuuid}。
@@ -191,7 +194,7 @@ TCP/IPのソケット通信では接続先のIPアドレスとポート番号を
 
 別のBluetooth機器からのデバイス検索に対して自端末を発見可能な状態にするには、「ACTION_REQUEST_DISCOVERABLE」を指定したインテントをstartAcitivityForResultメソッドで発行します。するとBluetooth許可リクエストダイアログが表示されるのでユーザが許可することにより一定時間応答できる状態になります（@<img>{03}）。
 
-//image[03][Bluetooth許可リクエストダイアログ（発見可能）]{
+//image[03][Bluetooth許可リクエストダイアログ（発見可能）][scale=0.35]{
 //}
 
 発見可能な状態でいる時間をインテントに設定することもできます。その場合、インテントの付加情報としてEXTRA_DISCOVERABLE_DURATIONに時間（秒）を設定します。
@@ -201,7 +204,8 @@ TCP/IPのソケット通信では接続先のIPアドレスとポート番号を
 //list[implemention_of_bt_client][デバイス検索への応答]{
   Intent intent = new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
   intent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, 300);
-  startActivityForResult(intent, REQUEST_BT_DISCOVERABLE); // REQUEST_BT_DISCOVERABLEは"1"などの定数
+  startActivityForResult(intent, 
+    REQUEST_BT_DISCOVERABLE); // REQUEST_BT_DISCOVERABLEは"1"などの定数
 //}
 
 
@@ -215,11 +219,11 @@ TCP/IPのソケット通信では接続先のIPアドレスとポート番号を
 状態の変化がおき、BroadcastReceiverで受け取ったインテントには、古い状態「EXTRA_PREVIOUS_SCAN_MODE」と新しい状態「EXTRA_SCAN_MODE」に次の値が入っています（@<table>{bt_scan_mode}）。
 
 //table[bt_scan_mode][ACTION_SCAN_MODE_CHANGEで受信する情報]{
-値 説明
+値	説明
 -------------------------------------------------------------
-SCAN_MODE_CONNECTABLE_DISCOVERABLE  発見可能な状態でかつ、接続も可能な状態
-SCAN_MODE_CONNECTABLE 発見可能な状態ではないが、接続可能な状態
-SCAN_MODE_NONE  発見可能な状態でもなく、接続もできない状態
+SCAN_MODE_CONNECTABLE_DISCOVERABLE	発見可能な状態でかつ、接続も可能な状態
+SCAN_MODE_CONNECTABLE	発見可能な状態ではないが、接続可能な状態
+SCAN_MODE_NONE	発見可能な状態でもなく、接続もできない状態
 //}
 
 
@@ -230,7 +234,9 @@ SCAN_MODE_NONE  発見可能な状態でもなく、接続もできない状態
 
 //list[implemention_of_bt_server][リモートデバイスからの接続要求の受付]{
   BluetoothAdapter btAdapter = BluetoothAdapter.getDefaultAdapter();
-  BluetoothServerSocket serverSocket = btAdapter.listenUsingRfcommWithServiceRecord("SampleServerConn",UUID.fromString("00001101-0000-1000-8000-00805F9B34FB"));
+  BluetoothServerSocket serverSocket =
+    btAdapter.listenUsingRfcommWithServiceRecord("SampleServerConn",
+    UUID.fromString("00001101-0000-1000-8000-00805F9B34FB"));
   BluetoothSocket socket = serverSocket.accept();
   if (socket != null) {   // クライアントからの接続要求を受け付け接続が完了した状態
     // データの送受信処理などを行う
@@ -290,15 +296,16 @@ ServiceListenerを使用した各プロファイルのプロキシオブジェ�
 
 //list[implemention_of_bt_service][BluetoothProfile.ServiceListenerの実装]{
 
-  private BluetoothHeadset mBluetoothHeadset; // HSPのBluetoothProfileオブジェクト
-  private BluetoothA2dp mBluetoothA2dp; // A2DPのBluetoothProfileオブジェクト
-  private BluetoothHealth mBluetoothHealth; // HDPのBluetoothProfileオブジェクト
+  private BluetoothHeadset mBluetoothHeadset; // HSPのオブジェクト
+  private BluetoothA2dp mBluetoothA2dp; // A2DPのオブジェクト
+  private BluetoothHealth mBluetoothHealth; // HDPのオブジェクト
 
-  private BluetoothProfile.ServiceListener mProfileListener = new BluetoothProfile.ServiceListener() {
+  private BluetoothProfile.ServiceListener mProfileListener =
+      new BluetoothProfile.ServiceListener() {
 
     @Override
     public void onServiceConnected(int profile, BluetoothProfile proxy) {
-      // プロキシオブジェクトがアダプタに指定のサービスに接続されたときに呼ばれるメソッド
+      // プロキシオブジェクトがアダプタに指定のサービスに接続されたときに呼ばれる
       // 接続された機器のプロファイル種別とBluetoothProfileのオブジェクトを受け取り
       // プロファイル専用の型のオブジェクトに保持しておく
       if (profile == BluetoothProfile.HEADSET) {
@@ -309,7 +316,7 @@ ServiceListenerを使用した各プロファイルのプロキシオブジェ�
         mBluetoothHealth= (BluetoothHealth) proxy;
       }
 
-      // このプロファイルで接続されているデバイスをBluetoothDeviceオブジェクトのリストで取得する
+      // 接続されているデバイスをBluetoothDeviceオブジェクトのリストで取得する
       List<BluetoothDevice> devices = proxy.getConnectedDevices();
 
       // １件ずつBluetoothDeviceオブジェクトを取り出し、
@@ -319,7 +326,7 @@ ServiceListenerを使用した各プロファイルのプロキシオブジェ�
 
     @Override
     public void onServiceDisconnected(int profile) {
-      // プロキシオブジェクトがアダプタに指定のサービスから切断されたときに呼ばれるメソッド
+      // プロキシオブジェクトがアダプタに指定のサービスから切断されたときに呼ばれる
 
       // 必要な後処理など・・・
 
@@ -336,9 +343,12 @@ ServiceListenerを使用した各プロファイルのプロキシオブジェ�
 
     // Bluetoothアダプターにサービスリスナーで取得するプロファイルをプロキシオブジェクトとして登録する
     BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-    mBluetoothAdapter.getProfileProxy(this, mProfileListener, BluetoothProfile.HEADSET); //HSPを指定
-    mBluetoothAdapter.getProfileProxy(this, mProfileListener, BluetoothProfile.A2DP); //A2DPを指定
-    mBluetoothAdapter.getProfileProxy(this, mProfileListener, BluetoothProfile.HEALTH); // HDPを指定
+    mBluetoothAdapter.getProfileProxy(this,
+      mProfileListener, BluetoothProfile.HEADSET); //HSPを指定
+    mBluetoothAdapter.getProfileProxy(this,
+      mProfileListener, BluetoothProfile.A2DP); //A2DPを指定
+    mBluetoothAdapter.getProfileProxy(this,
+      mProfileListener, BluetoothProfile.HEALTH); // HDPを指定
 
 //}
 
@@ -351,11 +361,11 @@ BluetoothHeadsetクラスでは以下のアクションインテントが定義�
 ブロードキャストレシーバでIntentを取得することで、ヘッドセットの接続状態変化、音声状態変化、ベンダー固有のイベント通知をリアルタイムに取得可能です（@<table>{bt_hsp_intent}）。
 
 //table[bt_hsp_intent][BluetoothHeadsetのアクションインテント]{
-値 説明
+値	説明
 -------------------------------------------------------------
-ACTION_AUDIO_STATE_CHANGED  A2DPの音声状態変化
-ACTION_CONNECTION_STATE_CHANGED HSP の接続状態の変化
-ACTION_VENDOR_SPECIFIC_HEADSET_EVENT  ヘッドセットのベンダー固有のイベント通知
+ACTION_AUDIO_STATE_CHANGED	A2DPの音声状態変化
+ACTION_CONNECTION_STATE_CHANGED HSP	の接続状態の変化
+ACTION_VENDOR_SPECIFIC_HEADSET_EVENT	ベンダー固有のイベント通知
 //}
 
 BluetoothHeadsetクラスが持つメソッドで音声認識やベンダ固有の機器操作用のコマンド送信を行うことが可能です。
@@ -372,10 +382,10 @@ BluetoothA2dpクラスでは次のアクションインテントが定義され�
 ブロードキャストレシーバでIntentを取得することで、接続状態変化、再生状態変化をリアルタイムに取得可能です。
 
 //table[bt_a2dp_intent][BluetoothA2dpのアクションインテント]{
-値 説明
+値	説明
 -------------------------------------------------------------
-ACTION_CONNECTION_STATE_CHANGED  A2DPの接続状態変化
-ACTION_PLAYING_STATE_CHANGED A2DPプロファイルの再生状態変化
+ACTION_CONNECTION_STATE_CHANGED	A2DPの接続状態変化
+ACTION_PLAYING_STATE_CHANGED	A2DPプロファイルの再生状態変化
 //}
 
 ブロードキャストレシーバーによる状態変化を取得する例を次に示します（@<list>{implemention_of_bt_bcast1}）。
@@ -395,9 +405,11 @@ ACTION_PLAYING_STATE_CHANGED A2DPプロファイルの再生状態変化
       //現在の状態
       int status = intent.getIntExtra(BluetoothProfile.EXTRA_STATE, -1);
       //直前の状態
-      int prevStatus = intent.getIntExtra(BluetoothProfile.EXTRA_PREVIOUS_STATE, -1);
+      int prevStatus =
+         intent.getIntExtra(BluetoothProfile.EXTRA_PREVIOUS_STATE, -1);
       // 接続しているBluetooth機器の情報
-      BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+      BluetoothDevice device =
+         intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
 
       // 接続状態変更のインテントを受信した場合
       if (action.equals(BluetoothA2dp.ACTION_CONNECTION_STATE_CHANGED)) {
@@ -430,23 +442,23 @@ BluetoothHealthCallbackが持つコールバックメソッドは、onHealthAppC
 onHealthAppConfigurationStatusChangeメソッドは、ヘルス機器の登録状態が変わったときにコールバックされるメソッドで、第２引数に次の値が入ってきます（@<table>{bt_health_status1}）。
 
 //table[bt_health_status1][onHealthAppConfigurationStatusChangeメソッド]{
-値 説明
+値	説明
 -------------------------------------------------------------
-APP_CONFIG_REGISTRATION_SUCCESS  登録成功
-APP_CONFIG_REGISTRATION_FAILURE 登録失敗
-APP_CONFIG_UNREGISTRATION_SUCCESS  登録解除成功
-APP_CONFIG_UNREGISTRATION_FAILURE  登録解除失敗
+APP_CONFIG_REGISTRATION_SUCCESS	登録成功
+APP_CONFIG_REGISTRATION_FAILURE	登録失敗
+APP_CONFIG_UNREGISTRATION_SUCCESS	登録解除成功
+APP_CONFIG_UNREGISTRATION_FAILURE	登録解除失敗
 //}
 
 onHealthChannelStateChangeメソッドはチャンネルの状態が変更されたときにコールバックされるメソッドで第３引数（変更前の状態）と第４引数（変更後の状態）に次の値が渡されます（@<table>{bt_health_status2}）。
 
 //table[bt_health_status2][onHealthChannelStateChangeメソッド]{
-値 説明
+値	説明
 -------------------------------------------------------------
-STATE_CHANNEL_CONNECTING  接続処理中
-STATE_CHANNEL_CONNECTED 接続完了
-STATE_CHANNEL_DISCONNECTING  切断処理中
-STATE_CHANNEL_DISCONNECTED  切断完了
+STATE_CHANNEL_CONNECTING	接続処理中
+STATE_CHANNEL_CONNECTED		接続完了
+STATE_CHANNEL_DISCONNECTING	切断処理中
+STATE_CHANNEL_DISCONNECTED	切断完了
 //}
 
 コールバックを登録したら、Bluetoothヘルス機器への接続を行います。接続にはBluetoothHealthクラスのconnectChannelToSourceメソッドを使用します。
@@ -461,17 +473,23 @@ STATE_CHANNEL_DISCONNECTED  切断完了
   class MyBluetoothHealthCallback extends BluetoothHealthCallback {
 
     @Override
-    public void onHealthAppConfigurationStatusChange(BluetoothHealthAppConfiguration config, int status) {
+    public void onHealthAppConfigurationStatusChange(
+        BluetoothHealthAppConfiguration config, int status) {
       super.onHealthAppConfigurationStatusChange(config, status);
 
-      // 登録が成功したら通信に必要なアプリケーションコンフィギュレーションを保持しておく
+      // 登録が成功したら通信に必要なアプリケーションコンフィギュレーションを保持
       mHealthConfig = config;
         :
     }
 
     @Override
-    public void onHealthChannelStateChange(BluetoothHealthAppConfiguration config, BluetoothDevice device, int prevState, int newState, ParcelFileDescriptor fd, int channelId) {
-      super.onHealthChannelStateChange(config, device, prevState, newState, fd, channelId);
+    public void onHealthChannelStateChange(
+        BluetoothHealthAppConfiguration config,
+        BluetoothDevice device, int prevState, int newState,
+        ParcelFileDescriptor fd, int channelId) {
+
+      super.onHealthChannelStateChange(config,
+        device, prevState, newState, fd, channelId);
 
       if (newState == BluetoothHealth.STATE_CHANNEL_CONNECTED){
         // チャンネルに関連づいたIDを保持しておく
@@ -489,7 +507,8 @@ STATE_CHANNEL_DISCONNECTED  切断完了
   private void register() {
     MyBluetoothHealthCallback mCallback = new MyBluetoothHealthCallback();
     // ヘルス受信機器として機能するアプリケーションコンフィギュレーションを登録する
-    mBluetoothHealth.registerSinkAppConfiguration("HEALTH_DEVICES", BluetoothHealth.SINK_ROLE, mCallback);
+    mBluetoothHealth.registerSinkAppConfiguration("HEALTH_DEVICES",
+      BluetoothHealth.SINK_ROLE, mCallback);
   }
 
   private void unregister() {
@@ -504,7 +523,8 @@ STATE_CHANNEL_DISCONNECTED  切断完了
 
   private void disconnect() {
     // Bluetoothヘルス機器から切断する
-    mBluetoothHealth.disconnectChannel(mBluetoothDevice, mHealthConfig, mChannelId);
+    mBluetoothHealth.disconnectChannel(mBluetoothDevice,
+      mHealthConfig, mChannelId);
   }
 
 //};
@@ -542,7 +562,8 @@ BLE機器と通信するアプリケーションの開発で使用するandroid.
 Android4.3 （API Level 18）より、BluetoothManagerクラスがサポートされ、BluetoothAdapterのインスタンスの取得などができるようになりました（@<list>{implemention_of_ble1}）。
 
 //list[implemention_of_ble1][BluetoothManager]{
-  BluetoothManager manager = (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
+  BluetoothManager manager =
+     (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
   mBluetoothAdapter = manager.getAdapter();
 //};
 

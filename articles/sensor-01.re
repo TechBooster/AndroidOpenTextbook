@@ -1,4 +1,4 @@
-= センサー概要
+= センシングデバイス
 //lead{
 本章ではAndroidに搭載された各種センサーの使用方法および、GPSセンサーを利用した
 位置情報の取得について説明します。
@@ -134,7 +134,8 @@ public class SensorActivity extends Activity implements SensorEventListener {
         setContentView(R.layout.main);
 
         // センサーマネージャの取得
-        mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        mSensorManager =
+            (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         mSensor[0] = (TextView) findViewById(R.id.sensor_0_text);
         mSensor[1] = (TextView) findViewById(R.id.sensor_1_text);
         mSensor[2] = (TextView) findViewById(R.id.sensor_2_text);
@@ -237,7 +238,7 @@ public class SensorActivity extends Activity implements SensorEventListener {
 
 実際のデータを取得した例としては次のようなデータが取得できます（@<img>{accel}）。
 
-//image[accel][加速度センサーの取得]{
+//image[accel][加速度センサーの取得][scale=0.15]{
 //}
 
 端末をほぼ自分に向けた状態では、
@@ -393,7 +394,7 @@ public void onSensorChanged(SensorEvent event) {
 これらは方位、傾斜、角度をそれぞれ表しています（@<img>{orientation}）が言葉のみで理解することは困難ですので、ぜひ動かしてみてください。
 センサーの大半は動かして学習することで理解できます。
 
-//image[orientation][傾きセンサー][scale=0.5]{
+//image[orientation][傾きセンサー][scale=0.3]{
 //}
 
 
@@ -404,7 +405,7 @@ API-Level 20で規定されているセンサーをざっと整理してみま�
 ==== @<b>{加速度センサー (Acceleration sensor)}
 
 x軸、y軸、z軸のそれぞれの加速度を表します。単位は(m/s^2)です（@<img>{axis_device}）。
-//image[axis_device][加速度センサーの軸][scale=0.3]{
+//image[axis_device][加速度センサーの軸][scale=0.5]{
 //}
 
 ==== @<b>{周囲温度センサー (Temperature Sensor)}
@@ -424,7 +425,7 @@ x軸、y軸、z軸方向の磁気の強さをキャリブレーション無し�
 x軸、y軸、z軸の回転の速度、角速度を表します。単位は(rad/s)
 たとえば時計の秒針の角速度は、60秒で一回転(360度)なので、6度/秒です。rad = 度 × π/180となります@（@<img>{gyro}）。
 
-//image[gyro][角速度][scale=0.35]{
+//image[gyro][角速度][scale=0.3]{
 //}
 
 ==== @<b>{心拍センサー (Heart Rate)}
@@ -525,10 +526,10 @@ x軸、y軸、z軸のそれぞれの加速度を重力加速度を差し引い�
 
 次のスクリーンショットは見やすくするため、アプリ画面で表示させています（@<img>{accelerometer}、@<img>{proximity}）。
 
-//image[accelerometer][加速度センサー][scale=0.4]{
+//image[accelerometer][加速度センサー][scale=0.15]{
 //}
 
-//image[proximity][近接センサー][scale=0.4]{
+//image[proximity][近接センサー][scale=0.15]{
 //}
 
 これはNexus 5でのセンサーのハードウェアの例です。またNexus 5では18種類もの
@@ -689,7 +690,7 @@ boolean status = mSensorManager.registerListener(this,
 高い山などに登ると、登った距離と実際の水平方向の距離にズレが生じてしまうので、カーナビ
 などではこれを考慮するために３次元測位を行っています（@<img>{3axis}）。
 
-//image[3axis][高度が必要な理由][scale=0.4]{
+//image[3axis][高度が必要な理由][scale=0.3]{
 //}
 
 GPSは受信精度が高ければ、正確な位置を10m程度の誤差で測位できますが、いくつかの弱点もあり
@@ -722,13 +723,13 @@ GPSを利用して位置情報を取得しますが、これは通常のセン�
 //}
 
 @<b>{Existing Android Code into Worksapce}を選択します（@<img>{play_service-02}）。
-//image[play_service-02][Google Play Servicesのインストール 2][scale=0.4]{
+//image[play_service-02][Google Play Servicesのインストール 2][scale=0.35]{
 //}
 
 @<b>{Browse}から@<b>{google-play-services_lib}を選択し、@<b>{Copy projects into workspaceにチェック}
 を入れて@<b>{Finish}ボタンを押します（@<img>{play_service-03}）。
 
-//image[play_service-03][Google Play Servicesのインストール 3][scale=0.4]{
+//image[play_service-03][Google Play Servicesのインストール 3][scale=0.35]{
 //}
 
 google-play-servicesはAndroid SDKを
@@ -921,7 +922,7 @@ Google Play Servicesの利用宣言はAndroidManifest.xml内の<application>エ�
 
 位置情報を取得した例として、アプリで表示させると@<img>{location}のようになります。
 
-//image[location][位置情報取得][scale=0.4]{
+//image[location][位置情報取得][scale=0.15]{
 //}
 
 さて、これだけだといわゆる緯度経度の数値しか見えないので、
@@ -942,7 +943,7 @@ mMapBtn.setOnClickListener(new View.OnClickListener() {
 })
 //}
 
-//image[map][IntentでMap表示][scale=0.4]{
+//image[map][IntentでMap表示][scale=0.15]{
 //}
 
 === 位置情報の更新
@@ -1038,7 +1039,7 @@ protected void onPause() {
 このように、ざっくりと位置を確認したい場合はLocationClient#getLastLocationを使い、
 時間や位置の変化で更新を伴ない場合はLocationRequest#requestLocationUpdatesを使用することが定石です（@<img>{update}）。
 
-//image[update][位置情報データ][scale=0.4]{
+//image[update][位置情報データ][scale=0.15]{
 //}
 
 ナビゲーションアプリを作る場合はこの位置情報を元にMapビューなどと組み合わせて
