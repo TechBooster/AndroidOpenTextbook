@@ -19,7 +19,7 @@ Androidを搭載している端末の種類はものすごい勢いで増加し�
  * スクリーンサイズ
 
 物理的な画面のサイズです。対角線の長さで表し、単位としてインチを用います。Androidでは、small、normal、large、extra largeの4つのグループで分類されています。
-@<table>{screensize_inch}に、インチ数とグループの関係を示します。携帯電話の大部分は4〜5インチなので、まずはnormalで正しく表示されることを目指しましょう。
+@<table>{screensize_inch}に、インチ数とグループの関係を示します。携帯電話の大部分は4〜5インチなので、まずはnormalで正しく表示されることを目指しましょう。@<fn>{device-large}
 
 //table[screensize_inch][インチ数とグループの関係]{
 グループ	インチ数
@@ -30,7 +30,7 @@ large	4〜7インチ程度
 extra large	7〜10インチ程度
 //}
 
-#@# footnoteで、なぜ5インチのハンドセットがlargeにならないかを説明する
+//footnote[device-large][最近の5インチ携帯電話はlargeに分類されそうですが、ピクセル密度が高いためnormalに分類されます。この理由は後で紹介します。]
 
  * ピクセル密度(density)
 
@@ -142,6 +142,8 @@ normal	470dp x 320dp
 large	640dp x 480dp
 xlarge	960dp x 720dp
 //}
+
+たとえば、最近の5インチフルHD（Full High Definition）端末は1920 x 1080pxでxxhdpiなので、640dp x 380dpとなり、largeではなくnormalに分類されます。
 
 === ScrollViewを使ってスクリーンサイズの違いに対応する
 
