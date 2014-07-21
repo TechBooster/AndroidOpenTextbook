@@ -1,7 +1,7 @@
 = センサー概要
 //lead{
- 本章ではAndroidに搭載された各種センサーの使用方法および、GPSセンサーを利用した
- 位置情報の取得について説明します。
+本章ではAndroidに搭載された各種センサーの使用方法および、GPSセンサーを利用した
+位置情報の取得について説明します。
 //}
 
 == センサーとは
@@ -17,7 +17,7 @@
 最近のセンサーはMEMS@<fn>{mems}で構成され、超小型化されているのが特徴です（@<img>{mems}）。
 //footnote[mems][MEMS(Micro Electro Mechanical Systems)とは、電子回路やセンサー、アクチュエータなどを複合化したデバイスとなっていて、一つのデバイス内部に複数の機能を要することが可能]
 
-//image[mems][半導体プロセスを用いて作成されたギア（左下）とダニ（右上）の電子顕微鏡写真(Wikipediaより)]{
+//image[mems][半導体プロセスを用いて作成されたギア（左下）とダニ（右上）の電子顕微鏡写真(Wikipediaより)][scale=0.3]{
 //}
 
 Androidには複数のハードウェアセンサーが搭載されていますが、さらにそれらをまとめた
@@ -73,7 +73,8 @@ mSensorManager = (SensorManager)getSystemService(Context.SENSOR_SERVICE);
 例として、Acceleration（加速度センサー）を取得します（@<list>{type}）。
 
 //list[type][センサーの取得]{
-Sensor acceleration = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+Sensor acceleration =
+   mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
 //}
 
 次にセンサーを有効にします（@<list>{register}）。
@@ -105,11 +106,14 @@ onAccuracyChangedはセンサーの精度が変化した時に呼ばれます。
 
 基本的な流れは以上になりますが、実際に使用する場合の実装は次のようになります。
 
- * onCreateもしくはonResumeでSensorManagerを取得する
- * onResumeで、センサーを有効化する。SensorManager#getDeafauletSensorでセンサーを取得し、SensorManager#registerListnerで有効化
- * onPauseでSensorManager#unregisterListenerで無効化
+ 1. onCreateもしくはonResumeでSensorManagerを取得する
+ 2. onResumeでセンサーを有効化する
+ 3. onPauseでセンサーを無効化する
 
 センサーの有効化と無効化があるのは、必要な時のみセンサー情報を使用するようにするためです。
+SensorManager#getDeafauletSensorでセンサーを取得し、SensorManager#registerListnerで有効化します。
+無効化はSensorManager#unregisterListenerで行えます。
+
 センサー情報をずっと使用すると電池を消費してしまうためで、アプリのライフサイクルを意識して利用時を定めます。
 
 そのため、たいていのアプリでは、onResumeでセンサーの取得を有効化し、onPauseで無効化するパターンとなります。
@@ -141,9 +145,11 @@ public class SensorActivity extends Activity implements SensorEventListener {
         super.onResume();
 
         // 使用するセンサーの設定
-        Sensor acceleration = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        Sensor acceleration =
+            mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         // センサーを有効にする
-        mSensorManager.registerListener(this, acceleration, SensorManager.SENSOR_DELAY_NORMAL);
+        mSensorManager.registerListener(this,
+            acceleration, SensorManager.SENSOR_DELAY_NORMAL);
     }
 
     @Override
@@ -204,8 +210,8 @@ public class SensorActivity extends Activity implements SensorEventListener {
  * SensorEvent.values[1] : y軸加速度
  * SensorEvent.values[2] : z軸加速度
 
-加速度なので、そのままx,y,xのそれぞれの加速度が取得できます。これを
-コードで取得するには、onSensorChangedに次のとおり、追加します（@<list>{sensorchange}）。
+加速度なので、そのままx、y、xのそれぞれの加速度が取得できます。これを
+コードで取得するには、onSensorChangedを次のとおりに変更します（@<list>{sensorchange}）。
 
 //list[sensorchange][センサー値変化イベントコールバック]{
   @Override
@@ -255,11 +261,13 @@ protected void onResume() {
     // センサマネージャへリスナーを登録
     for (Sensor sensor : sensors) {
         if (sensor.getType() == Sensor.TYPE_PROXIMITY) {
-            mSensorManager.registerListener(this, sensor, SensorManager.SENSOR_DELAY_UI);
+            mSensorManager.registerListener(this,
+                sensor, SensorManager.SENSOR_DELAY_UI);
         }
 
         if (sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
-            mSensorManager.registerListener(this, sensor, SensorManager.SENSOR_DELAY_UI);
+            mSensorManager.registerListener(this,
+                sensor, SensorManager.SENSOR_DELAY_UI);
         }
     }
 }
@@ -319,11 +327,13 @@ protected void onResume() {
     // センサマネージャへリスナーを登録
     for (Sensor sensor : sensors) {
         if (sensor.getType() == Sensor.TYPE_MAGNETIC_FIELD) {
-            mSensorManager.registerListener(this, sensor, SensorManager.SENSOR_DELAY_UI);
+            mSensorManager.registerListener(this,
+                sensor, SensorManager.SENSOR_DELAY_UI);
         }
 
         if (sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
-            mSensorManager.registerListener(this, sensor, SensorManager.SENSOR_DELAY_UI);
+            mSensorManager.registerListener(this,
+                sensor, SensorManager.SENSOR_DELAY_UI);
         }
     }
 }
@@ -359,7 +369,8 @@ public void onSensorChanged(SensorEvent event) {
         SensorManager.getRotationMatrix(inR, I, mAcceleration, mGeomagnetic);
 
         // Activityの表示が縦固定で、端末表面が自分を向いてる場合
-        SensorManager.remapCoordinateSystem(inR, SensorManager.AXIS_X, SensorManager.AXIS_Z, outR);
+        SensorManager.remapCoordinateSystem(inR,
+            SensorManager.AXIS_X, SensorManager.AXIS_Z, outR);
         SensorManager.getOrientation(outR, mOrientation);
 
         //  radianToDegree(mOrientation[0])  Z軸方向, Azimuth
@@ -382,7 +393,7 @@ public void onSensorChanged(SensorEvent event) {
 これらは方位、傾斜、角度をそれぞれ表しています（@<img>{orientation}）が言葉のみで理解することは困難ですので、ぜひ動かしてみてください。
 センサーの大半は動かして学習することで理解できます。
 
-//image[orientation][傾きセンサー]{
+//image[orientation][傾きセンサー][scale=0.5]{
 //}
 
 
@@ -393,7 +404,7 @@ API-Level 20で規定されているセンサーをざっと整理してみま�
 ==== @<b>{加速度センサー (Acceleration sensor)}
 
 x軸、y軸、z軸のそれぞれの加速度を表します。単位は(m/s^2)です（@<img>{axis_device}）。
-//image[axis_device][加速度センサーの軸]{
+//image[axis_device][加速度センサーの軸][scale=0.3]{
 //}
 
 ==== @<b>{周囲温度センサー (Temperature Sensor)}
@@ -413,7 +424,7 @@ x軸、y軸、z軸方向の磁気の強さをキャリブレーション無し�
 x軸、y軸、z軸の回転の速度、角速度を表します。単位は(rad/s)
 たとえば時計の秒針の角速度は、60秒で一回転(360度)なので、6度/秒です。rad = 度 × π/180となります@（@<img>{gyro}）。
 
-//image[gyro][角速度]{
+//image[gyro][角速度][scale=0.35]{
 //}
 
 ==== @<b>{心拍センサー (Heart Rate)}
@@ -514,10 +525,10 @@ x軸、y軸、z軸のそれぞれの加速度を重力加速度を差し引い�
 
 次のスクリーンショットは見やすくするため、アプリ画面で表示させています（@<img>{accelerometer}、@<img>{proximity}）。
 
-//image[accelerometer][加速度センサー]{
+//image[accelerometer][加速度センサー][scale=0.4]{
 //}
 
-//image[proximity][近接センサー]{
+//image[proximity][近接センサー][scale=0.4]{
 //}
 
 これはNexus 5でのセンサーのハードウェアの例です。またNexus 5では18種類もの
@@ -547,7 +558,9 @@ x軸、y軸、z軸のそれぞれの加速度を重力加速度を差し引い�
 たとえば、歩数計のセンサーを必須とする場合はAndroidManifest.xmlに次のように追加します（@<list>{featues}）。
 
 //list[featues][AndroidManifest.xml]{
-  <uses-feature android:name="android.hardware.sensor.stepdetector" android:required="true" />
+  <uses-feature
+      android:name="android.hardware.sensor.stepdetector"
+      android:required="true" />
 //}
 
 uses-feature要素を追記し、stepdetectorを持っていない機種のみにインストールを許可します。
@@ -562,10 +575,10 @@ uses-feature要素を追記し、stepdetectorを持っていない機種のみ�
 ==== センサーの数値の上限下限の違い
 
 センサーのハードウェアが違えば、精度や上限・下限も異なる場合があります。センサー
-の値の範囲を気にする必要がある場合もあります。たとえば、さきほどのNexus5と中華系の端末
-を近接センサーで比較してみると、次のようになっていたりします（@<img>{panda}）。
+の値の範囲を気にする必要がある場合もあります。たとえば、さきほどのNexus5と安価な端末
+を近接センサーで比較してみると、次のようになっています（@<img>{panda}）。
 
-//image[panda][ある中華端末の場合]{
+//image[panda][安価な端末の場合][scale=0.4]{
 //}
 
 @<img>{proximity}と比較すると、MaxRangeが異なります。
@@ -638,7 +651,8 @@ uses-feature要素を追記し、stepdetectorを持っていない機種のみ�
 //list[sensor_batch][バッチモード設定]{
 private Sensor mStepDetector;
 ...
-boolean status = mSensorManager.registerListener(this, mStepDetector, SensorManager.SENSOR_DELAY_NORMAL, 10000);
+boolean status = mSensorManager.registerListener(this,
+    mStepDetector, SensorManager.SENSOR_DELAY_NORMAL, 10000);
 //}
 
 ただし、バッチ処理が可能かどうかはセンサーの対応によるので、対応している場合のみ
@@ -675,7 +689,7 @@ boolean status = mSensorManager.registerListener(this, mStepDetector, SensorMana
 高い山などに登ると、登った距離と実際の水平方向の距離にズレが生じてしまうので、カーナビ
 などではこれを考慮するために３次元測位を行っています（@<img>{3axis}）。
 
-//image[3axis][高度が必要な理由]{
+//image[3axis][高度が必要な理由][scale=0.4]{
 //}
 
 GPSは受信精度が高ければ、正確な位置を10m程度の誤差で測位できますが、いくつかの弱点もあり
@@ -704,30 +718,30 @@ GPSを利用して位置情報を取得しますが、これは通常のセン�
 === Google Play Services Libraryの導入
 
 @<b>{Android SDK Manager}から@<b>{Google Play Services}を選択して、インストールします（@<img>{play_service-01}）。
-//image[play_service-01][Google Play Servicesのインストール 1]{
+//image[play_service-01][Google Play Servicesのインストール 1][scale=0.4]{
 //}
 
 @<b>{Existing Android Code into Worksapce}を選択します（@<img>{play_service-02}）。
-//image[play_service-02][Google Play Servicesのインストール 2]{
+//image[play_service-02][Google Play Servicesのインストール 2][scale=0.4]{
 //}
 
 @<b>{Browse}から@<b>{google-play-services_lib}を選択し、@<b>{Copy projects into workspaceにチェック}
 を入れて@<b>{Finish}ボタンを押します（@<img>{play_service-03}）。
 
-//image[play_service-03][Google Play Servicesのインストール 3]{
+//image[play_service-03][Google Play Servicesのインストール 3][scale=0.4]{
 //}
 
 google-play-servicesはAndroid SDKを
 インストールした@<b>{$(ANDORID_SDK)/extras/google/google_play_services}にあります。
 
 ビルドしてエラーが無いことを確認しておきましょう（@<img>{play_service-04}）。
-//image[play_service-04][Google Play Servicesのインストール 4]{
+//image[play_service-04][Google Play Servicesのインストール 4][scale=0.4]{
 //}
 
 アプリを作成時のひな形作成した後、Google Play ServicesライブラリをAndroid
 ライブラリとして組み込むすることで使用できます（@<img>{play_service-05}）。
 
-//image[play_service-05][Google Play Servicesのインストール 5]{
+//image[play_service-05][Google Play Servicesのインストール 5][scale=0.4]{
 //}
 
 これでGoogle Play Servicesライブラリの導入は完了です。
@@ -761,9 +775,12 @@ protected void onCreate(Bundle savedInstanceState) {
     setContentView(R.layout.activity_main);
 
     // Google Play Serviceが有効かどうかチェックを行う
-    final int result = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
+    final int result = GooglePlayServicesUtil.
+        isGooglePlayServicesAvailable(this);
     if (result != ConnectionResult.SUCCESS) {
-        Toast.makeText(this, "Google Play service is not available (status=" + result + ")", Toast.LENGTH_LONG).show();
+        Toast.makeText(this,
+            "Google Play service is not available (status=" + result + ")",
+            Toast.LENGTH_LONG).show();
         finish();
     }
 
@@ -775,7 +792,8 @@ protected void onCreate(Bundle savedInstanceState) {
 LocationClientを使用する場合には、2つのコールバックを引数に取るので、リスナーをActivityに設定しておきます（@<list>{gps_listener}）。
 
 //list[gps_listener][リスナーの設定]{
-public class MainActivity extends Activity implements ConnectionCallbacks, OnConnectionFailedListener
+public class MainActivity extends Activity
+     implements ConnectionCallbacks, OnConnectionFailedListener
 //}
 
 設定されるリスナーは3つで、OnConnectionFailedListenerは接続に失敗した時に呼ばれます（@<list>{gps_connectfail}）。
@@ -804,10 +822,10 @@ public void onDisconnected() {
 実装ではGoogle Play Servicesへの接続と切断を明示的にを行う必要があります。
 この辺は通常のセンサーと同じように実装できます。
 
- * onCreate()もしくはonResumeでLocationClientを取得
- * onResume()でLocationClient#connectでGoogle Play Servicesへ接続
- * onPause()でLocationClient#disconnectでGoogle Play Servicesと切断
- * 位置情報はLocationClient#getLastLocationで取得
+ * onCreateまたはonResume：LocationClientを取得する
+ * onResume：LocationClient#connectで接続する
+ * onPause：LocationClient#disconnectで切断する
+ * 位置情報の取得：LocationClient#getLastLocationを利用する
 
 また、気をつける点としてLocationClient#connectは非同期関数で、onConnected
 コールバックが呼ばれてからでないとLocationClient#getLastLocationを呼ぶことが
@@ -816,7 +834,8 @@ public void onDisconnected() {
 以上をまとめると、@<list>{gps_sample}のような実装になります。
 
 //list[gps_sample][GPSを使うコード]{
-public class MainActivity extends Activity implements ConnectionCallbacks, OnConnectionFailedListener {
+public class MainActivity extends Activity
+        implements ConnectionCallbacks, OnConnectionFailedListener {
 
     private LocationClient mLocationClient;
     private Location mLoc;
@@ -828,9 +847,12 @@ public class MainActivity extends Activity implements ConnectionCallbacks, OnCon
         setContentView(R.layout.activity_main);
 
         // Google Play ServiceKが実装されているか確認
-        final int result = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
+        final int result = 
+            GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
         if (result != ConnectionResult.SUCCESS) {
-            Toast.makeText(this, "Google Play service is not available (status=" + result + ")", Toast.LENGTH_LONG).show();
+            Toast.makeText(this,
+                 "Google Play service is not available (status=" + result + ")",
+                 Toast.LENGTH_LONG).show();
             finish();
         }
 
@@ -899,7 +921,7 @@ Google Play Servicesの利用宣言はAndroidManifest.xml内の<application>エ�
 
 位置情報を取得した例として、アプリで表示させると@<img>{location}のようになります。
 
-//image[location][位置情報取得]{
+//image[location][位置情報取得][scale=0.4]{
 //}
 
 さて、これだけだといわゆる緯度経度の数値しか見えないので、
@@ -913,13 +935,14 @@ mMapBtn.setOnClickListener(new View.OnClickListener() {
     @Override
     public void onClick(View v) {
         // IntentでGoogle Mapを呼び出す
-        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("geo:" + mLoc.getLatitude() + "," + mLoc.getLongitude()));
+        Intent intent = new Intent(Intent.ACTION_VIEW,
+            Uri.parse("geo:" + mLoc.getLatitude() + "," + mLoc.getLongitude()));
         startActivity(intent);
     }
 })
 //}
 
-//image[map][IntentでMap表示]{
+//image[map][IntentでMap表示][scale=0.4]{
 //}
 
 === 位置情報の更新
@@ -1015,7 +1038,7 @@ protected void onPause() {
 このように、ざっくりと位置を確認したい場合はLocationClient#getLastLocationを使い、
 時間や位置の変化で更新を伴ない場合はLocationRequest#requestLocationUpdatesを使用することが定石です（@<img>{update}）。
 
-//image[update][位置情報データ]{
+//image[update][位置情報データ][scale=0.4]{
 //}
 
 ナビゲーションアプリを作る場合はこの位置情報を元にMapビューなどと組み合わせて
