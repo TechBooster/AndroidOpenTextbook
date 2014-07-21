@@ -254,6 +254,23 @@ android:nextFocusUp	上キーが押された時にフォーカスの当たるVie
 </RelativeLayout>
 //}
 
+adbコマンドを使用して、設定が正しく反映されているかを方向キーの無い端末で確認することができます（@<list>{adb-input}）。
+
+//list[adb-input][adbコマンドで方向キーの操作をシミュレートする]{
+ $ adb shell input keyevent KEYCODE_DPAD_DOWN
+//}
+
+KEYCODE_DPAD_xxxxの部分に指定可能な方向を@<table>{keycode}に示します。
+
+//table[keycode][KEYCODE部に指定可能な方向]{
+KEYCODE	向き
+------------
+KEYCODE_DPAD_DOWN	下
+KEYCODE_DPAD_UP	上
+KEYCODE_DPAD_LEFT	左
+KEYCODE_DPAD_RIGHT	右
+//}
+
 === 動画に字幕を付ける
 
 作成したAndroidアプリ内で、説明のためにVideoViewを用いて動画再生を行うこともあるでしょう。しかし、耳の不自由な方は台詞を聞くことができないため、動画に字幕をつける必要があります。Androidでは、VideoViewに再生中の動画に字幕を付けるAPIがAndroid 4.4（API Level 19）で追加されました。以下の手順で、VideoViewで再生する動画に字幕を付けることができます。
