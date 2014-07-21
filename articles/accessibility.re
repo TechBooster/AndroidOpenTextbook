@@ -4,22 +4,22 @@
 
 == ローカライズ
 
-「このアプリ、すごくいいんだけど英語なんだよな。。。」といった経験をしたことはありませんか？すばらしいユーザー体験を提供するアプリであっても、言語が母国語でないというだけでインストールされないというケースはとても多いです。本節では、作成したAndroidを多言語対応（ローカライズ）する方法を紹介します。
+「このアプリ、すごくいいんだけど英語なんだよな」といった経験をしたことはありませんか？すばらしいユーザー体験を提供するアプリであっても、言語が母国語でないというだけでインストールされないというケースはとても多いです。ここでは、作成したAndroidを多言語対応（ローカライズ）する方法を紹介します。
 
 === 文字列をローカライズする
 
-アプリ内で使用している文字列を端末の言語設定に応じて変更するには、以下の順で文字列を置き換えていきます。
+アプリ内で使用している文字列を端末の言語設定に応じて変更するには、次の手順で文字列を置き換えていきます。
 
- * res/values/strings.xmlを作成する
- * レイアウトXML内の文字列を@string/xxxxにする
- * Javaプログラム内の文字列をgetString(R.string.xxxx)で置き換える
- * res/values-en/strings.xmlなどを作成する
+ 1. res/values/strings.xmlを作成する
+ 2. レイアウトXML内の文字列参照を@string/xxxxに変更する
+ 3. Javaプログラム内の文字列をgetString(R.string.xxxx)で参照する
+ 4. res/values-en/strings.xmlなど別言語リソースを作成する
 
 では、順に見ていきましょう。
 
 ==== res/values/strings.xmlを作成する
 
-まず、strings.xmlに文字列の対応表を作成します。name属性を用いて文字列に名前を付けていきます。この時、
+まず、strings.xmlにアプリケーションで利用する文字列の一覧表を作成します。name属性を用いて文字列（メッセージ）に名前を付けていきます。この時、
 
  * 数字で始まる名前
  * Javaの予約語（たとえばswitchなど）
@@ -35,7 +35,7 @@
 </resources>
 //}
 
-==== レイアウトXML内の文字列を@string/xxxxにする
+==== レイアウトXML内の文字列参照を@string/xxxxに変更する
 
 次に、レイアウトXML内の文字列（TextViewやButtonなど）を置き換えていきます。android:textやandroid:hintなど、文字列を指定する箇所を@string/xxxx形式で指定します。xxxxの部分は、先ほど作成したstrings.xmlのname属性に設定した名前を指定します。たとえば、@<list>{layout_string}では、TextViewに「メモ帳アプリ」が表示されます。
 
@@ -47,26 +47,26 @@
     />
 //}
 
-==== Javaプログラム内の文字列をgetString(R.string.xxxx)で置き換える
+==== Javaプログラム内の文字列をgetString(R.string.xxxx)で参照する
 
-Toastの引数やダイアログのメッセージなど、Javaプログラム内でユーザーに表示するための文字列を指定するシーンはいくつかあります。端末の言語設定を反映させるため、Javaプログラム中では文字列を""で指定するのではなく、次のような方法で指定します。
+Toastの引数やダイアログのメッセージなど、Javaプログラム内でユーザーに表示するために文字列を指定するシーンはいくつかあります。端末の言語設定を反映させるため、Javaプログラム中では文字列を""で指定するのではなく、次のような方法で指定します。
 
  * int resIdを引数にとるメソッドの場合、R.string.xxxxを渡す
  * StringやCharSequenceを引数にとるメソッドの場合、getString(R.string.xxxx)の戻り値を渡す
 
-TextViewのsetText()メソッドやAlertDialog.BuilderのsetMessage()メソッドなど、一部のメソッドはセットする文字列としてCharSequence(String)だけでなく、int型のresIdを指定することができます。この場合、引数としてR.string.xxxxを渡すことで多言語に対応させます。xxxxの部分はstrings.xmlのname属性に設定した名前にします。
+TextViewのsetTextメソッドやAlertDialog.BuilderのsetMessageメソッドなど、一部のメソッドはセットする文字列としてCharSequence(String)だけでなく、int型のresIdを指定することができます。この場合、引数としてR.string.xxxxを渡すことで多言語に対応させます。xxxxの部分はstrings.xmlのname属性に設定した名前にします。
 
 セットする文字列としてStringやCharSequenceしか受け取れないメソッドや、文字列の一部をユーザー名などに置き換えて使用したい場合、ActivityやFragmentのgetString(int resId)メソッドを使用して、端末の言語設定に従った文字列を取得し、それを使用します。
 
-==== res/values-en/strings.xmlなどを作成する
+==== res/values-en/strings.xmlなど別言語リソースを作成する
 
 レイアウトXMLとJavaプログラムを修正した後、以下の手順で各言語用のstrings.xmlを用意します。
 
- * res/values-<言語コード>フォルダを作ります。たとえば英語であればres/values-enフォルダを作成します。
- * res/values/strings.xmlをres/values-<言語コード>フォルダにコピーします。
- * コピーしたstrings.xmlファイルの文字列をその言語に翻訳します。
+ 1. res/values-<言語コード>フォルダを作ります。たとえば英語であればres/values-enフォルダを作成する
+ 2. res/values/strings.xmlをres/values-<言語コード>フォルダにコピーする
+ 3. コピーしたstrings.xmlファイルの文字列をその言語に翻訳する
 
-これにより、端末の言語設定に応じて使用されるstrings.xmlファイルが変更されます。尚、res/valuesフォルダ内のstrings.xmlはデフォルトリソースと呼ばれ、現在の言語用のstrings.xmlファイルが見つからない時に使用されます。
+これにより、端末の言語設定に応じて参照するstrings.xmlファイルが変更されます。なお、res/valuesフォルダ内のstrings.xmlはデフォルトリソースと呼ばれ、現在の言語設定に対応したstrings.xmlファイルが見つからない時に使用されます。
  
 === ローカライズした画像を用意する
 
@@ -74,23 +74,27 @@ TextViewのsetText()メソッドやAlertDialog.BuilderのsetMessage()メソッ�
 
 === デフォルトの言語を英語にする
 
-res/valuesフォルダや、res/drawable-hdpiフォルダなど、言語コードを含まないフォルダ内のリソースは「デフォルトリソース」と呼ばれます。これらは、端末の言語設定にマッチするフォルダが無い時に使用されます。つまり、res/values/strings.xmlに日本語のリソースをいれた場合、サポートしていない言語のユーザーには日本語が表示されてしまい、すぐアンインストールされてしまうことにつながります。世界的に見て、英語であれば多少は読めるというユーザーがいると思われるので、res/valuesには英語リソースを入れ、res/values-jaに日本語リソースを入れておきましょう。これにより、サポートしていない言語の場合でも英語で表示されるため、作成したアプリを使ってもらえる可能性が高まります。
+res/valuesフォルダや、res/drawable-hdpiフォルダなど、言語コードを含まないフォルダ内のリソースは「デフォルトリソース」と呼ばれます。これらは、端末の言語設定にあった言語コードのフォルダが存在しない時に使用されます。
+
+つまり、res/values/strings.xmlに日本語のリソースをいれた場合は、サポートしていない言語のユーザーには日本語が表示されてしまい、すぐアンインストールされてしまうことにつながります。
+世界的に見て、英語であれば多少は読めるというユーザーが多いため、res/valuesには英語リソースを入れ、res/values-jaに日本語リソースを入れておきましょう。
+これにより、サポートしていない言語の場合でも英語で表示されるため、作成したアプリを使ってもらえる可能性が高まります。
 
 == アクセシビリティ
 
-本節では、作成したAndroidアプリを、目や耳が不自由な方に使ってもらうためにやるべきことを紹介します。
+ここでは、作成したAndroidアプリを、目や耳が不自由な方に使ってもらうためにやるべきことを紹介します。
 
 === アクセシビリティ機能を試す
 
 まずは多くの端末で最初からインストールされているTalkBackを試してみましょう。「設定」の「ユーザー補助」から、TalkBackをONにします。これにより、読み上げ機能が有効になります。
-
-=== 読み上げ機能に対応する
-
 早速、作成したAndroidアプリを読み上げ機能に対応させてみましょう。
 
 ==== 読み上げ用文字列を設定する
 
-ViewやViewGroupにフォーカスがあたった時、TalkBackはandroid:textまたはandroid:contentDescriptionの内容を読み上げます。TextViewやButtonであれば、android:textが設定されているので読み上げが行われますが、ImageViewなど、android:textを持たないViewやViewGroupは、android:contentDescriptionが設定されていないと、読み上げが行われません。これでは目の不自由な方が画像をタップした時、どのような画像をタップしたか分からないので、android:contentDescriptionに読み上げ用の文字列を設定しましょう。読み上げ用の文字列もローカライズのことを考え、@string/xxxx形式で指定するようにします。
+ViewやViewGroupにフォーカスがあたった時、TalkBackはandroid:textまたはandroid:contentDescriptionの内容を読み上げます。
+TextViewやButtonであれば、android:textが設定されているので読み上げが行われますが、ImageViewなど、android:textを持たないViewやViewGroupは、android:contentDescriptionが設定されていないと、読み上げが行われません。
+
+これでは目の不自由な方が画像をタップした時、どのような画像をタップしたか分からないので、android:contentDescriptionに読み上げ用の文字列を設定しましょう。読み上げ用の文字列もローカライズのことを考え、@string/xxxx形式で指定するようにします。
 
 ==== 左右フリックに対応する
 
@@ -99,21 +103,31 @@ TalkBackがONの時は、左右フリックでフォーカスが移動します�
 //list[treeorder][レイアウトXML]{
 //}
 
+#@# リスト不明
+
 ==== フォーカスの制御を行う
 
-レイアウトを重ねて表示している時、後ろのViewにフォーカスがあたってしまうとユーザーは混乱してしまいます。これを防止するため、Viewにフォーカスを当てない設定を行うことができます。@<list>{focus_xml}はレイアウトXMLで@+id/xxxxにフォーカスを当てないようにする例です。
+レイアウトを重ねて表示している時、後ろのViewにフォーカスがあたってしまうとユーザーは混乱してしまいます。これを防止するため、Viewにフォーカスを当てない設定を行うことができます。
+
+@<list>{focus_xml}はレイアウトXMLで@+id/xxxxにフォーカスを当てないようにする例です。
 
 //list[focus_xml][レイアウトXMLでフォーカスを当てないよう設定]{
 //}
 
-Javaプログラム中で動的に指定する時は、@<list>{focus_java}のようにsetImportantForAccessibility()メソッドを使用します。
+#@# リスト不明
+
+Javaプログラム中で動的に指定する時は、@<list>{focus_java}のようにsetImportantForAccessibilityメソッドを使用します。
 
 //list[focus_java][Javaプログラムでフォーカスを当てないよう設定]{
 //}
 
+#@# リスト不明
+
 ==== 方向キーに対応する
 
-日本ではあまり見かけませんが、方向キーのある端末もあります。ユーザーは画面を見ることができなくても、Viewの並びを想像することはできるため、方向キーによる操作と想像しているViewの並びを合わせておく必要があります。これに対応するため、フォーカスが当たっている状態で上下左右が押された時、どのViewにフォーカスが移動すべきか指定することができます。@<table>{focus_order}は制御用の属性一覧です。たとえば、上キーが押された時@+id/button1にフォーカスを移動させた場合、android:nextFocusUpに@+id/button1を指定します。
+日本ではあまり見かけなくなりましたが、方向キーのある端末もあります。ユーザーは画面を見ることができなくても、Viewの並びを想像できるため、方向キーによる操作と想像しているViewの並びを合わせておく必要があります。これに対応するため、フォーカスが当たっている状態で上下左右が押された時、どのViewにフォーカスが移動すべきか指定できます。
+
+@<table>{focus_order}は制御用の属性一覧です。たとえば、上キーが押された時@+id/button1にフォーカスを移動させた場合、android:nextFocusUpに@+id/button1を指定します。
 
 //table[focus_order][フォーカスの制御用属性]{
 属性名	意味
@@ -129,16 +143,19 @@ android:nextFocusUp	上キーが押された時にフォーカスの当たるVie
 //list[focus_cursor][方向キーのある端末向けに設定をいれた例]{
 //}
 
+#@# リスト不明
+
 === 動画に字幕を付ける
 
 作成したAndroidアプリ内で、説明のためにVideoViewを用いて動画再生を行うこともあるでしょう。しかし、耳の不自由な方は台詞を聞くことができないため、動画に字幕をつける必要があります。Androidでは、VideoViewに再生中の動画に字幕を付けるAPIがAndroid 4.4（API Level 19）で追加されました。以下の手順で、VideoViewで再生する動画に字幕を付けることができます。
 
- * WebVTT形式の字幕ファイルを作成する。
- * VideoViewに字幕ファイルをセットする。
+ 1. WebVTT形式の字幕ファイルを作成する
+ 2. VideoViewに字幕ファイルをセットする
 
 ==== WebVTT形式の字幕ファイルを作成する
 
-WebVTTとは、The Web Video Text Tracks Formatの略で、HTML5のvideoタグで表示される動画に字幕を付ける時などに使用されます。詳細なドラフトはhttp://dev.w3.org/html5/webvtt/で読むことができます。
+WebVTT@<fn>{WebVTT}とは、The Web Video Text Tracks Formatの略で、HTML5のvideoタグで表示される動画に字幕を付ける時などに使用されます。
+//footnote[WebVTT][詳細なドラフトはhttp://dev.w3.org/html5/webvtt/で読むことができます]
 
 WebVTTファイルの形式を@<list>[webvtt]に示します。
 
@@ -161,7 +178,7 @@ OpenTextbookへ
 
 ==== VideoViewに字幕ファイルをセットする
 
-次に、作成したvttファイルをVideoViewにセットします。VideoViewのインスタンスを取得し、addSubtitleSource()メソッドで字幕データをセットします。@<list>[videoview]に例を示します。
+次に、作成したvttファイルをVideoViewにセットします。VideoViewのインスタンスを取得し、addSubtitleSourceメソッドで字幕データをセットします。@<list>[videoview]に例を示します。
 
 //list[videoview][VideoViewに字幕データをセットする]{
 mVideoView.addSubtitleSource(
@@ -180,11 +197,11 @@ mVideoView.addSubtitleSource(
 
 次の6点を特に検証しましょう。
 
- * 画面のタップを用いず、方向キーのみで操作できるか？
- * TalkbackがONの時、フォーカスが当たったものが正しく読み上げられるか？
- * タッチガイドがONの時、タップしたものが正しく読み上げられるか？
- * ユーザーが操作可能なViewは、Android Designで推奨されている1辺48dp以上であるか？
- * TalkbackがONの時、画像の拡大縮小やスクロールなどのジェスチャーが正しく動作するか？
+ * 画面のタップを用いず、方向キーのみで操作できる
+ * TalkbackがONの時、フォーカスが当たったものが正しく読み上げられる
+ * タッチガイドがONの時、タップしたものが正しく読み上げられる
+ * ユーザーが操作可能なViewは、Android Designで推奨されている1辺48dp以上である
+ * TalkbackがONの時、画像の拡大縮小やスクロールなどのジェスチャーが正しく動作する
  * 音のみのフィードバックを行っていないか？メール着信を音のみで通知していた場合、耳の不自由な方は通知に気づくことができません。
 
 == まとめ
