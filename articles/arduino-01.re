@@ -12,7 +12,7 @@ Arduino@<fn>{arduino}は今までハードルの高かったハードウェア�
 非常に簡単に行えるようにしたツールです。ちょっとしたセンサーなどの
 ハードウェアを制御するのに使われ、プロトタイピングツールと呼ばれています。
 開発用のIDE環境が用意されており、C言語ライクな記述でプログラムを書くことが
-できます。これを@<b>{スケッチ}と呼びます。
+でき、これを@<b>{スケッチ}と呼びます。
 
 //footnote[arduino][@<href>{http://www.arduino.cc/}]
 
@@ -64,19 +64,20 @@ PWM(Pulse Wave Modulation)と言い、実際にはアナログ出力っぽいこ
 の値を取ります。アナログといっても内部ではデジタル化された整数値と
 して扱われます。これはアナログ入力をA/Dコンバータで処理している
 ためです。
+
 ===[/column]
 
 == Arduino IDEのインストール
 
 Arduino IDEは、Windows, MacOS, Linuxに対応しています。IDEの
-ダウンロードはこちら@<href>{http://arduino.cc/en/Main/Software}から行います。
+ダウンロードは@<href>{http://arduino.cc/en/Main/Software}から行います。
 
 == デバイスドライバのインストール
 
 MacOSとLinuxではドライバは必要ありませんが、WindowsではUSBシリアル
 ドライバが必要です。Windows用ドライバは@<href>{http://www.ftdichip.com/Drivers/VCP.htm}
 からダウンロードしてインストールします。ドライバをインストールしたら、
-ArduinoとPCをUSBケーブルで接続して下さい。コントロールパネルが次の
+ArduinoとPCをUSBケーブルで接続します。コントロールパネルが次の
 ようになれば、Arduinoがシリアルポートとして正常に認識しています。この場合は
 "COM11"としてArduinoが見えるようになっています。
 
@@ -153,7 +154,7 @@ Arduinoは書き込みが成功すると、自動的に実行を開始します�
 //}
 
 書き込みが完了したらArduinoを見てみましょう。Arduinoは自動的にスケッチを
-実行します。見るのは次の図のあたりです。
+実行します。見るのは次の図の丸で囲まれた付近です。
 
 //image[l][Lチカ]{
 //}
@@ -361,7 +362,7 @@ A0〜A2のアナログ入力に割り当てました。
 Arduinoのアナログ入力は0〜1023の間の整数値しか取りません。そして入出力の最大値は5vですから、
 1023 = 5vという計算になります。
 
-実際にArduinoで取得できる値がどうなるかは、これも仕様書から計算することができます。
+実際にArduinoで取得できる値も、仕様書から計算することができます。
 
 //image[axis-offset][1G当たりの出力値]{
 //}
@@ -410,7 +411,7 @@ loopルーチンでは、入力で取得した加速度の値を先のオフセ�
 
 //list[3axis_sketch2][loopルーチン]{
 void loop() {
-  // 入力値を取得し、オフセットを引いておく
+  // 入力値を取得し、0Gのオフセットを引いておく
   axis[0] = analogRead(X_AXIS) - 511;
   axis[1] = analogRead(Y_AXIS) - 511;
   axis[2] = analogRead(Z_AXIS) - 511;
@@ -433,16 +434,15 @@ void loop() {
 と言われる分野でも非常に重要なデバイスです。Arduinoはそのセンサーを比較的
 簡単に扱えるツールとして注目されています。Arduinoにはイーサネットに接続で
 きる種類もあるので、今回取得したようなセンサーデータをクラウドにアップロード
-することも簡単にできます。Androidだけでなく、Arduinoやハードウェアといった
-関連分野についても学習することで、より広い範囲で応用力を発揮することができる
-ようになります。
+することも簡単にできます。Arduinoやハードウェアといった分野についても学習
+することで、より広い範囲で応用力を発揮することができるようになります。
 
 ===[column] パーツリスト
  * 秋月電子通商
- ** Ａｒｄｕｉｎｏ　Ｕｎｏ　Ｒｅｖ３（@<href>{http://akizukidenshi.com/catalog/g/gM-07385/}）
- ** 抵抗内蔵５ｍｍ黄緑色ＬＥＤ（５Ｖ用）　ＯＳＧ８ＮＵ５Ｂ６４Ａ－５Ｖ（１０個入）（@<href>{http://akizukidenshi.com/catalog/g/gI-06246/}）
- ** ＣＤＳセル　５ｍｍタイプ（@<href>{http://akizukidenshi.com/catalog/g/gI-00110/}）
- ** ３軸加速度センサモジュール　ＫＸＲ９４－２０５０（@<href>{http://akizukidenshi.com/catalog/g/gM-05153/}）
- ** ブレッドボード　ＢＢ－８０１（@<href>{http://akizukidenshi.com/catalog/g/gP-05294/}）
+ ** Arduino Uno Rev3（@<href>{http://akizukidenshi.com/catalog/g/gM-07385/}）
+ ** 抵抗内蔵５ｍｍ黄緑色LED（５v用）（１０個入）（@<href>{http://akizukidenshi.com/catalog/g/gI-06246/}）
+ ** Cdsセル　５ｍｍタイプ（@<href>{http://akizukidenshi.com/catalog/g/gI-00110/}）
+ ** ３軸加速度センサモジュール　KXR94-2050（@<href>{http://akizukidenshi.com/catalog/g/gM-05153/}）
+ ** ブレッドボード　BB-801（@<href>{http://akizukidenshi.com/catalog/g/gP-05294/}）
  ** ブレッドボード・ジャンパーコード（オス－オス）セット（@<href>{http://akizukidenshi.com/catalog/g/gC-05159/}）
 ===[/column]
