@@ -101,27 +101,61 @@ TextViewやButtonであれば、android:textが設定されているので読み
 TalkBackがONの時は、左右フリックでフォーカスが移動します。この時の順序はViewのツリー構造に依存します。@<list>{treeorder}で、@+id/button1にフォーカスがあたっている状態で右フリック（順送り）を行うと、@+id/button2にフォーカスが移動します。
 
 //list[treeorder][レイアウトXML]{
+<Button
+    android:id="@+id/button1"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="@string/button1"
+    />
+<Button
+    android:id="@+id/button2"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_below="@+id/button1"
+    android:text="@string/button2"
+    />
 //}
-
-#@# リスト不明
 
 ==== フォーカスの制御を行う
 
-レイアウトを重ねて表示している時、後ろのViewにフォーカスがあたってしまうとユーザーは混乱してしまいます。これを防止するため、Viewにフォーカスを当てない設定を行うことができます。
+@<img>{overlay}のようにレイアウトを重ねて表示するケースもあるでしょう。この時、後ろのViewにフォーカスがあたってしまうとユーザーは混乱してしまいます。これを防止するため、Viewにフォーカスを当てない設定を行うことができます。
 
-@<list>{focus_xml}はレイアウトXMLで@+id/xxxxにフォーカスを当てないようにする例です。
-
-//list[focus_xml][レイアウトXMLでフォーカスを当てないよう設定]{
+//image[overlay][レイアウトを重ねて表示]{
 //}
 
-#@# リスト不明
+レイアウトXMLでフォーカスを当てないようにするには、android:importantForAccessibility="no"をフォーカスを当てたくないViewに指定します。@<list>{focus_xml}は@+id/text_baseにフォーカスを当てないようにする例です。
+
+//list[focus_xml][レイアウトXMLでフォーカスを当てないよう設定]{
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFCCCCCC">
+    <TextView
+        android:id="@+id/text_base"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/base_text"
+        android:importantForAccessibility="no"/>
+</RelativeLayout>
+<RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#88888888"
+        android:layout_margin="32dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/overlay_text"/>
+</RelativeLayout>
+//}
 
 Javaプログラム中で動的に指定する時は、@<list>{focus_java}のようにsetImportantForAccessibilityメソッドを使用します。
 
 //list[focus_java][Javaプログラムでフォーカスを当てないよう設定]{
+// API Level 16以上で使えます
+View view = findViewById(R.id.text_base);
+view.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO);
 //}
-
-#@# リスト不明
 
 ==== 方向キーに対応する
 
@@ -131,19 +165,111 @@ Javaプログラム中で動的に指定する時は、@<list>{focus_java}のよ
 
 //table[focus_order][フォーカスの制御用属性]{
 属性名	意味
------------
+---------------------
 android:nextFocusDown	下キーが押された時にフォーカスの当たるViewを指定
 android:nextFocusLeft	左キーが押された時にフォーカスの当たるViewを指定
 android:nextFocusRight	右キーが押された時にフォーカスの当たるViewを指定
 android:nextFocusUp	上キーが押された時にフォーカスの当たるViewを指定
 //}
 
-@<list>{focus_cursor}は上下左右で適切なViewにフォーカスが移動するよう設定した例です。
+例として、@<img>{focus}のようなレイアウトに方向キー対応を入れてみましょう。
 
-//list[focus_cursor][方向キーのある端末向けに設定をいれた例]{
+//image[focus][レイアウトを重ねて表示]{
 //}
 
-#@# リスト不明
+ボタン1にフォーカスが当たっている時に下キーを押すと、ボタン4ではなくボタンAにフォーカスが移動してしまいます。@<list>{focus_cursor}は、下キーが押されたときにボタン4にフォーカスが移動するよう設定した例です。
+
+//list[focus_cursor][方向キーのある端末向けに設定をいれた例]{
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    tools:context=".MainActivity">
+
+    <LinearLayout
+        android:id="@+id/layout_1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <Button
+            android:id="@+id/button1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:nextFocusDown="@+id/button4"
+            android:text="@string/button1"/>
+        <Button
+            android:id="@+id/button2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/button2"/>
+        <Button
+            android:id="@+id/button3"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:nextFocusDown="@+id/button6"
+            android:text="@string/button3"/>
+    </LinearLayout>
+    <Button
+        android:id="@+id/button_a"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/layout_1"
+        android:layout_centerHorizontal="true"
+        android:text="@string/buttonA"
+        />
+    <LinearLayout
+        android:id="@+id/layout_2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/button_a"
+        android:orientation="horizontal">
+        <Button
+            android:id="@+id/button4"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:nextFocusUp="@+id/button1"
+            android:text="@string/button4"/>
+        <Button
+            android:id="@+id/button5"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/button5"/>
+        <Button
+            android:id="@+id/button6"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:nextFocusUp="@+id/button3"
+            android:text="@string/button6"/>
+    </LinearLayout>
+</RelativeLayout>
+//}
+
+adbコマンドを使用して、設定が正しく反映されているかを方向キーの無い端末で確認することができます（@<list>{adb-input}）。
+
+//list[adb-input][adbコマンドで方向キーの操作をシミュレートする]{
+ $ adb shell input keyevent KEYCODE_DPAD_DOWN
+//}
+
+KEYCODE_DPAD_xxxxの部分に指定可能な方向を@<table>{keycode}に示します。
+
+//table[keycode][KEYCODE部に指定可能な方向]{
+KEYCODE	向き
+------------
+KEYCODE_DPAD_DOWN	下
+KEYCODE_DPAD_UP	上
+KEYCODE_DPAD_LEFT	左
+KEYCODE_DPAD_RIGHT	右
+//}
 
 === 動画に字幕を付ける
 
@@ -178,7 +304,7 @@ OpenTextbookへ
 
 ==== VideoViewに字幕ファイルをセットする
 
-次に、作成したvttファイルをVideoViewにセットします。VideoViewのインスタンスを取得し、addSubtitleSourceメソッドで字幕データをセットします。@<list>[videoview]に例を示します。
+次に、作成したvttファイルをVideoViewにセットします。VideoViewのインスタンスを取得し、addSubtitleSourceメソッドで字幕データをセットします。@<list>{videoview}に例を示します。
 
 //list[videoview][VideoViewに字幕データをセットする]{
 mVideoView.addSubtitleSource(
