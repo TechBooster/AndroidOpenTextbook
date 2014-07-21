@@ -430,7 +430,7 @@ phone   電話番号を入力する
 //}
 
 
-//image[textfield-hint][android:hintを利用する]{
+//image[textfield_hint][android:hintを利用する]{
 //}
 
 @<list>{android_hint}や@<img>{textfield_hint}のように、入力エリア内に説明のテキストラベルを入れてもいいのですが、ユーザーの操作性からすると、少し問題もあります。

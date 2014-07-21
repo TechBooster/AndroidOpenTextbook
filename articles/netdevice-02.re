@@ -2,7 +2,7 @@
 
 //lead{
  本章ではAndroidでWi-Fiの設定をする方法、およびWi-Fiの状態を取得する方法について説明します。
- //}
+//}
 
 == Wi-Fiの概要
 
@@ -128,11 +128,11 @@ Wi-Fi機器の検索をして得られた機器のListから特定のWi-Fi機器
   config.wepTxKeyIndex = 0;
 //}
 
-WEP認証で接続する際にはWifiConfigrationクラスのallowedKeyManagementに「WifiConfiguration.KeyMgmt.NONE」を設定します。他の設定値に関してもWEP認証に必要な値を設定します（@<list>{implemention_of_wifi_wep}）。
+WEP認証で接続する際にはWifiConfigrationクラスのallowedKeyManagementに「WifiConfiguration.KeyMgmt.NONE」を設定します。他の設定値に関してもWEP認証に必要な値を設定します（@<list>{implemention_of_wifi_wpa}）。
 
  * 認証方式がWPA/WPA2-PSKの場合のWifiConfiguration
 
-//list[implemention_of_wifi_wep][WPA/WPA2-PSK認証]{
+//list[implemention_of_wifi_wpa][WPA/WPA2-PSK認証]{
   WifiConfiguration config = new WifiConfiguration();
   //SSID
   config.SSID = "\"" + ssid + "\"";
@@ -194,10 +194,10 @@ saveConfigurationメソッドで接続したWi-Fi機器の設定情報をシス�
 
 == WiFi接続情報の取得とその情報の使用例など
 
-Wi-Fiの接続状態を取得するためのサンプルコードを次に示します（@<list>{implemention_of_wifi_getconf}）。
+Wi-Fiの接続状態を取得するためのサンプルコードを次に示します（@<list>{implemention_of_wifi_getConnect}）。
 接続状態はWifiManagerクラスのgetConnectionInfoメソッドで取得することができます。取得結果は戻り値のWifiInfoクラスのオブジェクトに含まれています。
 
-//list[implemention_of_wifi_getconf][Wi-Fiの接続状態を取得する]{
+//list[implemention_of_wifi_getConnect][Wi-Fiの接続状態を取得する]{
   WifiManager wm = (WifiManager) getSystemService(WIFI_SERVICE);
   WifiInfo info = wm.getConnectionInfo();
   Log.v("WifiInfo", "SSID = " + info.getSSID());

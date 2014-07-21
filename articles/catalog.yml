@@ -1,21 +1,17 @@
 PREDEF:
 
 CHAPS:
-    - sample.re
     - uibasic-01.re
-    - background01.re
-    - arduino-01.re
     - sensor-01.re
     - network-01.re
+    - netdevice-01.re
+    - netdevice-02.re
     - graphics-01.re
     - graphics-02.re
     - graphics-03.re
-    - webserver-01.re
     - multidevice-01.re
-    - glossary.re
-    - library-01.re
-    - library-02.re
-    - library-03.re
+    - accessibility.re
+    - webserver-01.re
 
 POSTDEF:
 

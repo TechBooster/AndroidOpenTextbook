@@ -49,8 +49,8 @@ params: --stylesheet=main.css --chapterlink
 mytoc: true
 # 奥付生成用
 colophon: true
-texstyle: tatsumacro
-texdocumentclass: ["jsbook", "oneside,14pt"]
+texstyle: techbooster-doujin
+texdocumentclass: ["jsbook", "b5j,twoside,openany"]
 pubhistory: |
   2014年 3月19日 リポジトリ作成
 debug: true

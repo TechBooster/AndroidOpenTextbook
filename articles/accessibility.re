@@ -26,7 +26,7 @@
 
 は使用することができないので注意しましょう。@<list>{stringxml}に、アプリ名とメッセージの対応を記述した例を示します。
 
-//list[stringxml][strings.xmlの例] {
+//list[stringxml][strings.xmlの例]{
 <resources>
     <string name="app_name">メモ帳アプリ</string>
 

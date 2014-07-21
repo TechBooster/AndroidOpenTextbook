@@ -2,7 +2,7 @@
 
 //lead{
  本章ではAndroidのBluetoothを搭載したAndroid端末と他のBluetooth搭載機器との間で通信を行う方法について説明します。
- //}
+//}
 
 == Bluetooth通信の基礎知識
 
@@ -158,10 +158,10 @@ Androidではペアリングしていない別のBluetooth機器と初めて接�
 == 検索されたデバイスに接続（クライアント端末として振る舞う）
 
 検索されたデバイスにクライアントとしてSPP接続をするには、BluetoothSocketクラスのオブジェクトを使用します。
-次にサンプルプログラムを示します（@<list>{implemention_of_bt_client}）。このサンプルではペアリング済みデバイスの検索結果の中から選択したデバイスとSPPで接続しています。
+次にサンプルプログラムを示します（@<list>{createRfcommSocketToServiceRecord}）。このサンプルではペアリング済みデバイスの検索結果の中から選択したデバイスとSPPで接続しています。
 
 
-//list[implemention_of_bt_client][deviceにクライアントとしてSPP接続する]{
+//list[createRfcommSocketToServiceRecord][deviceにクライアントとしてSPP接続する]{
   BluetoothSocket socket = device.createRfcommSocketToServiceRecord(UUID.fromString("00001101-0000-1000-8000-00805F9B34FB")); //SPPのUUIDを指定
   socket.connect();// 接続実行
 
@@ -191,7 +191,7 @@ TCP/IPのソケット通信では接続先のIPアドレスとポート番号を
 
 別のBluetooth機器からのデバイス検索に対して自端末を発見可能な状態にするには、「ACTION_REQUEST_DISCOVERABLE」を指定したインテントをstartAcitivityForResultメソッドで発行します。するとBluetooth許可リクエストダイアログが表示されるのでユーザが許可することにより一定時間応答できる状態になります（@<img>{03}）。
 
-//image[03][Bluetooth許可リクエストダイアログ(発見可能)]{
+//image[03][Bluetooth許可リクエストダイアログ（発見可能）]{
 //}
 
 発見可能な状態でいる時間をインテントに設定することもできます。その場合、インテントの付加情報としてEXTRA_DISCOVERABLE_DURATIONに時間（秒）を設定します。
