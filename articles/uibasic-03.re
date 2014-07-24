@@ -32,7 +32,7 @@ Graphical Layoutではドラッグアンドドロップでだれでもレイア�
 
 そのため、各ファイルの任務を決めておくようにし、ソースコードを簡素に、見やすくしようということが推奨されているのです（@<img>{lead-sepa}の右側）。
 
-//image[lead-sepa][]{
+//image[lead-sepa][Javaファイル内だけですべてをつくろうとすると、ソースコードが煩雑になる]{
 //}
 
 実務的な観点からいうと、このようにプログラムとレイアウトを完全に分けておくことで、「プログラムをつくる人」「レイアウトをつくる人」を分担することができ、作業効率の向上にもつながります。
@@ -59,7 +59,7 @@ ADTを起動し、新たにAndroidプロジェクトを作成します。
 //image[201][Graphical Layoutを見る]{
 //}
 
-下のタブを「fragment_main.xml」に切り替えてみましょう。
+下のタブを「activity_main.xml」に切り替えてみましょう。
 
 ここに書かれているのが、レイアウトを構成するXMLです（@<img>{202}）。
 
@@ -102,7 +102,7 @@ ADTを起動し、新たにAndroidプロジェクトを作成します。
 では次に、テキストの色や大きさを変更してみましょう。
 先ほどの@<list>{202}に、次の2行を追加します（@<list>{203}）。
 
-//listnum[203][5〜6行目を追加した]{
+//listnum[203][5〜6行目を追加]{
 <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -117,7 +117,7 @@ ADTを起動し、新たにAndroidプロジェクトを作成します。
 //footnote[imagine][XMLでレイアウトを作るときには、必ず「このコードを書くとどうなるかな」というのを想像するようにしましょう。コードから、実際の表示がどうなるかというのを、自分の中でイメージできることが大切なのです]
 
 
-//image[204][出力結果。テキストが赤色になり、大きくなった]{
+//image[204][出力結果。テキストが赤色になり、サイズが大きくなる]{
 //}
 
 テキストが赤色になり、大きさが大きくなったのが確認できます。
@@ -162,7 +162,7 @@ http://www.colordic.org/
 Androidの場合、このRGBをあらわす6桁の色コードの前に、さらに2桁追加し、8桁で色をあらわすこともあります。
 RGBの前の2桁は、アルファ（不透明度）を意味します。ただし、アルファも16進数になっていることに注意してください。
 
-//image[color-alpha][]{
+//image[color-alpha][アルファも入った場合のカラーコード]{
 //}
 
 「#00000000」の場合、アルファが0%ですので、これは透明となり見えません。
@@ -185,7 +185,8 @@ XMLは、次のような要素で構成されています（@<img>{205}）。
 Androidでは、各パーツのことを「ビュー（View）」と呼びます。
 ビュー名は、よく使うものとして次のようなものがあります。
 
-//table[よく使うビュー名][]{
+//table[][よく使うビュー名]{
+ビュー名	説明
 Button  ボタンを表示する
 TextView        テキストを表示する
 ImageView       画像を表示する
@@ -196,7 +197,7 @@ ProgressBar     プログレスバーを表示する
 SeekBar シークバーを表示する
 //}
 
-//image[views][]{
+//image[views][よく使うビュー]{
 //}
 
 ButtonやTextViewは、文字列を変更したり、文字の大きさや色を変えてカスタマイズすることは簡単です。また、ImageViewについても、画像リソースを変更することでいろいろな画像を表示させることができます。
@@ -210,7 +211,6 @@ ButtonやTextViewは、文字列を変更したり、文字の大きさや色を
 
 各ビューに設定できる属性は、それぞれにおいてかなりの数があります。
 どのような属性が指定できるかは、コードを書いている中で「android:」と入力するとオートコンプリート機能によって指定可能な候補一覧が表示されますので、それを見ておくとよいでしょう（@<img>{206}）。
-
 
 //image[206][TextViewで指定可能な属性の候補が表示される]{
 //}
@@ -242,7 +242,7 @@ ButtonやTextViewは、文字列を変更したり、文字の大きさや色を
 
 ボタンを表示するときには、次のようなXMLを書きます（@<list>{button-normal}、@<img>{button-normal}）。
 
-//listnum[button-normal][]{
+//listnum[button-normal][Buttonコンポーネント]{
 <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -293,7 +293,7 @@ wrap_contentを設定した場合、ビューを占める領域は、そのビ�
 
 確認のため、ボタン内に表示するテキストを変更してみます（@<list>{button-normal-textedit}）。
 
-//listnum[button-normal-textedit][]{
+//listnum[button-normal-textedit][4行目の文字列を変更する]{
 <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -302,7 +302,7 @@ wrap_contentを設定した場合、ビューを占める領域は、そのビ�
 
 変更するとボタン全体の横幅が、テキストの文字数にあわせて伸びました（@<img>{button-wrapcontent}）。
 
-//image[button-wrapcontent][ボタンの文言を変更すると、それにあわせてボタンの横幅が伸びた]{
+//image[button-wrapcontent][ボタンの文言を変更すると、それにあわせてボタンの横幅が伸びる]{
 //}
 
 このように、ビューがもっているサイズにあわせたいときは、「wrap_content」を設定します。
@@ -313,7 +313,7 @@ wrap_contentを設定した場合、ビューを占める領域は、そのビ�
 前述の@<list>{button-normal}では、android:layout_widthもandroid:layout_heightも、両方とも「wrap_content」が設定されていました。
 2行目のandroid:layout_widthを「match_parent」に変更してみます（@<list>{button-matchparent}）。
 
-//listnum[button-matchparent][]{
+//listnum[button-matchparent][android:layout_widthを「match_parent」に変更]{
 <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -322,13 +322,13 @@ wrap_contentを設定した場合、ビューを占める領域は、そのビ�
 
 横方向に、画面サイズいっぱいまで広げる設定をしましたので、ボタンは@<img>{button-matchparent}のように横幅いっぱいまで広がります。
 
-//image[button-matchparent][]{
+//image[button-matchparent][ボタンが横幅いっぱいまで広がる]{
 //}
 
 
 では今度は、@<list>{button-matchparent-height}のように、android:layout_widthを「wrap_content」に戻し、android:layout_heightを「match_parent」に設定してみましょう。
 
-//listnum[button-matchparent-height][]{
+//listnum[button-matchparent-height][android:layout_widthを「wrap_content」に戻し、android:layout_heightを「match_parent」に変更]{
 <Button
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
@@ -337,7 +337,7 @@ wrap_contentを設定した場合、ビューを占める領域は、そのビ�
 
 今度は縦方向に、画面サイズいっぱいまで広がりました（@<img>{button-matchparent-height}）。
 
-//image[button-matchparent-height][]{
+//image[button-matchparent-height][ボタンが縦方向に画面サイズいっぱいまで広がる]{
 //}
 
 
@@ -348,7 +348,7 @@ wrap_contentを設定した場合、ビューを占める領域は、そのビ�
 
 画像を表示するときには、次のようなXMLを書きます。
 
-//listnum[imageview-normal][]{
+//listnum[imageview-normal][ImageViewコンポーネント]{
 <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -363,7 +363,7 @@ wrap_contentを設定した場合、ビューを占める領域は、そのビ�
 ic_launcher.png@<fn>{launchericon}は、resフォルダの「drawable-mdpi」「drawable-hdpi」「drawable-xhdpi」という3つのフォルダの中に1つずつ入っています（@<img>{imageview-res}）。
 内容は同じですが、それぞれの画面解像度に合ったサイズのものが入っています（@<img>{imageview-imagesize}）。
 
-//image[imageview-normal][drawable-xhdpiフォルダにあるic_launcher.pngを表示した]{
+//image[imageview-normal][drawable-xhdpiフォルダにあるic_launcher.pngを表示]{
 //}
 
 
@@ -412,7 +412,7 @@ Android全体のルールは、ガイドラインのIconographyの項@<fn>{icono
 これだけで、最低限の入力エリアを作成することができます。
 
 
-//image[textfield-normal][テキストフィールドを表示する]{
+//image[textfield-normal][テキストフィールドを表示]{
 //}
 
 @<img>{textfield-normal}では、「android:layout_width="match_parent"」となっているので、入力エリアが横幅いっぱいに配置されます。
@@ -438,14 +438,14 @@ Android全体のルールは、ガイドラインのIconographyの項@<fn>{icono
 しかし、実はこれだけでは実用には不十分で、10文字以上文字を入力すると、このままだと改行されてしまいます。
 
 
-//image[textfield-normal-ems-br][]{
+//image[textfield-normal-ems-br][10文字以上入力すると、改行される]{
 //}
 
 複数行入力させるような内容の部分ではこれでもよいのですが、通常の入力フォームでは、名前やメールアドレス、パスワードなどを入力することが多いので、これではあまり使い勝手がよくありません。
 
 こういったときには入力制限を設定することが必要で、改行をできないようにする場合は、「android:inputType="text"」を追加します（@<list>{textfield-normal-ems-nobr}、@<img>{textfield-normal-ems-nobr}）。
 
-//listnum[textfield-normal-ems-nobr][]{
+//listnum[textfield-normal-ems-nobr][5行目に「android:inputType="text"」を追加]{
 <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -460,7 +460,7 @@ Android全体のルールは、ガイドラインのIconographyの項@<fn>{icono
 「android:inputType」という属性は、その他にもいろいろな入力制限を設定することができます。
 たとえば、「android:inputType="textPassword"」を追加すると、前章にも出てきたパスワード入力用のテキストフィールドになります（@<list>{textfield-normal-ems-pass}、@<list>{textfield-normal-ems-pass}）。
 
-//listnum[textfield-normal-ems-pass][]{
+//listnum[textfield-normal-ems-pass][5行目を「android:inputType="textPassword"」に変更]{
 <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -469,7 +469,7 @@ Android全体のルールは、ガイドラインのIconographyの項@<fn>{icono
 //}
 
 
-//image[textfield-normal-ems-pass][パスワード用の入力エリアになった]{
+//image[textfield-normal-ems-pass][パスワード用の入力エリアになる]{
 //}
 
 「android:inputType」については、場合に応じて必要な入力制限を設定するようにしましょう。
@@ -479,6 +479,7 @@ Android全体のルールは、ガイドラインのIconographyの項@<fn>{icono
 //footnote[inputtype][https://developer.android.com/reference/android/widget/TextView.html#attr_android:inputType]
 
 //table[inputtype][android:inputTypeでよく使う値]{
+値	説明
 none    入力不可
 text    文字を入力
 textAutoCorrect 文字のスペルミスを自動で修正する
@@ -500,7 +501,7 @@ phone   電話番号を入力する
 以前は、@<img>{textfield-form-before}のように、「Eメール」というTextViewを置き、その横にEditTextを並べていることがほとんどでした。
 
 
-//image[textfield-form-before][]{
+//image[textfield-form-before][TextViewとEditTextが横並びで配置]{
 //}
 
 しかし、最近では@<img>{textfield-dropbox-login}のように、入力エリアの中に、うすい文字で説明を書いておくことが多くなりました。
@@ -535,7 +536,7 @@ phone   電話番号を入力する
 //}
 
 
-//image[textfield-dropbox-after][テキストラベルが入力エリアの中にある場合、入力するとラベルが消えてしまった]{
+//image[textfield-dropbox-after][テキストラベルが入力エリアの中にある場合、入力するとラベルが消える]{
 //}
 
 @<img>{textfield-dropbox-after}のほうは、説明のテキストラベルが消えてしまいました。
