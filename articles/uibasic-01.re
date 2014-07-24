@@ -60,15 +60,13 @@ iPhoneの登場から7年が経った今、タッチデバイスでのインタ�
 の3つに目を通しておくとよいでしょう。
 
 
-//image[guideline-design-style][]{
+//image[guideline-design-style][ガイドラインのStyle]{
 //}
 
-
-//image[guideline-design-patterns][]{
+//image[guideline-design-patterns][ガイドラインのPatterns]{
 //}
 
-
-//image[guideline-design-blocks][]{
+//image[guideline-design-blocks][ガイドラインのBuilding Blocks]{
 //}
 
 == iPhoneアプリとAndroidアプリのインターフェースの比較
@@ -96,11 +94,9 @@ iPhoneアプリのインターフェースをAndroidアプリでマネする必�
 
 いちばんわかりやすいのは、設定アプリを比較することです。
 
-
-
-//image[comp-setting-a][]{
+//image[comp-setting-a][設定アプリの画面（Android）]{
 //}
-//image[comp-setting-i][]{
+//image[comp-setting-i][設定アプリの画面（iPhone）]{
 //}
 
 @<img>{comp-setting-a}と@<img>{comp-setting-i}では、いろいろな相違点があります。
