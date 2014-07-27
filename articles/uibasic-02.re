@@ -175,19 +175,19 @@ Graphical Layoutを使って、次のインターフェイスを作成してみ�
 の4つのテキストフィールドがあり、それぞれ「Text Fields」フォルダの中から選んで配置しますが、それぞれの「Input Type」が異なるものを選んでくるのが最適です（@<img>{017}～@<img>{021}）。
 
 
-//image[017][E-mailでは、Input Typeの値が「textEmailAddress」になっている]{
+//image[017][E-mailでは、Input Typeの値が「textEmailAddress」になっている][scale=0.2]{
 //}
 
-//image[018][]{
+//image[018][][scale=0.2]{
 //}
 
-//image[019][]{
+//image[019][][scale=0.2]{
 //}
 
-//image[020][]{
+//image[020][][scale=0.2]{
 //}
 
-//image[021][それぞれの特徴にあったText Fieldsを選ぶ]{
+//image[021][それぞれの特徴にあったText Fieldsを選ぶ][scale=0.2]{
 //}
 
 こうすることで、Android OSが最適なIME（日本語入力）キーボード@<fn>{ime}を自動で表示することができます。
@@ -210,7 +210,7 @@ Input Typeで表示させるキーボードを切り分けることによって�
 そうするためには、「Form Widgets」の中の「RadioGroup」を選ぶべきです。「RadioButton」を選んでしまうと、それぞれが単独で選べることになってしまいますので、注意しましょう（@<img>{022}）。
 
 
-//image[022][ラジオボタンをそれぞれ単独で選ぶことができる状態。こうならないようにしよう]{
+//image[022][ラジオボタンをそれぞれ単独で選ぶことができる状態。こうならないようにしよう][scale=0.2]{
 //}
 
 ==== 3. 「登録する」というボタン

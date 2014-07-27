@@ -579,7 +579,7 @@ uses-feature要素を追記し、stepdetectorを持っていない機種のみ�
 の値の範囲を気にする必要がある場合もあります。たとえば、さきほどのNexus5と安価な端末
 を近接センサーで比較してみると、次のようになっています（@<img>{panda}）。
 
-//image[panda][安価な端末の場合][scale=0.4]{
+//image[panda][安価な端末の場合][scale=0.3]{
 //}
 
 @<img>{proximity}と比較すると、MaxRangeが異なります。

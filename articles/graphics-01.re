@@ -69,12 +69,14 @@ OpenGL ESは2014年現在いくつかのバージョンがあり、Android端末
 各サンプルはFragmentを用いて実装します（@<list>{Chapter01_01}）。
 
 //listnum[Chapter01_01][Chapter01_01.java]{
-public class Chapter01_01 extends Fragment implements GLSurfaceView.Renderer {
+public class Chapter01_01 extends Fragment implements
+        GLSurfaceView.Renderer {
 
     protected GLSurfaceView glSurfaceView;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater,
+            ViewGroup container, Bundle savedInstanceState) {
 ====================================================== [1] ここから
         glSurfaceView = new GLSurfaceView(getActivity());
         glSurfaceView.setEGLContextClientVersion(2);
@@ -266,12 +268,17 @@ public class Chapter01_02 extends Chapter01_01 {
 ====================================================== [3] ここまで
 
 ====================================================== [4] ここから
-            final int vertexShader = ES20Util.compileShader(GL_VERTEX_SHADER, vertexShaderSource);
-            final int fragmentShader = ES20Util.compileShader(GL_FRAGMENT_SHADER, fragmentShaderSource);
+            final int vertexShader = 
+                ES20Util.compileShader(GL_VERTEX_SHADER,
+                vertexShaderSource);
+            final int fragmentShader =
+                ES20Util.compileShader(GL_FRAGMENT_SHADER,
+                fragmentShaderSource);
 ====================================================== [4] ここまで
 
 ====================================================== [5] ここから
-            this.program = ES20Util.linkShader(vertexShader, fragmentShader);
+            this.program =
+                ES20Util.linkShader(vertexShader, fragmentShader);
 ====================================================== [5] ここまで
         }
 ====================================================== [6] ここから
@@ -324,7 +331,8 @@ public class Chapter01_02 extends Chapter01_01 {
                 -1.0f, -1.0f};
 
 
-        glVertexAttribPointer(attr_pos, 2, GL_FLOAT, false, 0, ES20Util.wrap(position));
+        glVertexAttribPointer(attr_pos, 2, GL_FLOAT,
+            false, 0, ES20Util.wrap(position));
 ====================================================== [11] ここまで
 
 ====================================================== [12] ここから
@@ -578,7 +586,10 @@ Bufferオブジェクトの生成自体は次のようになります（@<list>{
 
 //list[ByteBuffer][float配列からBufferオブジェクトの生成]{
     public static FloatBuffer wrap(float[] buffer) {
-        return (FloatBuffer) ByteBuffer.allocateDirect(buffer.length * 4).order(ByteOrder.nativeOrder()).asFloatBuffer().put(buffer).position(0);
+        return (FloatBuffer) ByteBuffer
+            .allocateDirect(buffer.length * 4)
+            .order(ByteOrder.nativeOrder())
+            .asFloatBuffer().put(buffer).position(0);
     }
 //}
 
@@ -640,7 +651,8 @@ public class Chapter01_03 extends Chapter01_02 {
                     // v5(right bottom)
                     0.75f, -0.75f,
             };
-            GLES20.glVertexAttribPointer(attr_pos, 2, GLES20.GL_FLOAT, false, 0, ES20Util.wrap(position));
+            GLES20.glVertexAttribPointer(attr_pos, 2, GLES20.GL_FLOAT,
+                false, 0, ES20Util.wrap(position));
             GLES20.glDrawArrays(GLES20.GL_TRIANGLES, 0, 6);
         }
     }
@@ -703,24 +715,26 @@ public class Chapter01_04 extends Chapter01_01 {
         {
 ====================================================== [3] ここから
             final String vertexShaderSource =
-                            "attribute mediump vec4 attr_pos;" +
-                            "attribute mediump vec2 attr_uv;" +
-                            "varying mediump vec2 vary_uv;" +
-                            "void main() {" +
-                            "   gl_Position = attr_pos;" +
-                            "   vary_uv = attr_uv;" +
-                            "}";
+                    "attribute mediump vec4 attr_pos;" +
+                    "attribute mediump vec2 attr_uv;" +
+                    "varying mediump vec2 vary_uv;" +
+                    "void main() {" +
+                    "   gl_Position = attr_pos;" +
+                    "   vary_uv = attr_uv;" +
+                    "}";
 
             final String fragmentShaderSource =
-                            "uniform sampler2D unif_texture;" +
-                            "varying mediump vec2 vary_uv;" +
-                            "void main() {" +
-                            "   gl_FragColor = texture2D(unif_texture, vary_uv);" +
-                            "}";
+                    "uniform sampler2D unif_texture;" +
+                    "varying mediump vec2 vary_uv;" +
+                    "void main() {" +
+                    "   gl_FragColor = texture2D(unif_texture, vary_uv);" +
+                    "}";
 ====================================================== [3] ここまで
 
             // コンパイルとリンクを行う
-            this.program = ES20Util.compileAndLinkShader(vertexShaderSource, fragmentShaderSource);
+            this.program = 
+                ES20Util.compileAndLinkShader(vertexShaderSource,
+                fragmentShaderSource);
         }
 
         // locationを取り出す
@@ -735,7 +749,9 @@ public class Chapter01_04 extends Chapter01_01 {
 
         // テクスチャを読み込む
         {
-            Bitmap bitmap = ES20Util.decodeBitmapFromAssets(getActivity(), "sample512x512.png");
+            Bitmap bitmap = 
+                ES20Util.decodeBitmapFromAssets(getActivity(),
+                "sample512x512.png");
 
 ====================================================== [4] ここから
             int[] textureId = {0};
@@ -748,10 +764,14 @@ public class Chapter01_04 extends Chapter01_01 {
             glBindTexture(GL_TEXTURE_2D, texture);
             {
                 GLUtils.texImage2D(GL_TEXTURE_2D, 0, bitmap, 0); // テクスチャをバインド
-                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+                glTexParameteri(GL_TEXTURE_2D,
+                    GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+                glTexParameteri(GL_TEXTURE_2D,
+                    GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+                glTexParameteri(GL_TEXTURE_2D,
+                    GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+                glTexParameteri(GL_TEXTURE_2D,
+                    GL_TEXTURE_MIN_FILTER, GL_NEAREST);
             }
             glBindTexture(GL_TEXTURE_2D, 0); // テクスチャをアンバインド
 ====================================================== [5] ここまで
@@ -799,7 +819,8 @@ public class Chapter01_04 extends Chapter01_01 {
             };
 
 
-            glVertexAttribPointer(attr_pos, 2, GL_FLOAT, false, 0, ES20Util.wrap(position));
+            glVertexAttribPointer(attr_pos, 2, GL_FLOAT, false, 0,
+                ES20Util.wrap(position));
 
 ====================================================== [7] ここから
             final float[] uv = {
@@ -820,7 +841,8 @@ public class Chapter01_04 extends Chapter01_01 {
                     1, 1,
             };
 
-            glVertexAttribPointer(attr_uv, 2, GL_FLOAT, false, 0, ES20Util.wrap(uv));
+            glVertexAttribPointer(attr_uv, 2, GL_FLOAT, false, 0,
+                ES20Util.wrap(uv));
 ====================================================== [7] ここまで
             glDrawArrays(GL_TRIANGLES, 0, 6);
         }
@@ -904,22 +926,22 @@ OpenGL ESで「ポリゴンにテクスチャを貼り付ける」というの�
 
 //list[vary_uvVertex][頂点シェーダー]{
             final String vertexShaderSource =
-                            "attribute mediump vec4 attr_pos;" +
-                            "attribute mediump vec2 attr_uv;" +
-                            "varying mediump vec2 vary_uv;" +
-                            "void main() {" +
-                            "   gl_Position = attr_pos;" +
-                            "   vary_uv = attr_uv;" +
-                            "}";
+                    "attribute mediump vec4 attr_pos;" +
+                    "attribute mediump vec2 attr_uv;" +
+                    "varying mediump vec2 vary_uv;" +
+                    "void main() {" +
+                    "   gl_Position = attr_pos;" +
+                    "   vary_uv = attr_uv;" +
+                    "}";
 //}
 
 //list[vary_uvFragment][フラグメントシェーダー]{
             final String fragmentShaderSource =
-                            "uniform sampler2D unif_texture;" +
-                            "varying mediump vec2 vary_uv;" +
-                            "void main() {" +
-                            "   gl_FragColor = texture2D(unif_texture, vary_uv);" +
-                            "}";
+                    "uniform sampler2D unif_texture;" +
+                    "varying mediump vec2 vary_uv;" +
+                    "void main() {" +
+                    "   gl_FragColor = texture2D(unif_texture, vary_uv);" +
+                    "}";
 //}
 
 ==== 頂点にUV座標を追加する

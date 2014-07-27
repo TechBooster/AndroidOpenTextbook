@@ -20,13 +20,13 @@ Bluetoothでは通信しようとする機器同士が同じ通信プロトコ�
 //table[bt_prof][一般的なBluetoothプロファイル]{
 プロファイル名	説明
 -------------------------------------------------------------
-SPP	Bluetooth機器を仮想シリアルポート化するためのプロファイル
-DUN	携帯電話・PHSを介してインターネットにダイアルアップ接続するためのプロファイル
-HID	マウスやキーボードなどの入力装置を無線化するためのプロファイル
-HSP	Bluetooth搭載ヘッドセットと通信するためのプロファイル
-HFP	車内やヘッドセットでハンズフリー通話を実現するためのプロファイル
-A2DP	音声をレシーバー付きヘッドフォンに伝送するためのプロファイル
-HDP	健康管理機器同士を接続するためのプロファイル
+SPP	Bluetooth機器を仮想シリアルポート化する
+DUN	携帯電話・PHSを介してインターネットにダイアルアップ接続する
+HID	マウスやキーボードなどの入力装置を無線化する
+HSP	Bluetooth搭載ヘッドセットと通信する
+HFP	車内やヘッドセットでハンズフリー通話を実現する
+A2DP	音声をレシーバー付きヘッドフォンに伝送する
+HDP	健康管理機器同士を接続する
 //}
 
 
@@ -216,16 +216,11 @@ TCP/IPのソケット通信では接続先のIPアドレスとポート番号を
 
 自端末がBruetooth機器として発見可能な状態かどうかの変化が起きた場合、BroadcastReceiverで通知を受け取ることができます。
 それを実現するためにはあらかじめ「ACTION_SCAN_MODE_CHANGED」インテントをBroadcastReceiverとして登録します。
-状態の変化がおき、BroadcastReceiverで受け取ったインテントには、古い状態「EXTRA_PREVIOUS_SCAN_MODE」と新しい状態「EXTRA_SCAN_MODE」に次の値が入っています（@<table>{bt_scan_mode}）。
+状態の変化がおき、BroadcastReceiverで受け取ったインテントには、古い状態「EXTRA_PREVIOUS_SCAN_MODE」と新しい状態「EXTRA_SCAN_MODE」に次の値が入っています。
 
-//table[bt_scan_mode][ACTION_SCAN_MODE_CHANGEで受信する情報]{
-値	説明
--------------------------------------------------------------
-SCAN_MODE_CONNECTABLE_DISCOVERABLE	発見可能な状態でかつ、接続も可能な状態
-SCAN_MODE_CONNECTABLE	発見可能な状態ではないが、接続可能な状態
-SCAN_MODE_NONE	発見可能な状態でもなく、接続もできない状態
-//}
-
+ * SCAN_MODE_CONNECTABLE_DISCOVERABLE：発見可能な状態でかつ、接続も可能な状態
+ * SCAN_MODE_CONNECTABLE：発見可能な状態ではないが、接続可能な状態
+ * SCAN_MODE_NONE：発見可能な状態でもなく、接続もできない状態
 
 == 別のBluetooth機器からの接続要求を受ける（サーバー端末として振る舞う）
 

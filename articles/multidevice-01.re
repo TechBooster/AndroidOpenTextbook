@@ -62,7 +62,7 @@ Androidでは、レイアウト時に長さの単位としてdpを用いると�
 作成したAndroidアプリは、さまざまな画面サイズやピクセル密度の端末上で実行されます。
 レイアウトをピクセル単位で行ってしまうと、@<img>{width-pixel}のように、ある機種では画面の幅いっぱいに表示されるが、別の機種では画面の半分ほどのサイズで表示されるといった問題が発生します。
 
-//image[width-pixel][ボタンの横幅をピクセルで指定した例]{
+//image[width-pixel][ボタンの横幅をピクセルで指定した例][scale=0.35]{
 //}
 
 レイアウトが崩れてしまうと、ユーザー体験の低下に直結します。
@@ -152,7 +152,7 @@ xlarge	960dp x 720dp
 
 この違いにより、「手元の開発用端末では想定していたレイアウトになるが、長辺が短い端末だと下がはみ出てしまい、一部のボタンが押せない」といった問題が発生します（@<img>{scrollview}）
 
-//image[scrollview][ボタンが端末によってはみ出てしまう例]{
+//image[scrollview][ボタンが端末によってはみ出てしまう例][scale=0.35]{
 //}
 
 この問題を解決するため、レイアウト自体を470dp以内に収めるようやりなおすという手も考えられますが、さまざまな事情によりレイアウトを変更できないこともあるでしょう。
@@ -237,14 +237,14 @@ private Notification createNotification(Bitmap bigIcon) {
 
 古いOSのエミュレーターを作成するために、Android SDK ManagerでOSバージョン毎にシステムイメージをインストールします。@<img>{install-emulator}に、Android 4.0.3（API Level 15）のシステムイメージをインストールする例を示します。
 
-//image[install-emulator][システムイメージのインストール]{
+//image[install-emulator][システムイメージのインストール][scale=0.4]{
 //}
 
  * エミュレーターのスクリーンサイズとピクセル密度を指定する
 
 次に、テスト対象となるエミュレーターを作成しましょう。Android Virtual Device Managerを起動し、Createボタンをクリックします。クリックすると、@<img>{create-emulator}のダイアログが表示されるので、Device欄で端末の種類とピクセル密度を、Skin欄でスクリーンサイズを指定します。@<table>{skin-pixel}にSkinとピクセル数の関係を示します。
 
-//image[create-emulator][エミュレーターの新規作成]{
+//image[create-emulator][エミュレーターの新規作成][scale=0.35]{
 //}
 
 //table[skin-pixel][Skinとピクセル数の関係]{
@@ -271,10 +271,10 @@ WXGA800	1280 x 800
 この問題を解決するため、エミュレーターの起動時に、指定したインチ数でディスプレイに表示するための設定を行います。Android Virtual Device ManagerでStartボタンを押すと、@<img>{real-size}のダイアログが表示されます。ここでScale display to real sizeにチェックをつけ、
 インチ数とディスプレイのdpiを指定してエミュレーターを起動します。もしディスプレイのdpi値が分からない場合は、入力欄の右側にある「？」をクリックしましょう。ディスプレイのインチ数と解像度を指定するだけで、自動的にdpi値を計算してくれます（@<img>{monitor-density}）。この設定により、たとえばディスプレイ上で4インチ（約10cm）のエミュレーターを起動することができます。
 
-//image[real-size][インチ数を指定する]{
+//image[real-size][インチ数を指定する][scale=0.35]{
 //}
 
-//image[monitor-density][ディスプレイのdpiを調べる]{
+//image[monitor-density][ディスプレイのdpiを調べる][scale=0.35]{
 //}
 
 === まとめ
