@@ -193,6 +193,7 @@ private Notification createNotification(Bitmap bigIcon) {
 }
 //}
 
+//noindent
 
 ====[column] 横持ちに対応する
 
@@ -203,7 +204,8 @@ private Notification createNotification(Bitmap bigIcon) {
 縦持ちと横持ちで異なるレイアウトを使用する場合、res/layout-landフォルダを作成し、そこに縦持ち用と同じファイル名で横持ち用のレイアウトxmlファイルをいれます。
 これだけで、setContentViewメソッドやinflater.inflateメソッドでレイアウトxmlファイルからViewを生成する時、画面の向きに応じて使用するレイアウトxmlファイルを切り替えてくれます。
 
-
+====[/column]
+//noindent
 == 利用可能な端末を制限する
 
 動作保証を確実にするために、インストール可能な端末を制限したり、特定の動作を制限したりする方法を紹介します。
@@ -237,7 +239,7 @@ private Notification createNotification(Bitmap bigIcon) {
 
 古いOSのエミュレーターを作成するために、Android SDK ManagerでOSバージョン毎にシステムイメージをインストールします。@<img>{install-emulator}に、Android 4.0.3（API Level 15）のシステムイメージをインストールする例を示します。
 
-//image[install-emulator][システムイメージのインストール][scale=0.4]{
+//image[install-emulator][システムイメージのインストール][scale=0.3]{
 //}
 
  * エミュレーターのスクリーンサイズとピクセル密度を指定する

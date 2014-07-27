@@ -194,7 +194,7 @@ TCP/IPのソケット通信では接続先のIPアドレスとポート番号を
 
 別のBluetooth機器からのデバイス検索に対して自端末を発見可能な状態にするには、「ACTION_REQUEST_DISCOVERABLE」を指定したインテントをstartAcitivityForResultメソッドで発行します。するとBluetooth許可リクエストダイアログが表示されるのでユーザが許可することにより一定時間応答できる状態になります（@<img>{03}）。
 
-//image[03][Bluetooth許可リクエストダイアログ（発見可能）][scale=0.35]{
+//image[03][Bluetooth許可リクエストダイアログ（発見可能）][scale=0.25]{
 //}
 
 発見可能な状態でいる時間をインテントに設定することもできます。その場合、インテントの付加情報としてEXTRA_DISCOVERABLE_DURATIONに時間（秒）を設定します。
