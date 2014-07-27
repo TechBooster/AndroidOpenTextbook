@@ -7,13 +7,13 @@
 # ブック名(ファイル名になるもの。ASCII範囲の文字を使用)
 bookname: book
 # 書名
-booktitle: Android OpenTextbook Milestone 1
+booktitle: 出かけよう、Android！
 # 著者
 aut: AOTB Project
-prt: TechBooster
+prt: 日光企画
 prt_url: しらない
 edt: mhidaka
-dsr: mhidaka
+dsr: yuya
 date: 2014-08-17
 rights: |
   (C) 2014 androidopentextbook.jp
@@ -53,5 +53,5 @@ texstyle: techbooster-doujin
 texdocumentclass: ["jsbook", "b5j,twoside,openany"]
 pubhistory: |
   2014年 3月19日 リポジトリ作成
-  2014年 8月17日 マイルストーン1
+  2014年 8月17日 マイルストーン1「出かけよう、Android！」初版
 debug: true

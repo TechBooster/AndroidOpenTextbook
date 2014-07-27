@@ -933,7 +933,7 @@ Google Play Servicesの利用宣言はAndroidManifest.xml内の<application>エ�
 
 位置情報を取得した例として、アプリで表示させると@<img>{location}のようになります。
 
-//image[location][位置情報取得][scale=0.15]{
+//image[location][位置情報取得][scale=0.10]{
 //}
 
 さて、これだけだといわゆる緯度経度の数値しか見えないので、
@@ -954,7 +954,7 @@ mMapBtn.setOnClickListener(new View.OnClickListener() {
 })
 //}
 
-//image[map][IntentでMap表示][scale=0.15]{
+//image[map][IntentでMap表示][scale=0.10]{
 //}
 
 === 位置情報の更新
