@@ -162,7 +162,7 @@ Foursquareアプリのインターフェースの相違点を書き出してみ�
 
 Dropboxアプリのインターフェースの相違点を書き出してみましょう（@<img>{comp-dropbox}）。
 
-//image[comp-dropbox1][Dropbox（左：Android、中央：Androidのメニュー、右：iOS）]{
+//image[comp-dropbox][Dropbox（左：Android、中央：Androidのメニュー、右：iOS）]{
 //}
 
 インターフェースの相違点
