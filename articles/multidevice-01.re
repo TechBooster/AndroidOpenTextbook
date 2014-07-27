@@ -239,14 +239,14 @@ private Notification createNotification(Bitmap bigIcon) {
 
 古いOSのエミュレーターを作成するために、Android SDK ManagerでOSバージョン毎にシステムイメージをインストールします。@<img>{install-emulator}に、Android 4.0.3（API Level 15）のシステムイメージをインストールする例を示します。
 
-//image[install-emulator][システムイメージのインストール][scale=0.3]{
+//image[install-emulator][システムイメージのインストール][scale=0.25]{
 //}
 
  * エミュレーターのスクリーンサイズとピクセル密度を指定する
 
 次に、テスト対象となるエミュレーターを作成しましょう。Android Virtual Device Managerを起動し、Createボタンをクリックします。クリックすると、@<img>{create-emulator}のダイアログが表示されるので、Device欄で端末の種類とピクセル密度を、Skin欄でスクリーンサイズを指定します。@<table>{skin-pixel}にSkinとピクセル数の関係を示します。
 
-//image[create-emulator][エミュレーターの新規作成][scale=0.35]{
+//image[create-emulator][エミュレーターの新規作成][scale=0.3]{
 //}
 
 //table[skin-pixel][Skinとピクセル数の関係]{
