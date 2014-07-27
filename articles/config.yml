@@ -7,17 +7,17 @@
 # ブック名(ファイル名になるもの。ASCII範囲の文字を使用)
 bookname: book
 # 書名
-booktitle: Android Open Textbook
+booktitle: Android OpenTextbook Milestone 1
 # 著者
-aut: 最強の羊
+aut: AOTB Project
 prt: TechBooster
 prt_url: しらない
 edt: mhidaka
 dsr: mhidaka
-date: 2014-02-14
+date: 2014-08-17
 rights: |
-  (C) 2014 techbooster.org
-description: 最強は語らなくても最強
+  (C) 2014 androidopentextbook.jp
+description: オープンソースで作るAndroidの教科書です
 # 以下はオプション
 #prt: 出版社
 # asn: Associated name
@@ -34,7 +34,7 @@ coverfile: _cover.html
 # coverimage: 表紙用画像ファイル
 # coverimage: cover.jpg
 # 固有IDに使用するドメイン
-urnid: 最強はURLがなくても最強
+urnid: jp.androidopentextbook.m1
 # CSSファイル (yamlファイルおよびReVIEWファイルを置いたディレクトリにあること
 stylesheet: main.css
 # LaTeX用のdocumentclassを指定する
@@ -53,4 +53,5 @@ texstyle: techbooster-doujin
 texdocumentclass: ["jsbook", "b5j,twoside,openany"]
 pubhistory: |
   2014年 3月19日 リポジトリ作成
+  2014年 8月17日 マイルストーン1
 debug: true

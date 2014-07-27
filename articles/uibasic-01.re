@@ -53,22 +53,22 @@ iPhoneの登場から7年が経った今、タッチデバイスでのインタ�
 
 学習が進んでくると、そのうち全部を読まなければならないのですが、はじめは、
 
- * Design -> Style（@<img>{guideline-design-style}）
- * Design -> Patterns（@<img>{guideline-design-patterns}）
- * Design -> Building Blocks（@<img>{guideline-design-blocks}）
+ * Design > Style（@<img>{guideline-design-style}）
+ * Design > Patterns（@<img>{guideline-design-patterns}）
+ * Design > Building Blocks（@<img>{guideline-design-blocks}）
 
 の3つに目を通しておくとよいでしょう。
 
 
-//image[guideline-design-style][]{
+//image[guideline-design-style][Design > Style画面][scale=0.2]{
 //}
 
 
-//image[guideline-design-patterns][]{
+//image[guideline-design-patterns][Design > Patterns画面][scale=0.2]{
 //}
 
 
-//image[guideline-design-blocks][]{
+//image[guideline-design-blocks][Design > Building Blocks画面][scale=0.2]{
 //}
 
 == iPhoneアプリとAndroidアプリのインターフェースの比較
@@ -94,13 +94,13 @@ iPhoneアプリのインターフェースをAndroidアプリでマネする必�
 先述のとおり、それぞれのOSでの構成や思想が違い、さらにその言語を使って最適化できるインターフェースも違います。
 無理やりどちらかのOSのインターフェースにあわせることは、アプリを作っていく上で、無駄な設計が多くなってしまうことに注意してください。
 
-いちばんわかりやすいのは、設定アプリを比較することです。
+いちばんわかりやすいのは、設定アプリを比較することです（@<img>{comp-setting-a}、@<img>{comp-setting-i}）。
 
 
 
-//image[comp-setting-a][]{
+//image[comp-setting-a][Androidの設定画面][scale=0.2]{
 //}
-//image[comp-setting-i][]{
+//image[comp-setting-i][iOSの設定画面][scale=0.25]{
 //}
 
 @<img>{comp-setting-a}と@<img>{comp-setting-i}では、いろいろな相違点があります。
@@ -124,9 +124,9 @@ Facebook、Twitter、Foursquare、Dropboxを挙げておきます。これらに
 
 Facebookアプリのインターフェースの相違点を書き出してみましょう。
 
-//image[comp-facebook-a][Facebook（Android）]{
+//image[comp-facebook-a][Facebook（Android）][scale=0.2]{
 //}
-//image[comp-facebook-i][Facebook（iPhone）]{
+//image[comp-facebook-i][Facebook（iPhone）][scale=0.25]{
 //}
 
 インターフェースの相違点
@@ -140,11 +140,11 @@ Facebookアプリのインターフェースの相違点を書き出してみま
 
 Twitterアプリのインターフェースの相違点を書き出してみましょう。
 
-//image[comp-twitter-a1][Twitter（Android）]{
+//image[comp-twitter-a1][Twitter（Android）][scale=0.2]{
 //}
-//image[comp-twitter-a2][Twitter：メニュー（Android）]{
+//image[comp-twitter-a2][Twitter：メニュー（Android）][scale=0.2]{
 //}
-//image[comp-twitter-i][Twitter（iPhone）]{
+//image[comp-twitter-i][Twitter（iPhone）][scale=0.25]{
 //}
 
 
@@ -160,13 +160,13 @@ Twitterアプリのインターフェースの相違点を書き出してみま�
 
 Foursquareアプリのインターフェースの相違点を書き出してみましょう。
 
-//image[comp-foursquare-a1][Foursquare（Android）]{
+//image[comp-foursquare-a1][Foursquare（Android）][scale=0.2]{
 //}
-//image[comp-foursquare-a2][Foursquare：展開時（Android）]{
+//image[comp-foursquare-a2][Foursquare：展開時（Android）][scale=0.2]{
 //}
-//image[comp-foursquare-i1][Foursquare（iPhone）]{
+//image[comp-foursquare-i1][Foursquare（iPhone）][scale=0.25]{
 //}
-//image[comp-foursquare-i2][Foursquare：展開時（iPhone）]{
+//image[comp-foursquare-i2][Foursquare：展開時（iPhone）][scale=0.25]{
 //}
 
 インターフェースの相違点
@@ -179,11 +179,11 @@ Foursquareアプリのインターフェースの相違点を書き出してみ�
 
 Dropboxアプリのインターフェースの相違点を書き出してみましょう。
 
-//image[comp-dropbox-a1][Dropbox（Android）]{
+//image[comp-dropbox-a1][Dropbox（Android）][scale=0.2]{
 //}
-//image[comp-dropbox-a2][Dropbox：メニュー（Android）]{
+//image[comp-dropbox-a2][Dropbox：メニュー（Android）][scale=0.2]{
 //}
-//image[comp-dropbox-i][Dropbox（iPhone）]{
+//image[comp-dropbox-i][Dropbox（iPhone）][scale=0.25]{
 //}
 
 インターフェースの相違点

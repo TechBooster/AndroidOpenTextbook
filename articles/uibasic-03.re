@@ -150,7 +150,7 @@ Rは赤（Red）、Gは緑（Green）、Bは青（Blue）を示しており、�
 //image[color-f00][赤色をRGBで表現]{
 //}
 
-//image[color-ff0][黃色をRGBで表現]{
+//image[color-ff0][黄色をRGBで表現]{
 //}
 
 この10進数の値を16進数に変換し、R、G、Bの順に並べたものがカラーコードとなります。

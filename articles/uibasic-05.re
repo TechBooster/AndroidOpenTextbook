@@ -108,8 +108,8 @@ Androidアプリをひとたびリリースすれば、それは全世界で公�
 Androidアプリは、ローカライズしやすいように構成されています。
 新規に立ち上げたサンプルアプリで、英語版にも対応するように作り変えてみましょう。
 
- 1. 「values」フォルダと同じ階層に「values-ja」というフォルダを作成する（@<image>{strings-folderを参照}）
- 2. 「values-ja」フォルダ内に、「values」フォルダ内の「strings.xml」をコピーする（@<image>{strings-folderを参照}）
+ 1. 「values」フォルダと同じ階層に「values-ja」というフォルダを作成する（@<img>{strings-folder}を参照）
+ 2. 「values-ja」フォルダ内に、「values」フォルダ内の「strings.xml」をコピーする（@<img>{strings-folder}を参照）
  3. 新しくコピーしてきた「values-ja」フォルダ内の「strings.xml」の文字列を@<list>{values-ja}のように日本語にする
 
 //listnum[values-ja][values-ja/string.xml]{
@@ -174,7 +174,7 @@ colors.xmlは、色を管理するファイルです。
 
 先の例でも挙げましたが、配色を設計するときに指定した色を書いておくとよいでしょう。
 
-まず、色を管理するサンプルXMLを作成します。ここで作成するサンプルは、@<image>{colors-sample}のような簡単なリストです。
+まず、色を管理するサンプルXMLを作成します。ここで作成するサンプルは、@<img>{colors-sample}のような簡単なリストです。
 
 
 //image[colors-sample][]{
@@ -284,7 +284,7 @@ android:textColor="#fff"
 android:background="#b81c22"
 //}
 
-この時点で、見出しのTextViewは@<list>{color-keycolor}のようになっています。
+この時点で、見出しのTextViewは@<img>{color-keycolor}のようになっています。
 
 //listnum[][]{
 <TextView
