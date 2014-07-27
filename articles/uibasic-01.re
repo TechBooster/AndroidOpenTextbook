@@ -11,7 +11,7 @@
 //footnote[affordance][1988年、ドナルド・ノーマンはデザインの認知心理学的研究の中で、モノに備わった、ヒトが知覚できる「行為の可能性」という意味でアフォーダンスを用いた。この文脈によるアフォーダンスという語義が、ユーザーインタフェースやデザインの領域において使われるようになった。アフォーダンスは、物をどう取り扱ったらよいかについての強い手がかりを示してくれる。たとえば、ドアノブがなく平らな金属片が付いたドアは、その金属片を押せばよいことを示している。逆に、引き手のついたタンスは、引けばよいことを示している。これらは、体験に基づいて説明なしで取り扱うことができる(Wikipediaより)]
 
 
-//image[affordance][アフォーダンスを利用したユーザーインターフェースの例]{
+//image[affordance][アフォーダンスを利用したユーザーインターフェースの例][scale=0.5]{
 //}
 
 @<img>{affordance}を見ると、その意味が少しわかるでしょうか。
@@ -94,16 +94,12 @@ iPhoneアプリのインターフェースをAndroidアプリでマネする必�
 先述のとおり、それぞれのOSでの構成や思想が違い、さらにその言語を使って最適化できるインターフェースも違います。
 無理やりどちらかのOSのインターフェースにあわせることは、アプリを作っていく上で、無駄な設計が多くなってしまうことに注意してください。
 
-いちばんわかりやすいのは、設定アプリを比較することです（@<img>{comp-setting-a}、@<img>{comp-setting-i}）。
+いちばんわかりやすいのは、設定アプリを比較することです（@<img>{comp-setting}）。
 
-
-
-//image[comp-setting-a][Androidの設定画面][scale=0.2]{
-//}
-//image[comp-setting-i][iOSの設定画面][scale=0.25]{
+//image[comp-setting][設定画面（左：Android、右：iOS）]{
 //}
 
-@<img>{comp-setting-a}と@<img>{comp-setting-i}では、いろいろな相違点があります。
+@<img>{comp-setting}のAndroidとiOSでは、いろいろな相違点があります。
 どういったことが違うか、グループで話し合い、箇条書きで書き出してみましょう。
 
  * 
@@ -122,11 +118,9 @@ Facebook、Twitter、Foursquare、Dropboxを挙げておきます。これらに
 
 
 
-Facebookアプリのインターフェースの相違点を書き出してみましょう。
+Facebookアプリのインターフェースの相違点を書き出してみましょう（@<img>{comp-facebook}）。
 
-//image[comp-facebook-a][Facebook（Android）][scale=0.2]{
-//}
-//image[comp-facebook-i][Facebook（iPhone）][scale=0.25]{
+//image[comp-facebook][Facebook（左：Android、右：iOS）]{
 //}
 
 インターフェースの相違点
@@ -138,15 +132,10 @@ Facebookアプリのインターフェースの相違点を書き出してみま
  *
 
 
-Twitterアプリのインターフェースの相違点を書き出してみましょう。
+Twitterアプリのインターフェースの相違点を書き出してみましょう（@<img>{comp-twitter}）。
 
-//image[comp-twitter-a1][Twitter（Android）][scale=0.2]{
+//image[comp-twitter][Twitter（左：Android、中央：Androidのメニュー、右：iOS）][scale=0.2]{
 //}
-//image[comp-twitter-a2][Twitter：メニュー（Android）][scale=0.2]{
-//}
-//image[comp-twitter-i][Twitter（iPhone）][scale=0.25]{
-//}
-
 
 インターフェースの相違点
 
@@ -158,15 +147,9 @@ Twitterアプリのインターフェースの相違点を書き出してみま�
  *
 
 
-Foursquareアプリのインターフェースの相違点を書き出してみましょう。
+Foursquareアプリのインターフェースの相違点を書き出してみましょう（@<img>{comp-foursquare}）。
 
-//image[comp-foursquare-a1][Foursquare（Android）][scale=0.2]{
-//}
-//image[comp-foursquare-a2][Foursquare：展開時（Android）][scale=0.2]{
-//}
-//image[comp-foursquare-i1][Foursquare（iPhone）][scale=0.25]{
-//}
-//image[comp-foursquare-i2][Foursquare：展開時（iPhone）][scale=0.25]{
+//image[comp-foursquare][Foursquare（上段：Android、下段：iOS）]{
 //}
 
 インターフェースの相違点
@@ -177,13 +160,9 @@ Foursquareアプリのインターフェースの相違点を書き出してみ�
  * 
  *
 
-Dropboxアプリのインターフェースの相違点を書き出してみましょう。
+Dropboxアプリのインターフェースの相違点を書き出してみましょう（@<img>{comp-dropbox}）。
 
-//image[comp-dropbox-a1][Dropbox（Android）][scale=0.2]{
-//}
-//image[comp-dropbox-a2][Dropbox：メニュー（Android）][scale=0.2]{
-//}
-//image[comp-dropbox-i][Dropbox（iPhone）][scale=0.25]{
+//image[comp-dropbox1][Dropbox（左：Android、中央：Androidのメニュー、右：iOS）]{
 //}
 
 インターフェースの相違点
@@ -195,7 +174,7 @@ Dropboxアプリのインターフェースの相違点を書き出してみま�
  *
 
 このように見てみると、AndroidにはAndroidのインターフェースの特徴が、iPhoneにはiPhoneのインターフェースの特徴がみえてきます。
-これらをしっかりと認識し、AndroidとiPhoneをごちゃまぜにしないようにしましょう。
+これらをしっかりと認識し、AndroidとiPhoneを混同しないようにしましょう。
 
 こういった比較は、日常で、普段使っているアプリでもできるので、アプリを使うときにはただ使うだけではなく、どういうインターフェースが使われているか、注意してみましょう。そうすると、アプリに対する見方が180度変わってきます。
 
