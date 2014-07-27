@@ -750,13 +750,9 @@ google-play-servicesはAndroid SDKを
 === 位置情報精度の設定
 
 GPSを使用して精度を上げたい場合はGPS機能を有効にする必要があります。
-Androidアプリの"設定"を起動して、次の手順で設定を行っておきましょう。
+Androidアプリの"設定"を起動して、次の手順で設定を行っておきましょう（@<img>{gps-set}）。
 
-//image[gps-set1][GPS設定１][scale=0.15]{
-//}
-//image[gps-set2][GPS設定２][scale=0.15]{
-//}
-//image[gps-set3][GPS設定３][scale=0.15]{
+//image[gps-set][GPS設定]{
 //}
 
 "高精度"もしくは"端末のみ"に設定することで、GPSが有効になります。
