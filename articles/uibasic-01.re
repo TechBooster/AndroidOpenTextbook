@@ -41,7 +41,7 @@ iPhoneの登場から7年が経った今、タッチデバイスでのインタ�
 さて、一般的なインターフェースについては上述のとおりですが、Androidアプリを作るときには、それに沿ったインターフェースを知っておかなければなりません。
 なぜなら、Android OSを提供しているGoogleが、「Androidアプリはこう作りなさい」というガイドラインを作成しているからです。
 
-//image[guideline][Googleが定めているAndroidアプリのガイドライン（@<href>{http://developer.android.com/}）][scale=0.5]{
+//image[guideline][Googleが定めているAndroidアプリのガイドライン（@<href>{http://developer.android.com/}）][scale=0.25]{
 //}
 
 このガイドラインの中には、「Design」「Develop」「Distribute」という3つのカテゴリがあり、すべてのインターフェースを知るためには、それを実際にコードでかいて実現できなければなりません。
