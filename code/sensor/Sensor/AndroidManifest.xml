@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.techbooster.sensor"
+    package="jp.androidopentextbook.sensor"
     android:versionCode="1"
     android:versionName="1.0" >
 
     <uses-sdk
-        android:minSdkVersion="16"
+        android:minSdkVersion="19"
         android:targetSdkVersion="19" />
 
     <application
@@ -14,7 +14,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="com.techbooster.sensor.MainActivity"
+            android:name="jp.androidopentextbook.sensor.MainActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -23,32 +23,32 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.techbooster.sensor.DeviceViewActivity"
+            android:name="jp.androidopentextbook.sensor.DeviceViewActivity"
             android:label="@string/sensor_name" >
         </activity>
         <activity
-            android:name="com.techbooster.sensoractivity.AccelerometerActivity" >
+            android:name="jp.androidopentextbook.sensoractivity.AccelerometerActivity" >
         </activity>
         <activity
-            android:name="com.techbooster.sensoractivity.MagneticActivity" >
+            android:name="jp.androidopentextbook.sensoractivity.MagneticActivity" >
         </activity>
         <activity
-            android:name="com.techbooster.sensoractivity.GyroscopeActivity" >
+            android:name="jp.androidopentextbook.sensoractivity.GyroscopeActivity" >
         </activity>
         <activity
-            android:name="com.techbooster.sensoractivity.ProximityActivity" >
+            android:name="jp.androidopentextbook.sensoractivity.ProximityActivity" >
         </activity>
         <activity
-            android:name="com.techbooster.sensoractivity.LightActivity" >
+            android:name="jp.androidopentextbook.sensoractivity.LightActivity" >
         </activity>
         <activity
-            android:name="com.techbooster.sensoractivity.PressureActivity" >
+            android:name="jp.androidopentextbook.sensoractivity.PressureActivity" >
         </activity>
         <activity
-            android:name="com.techbooster.sensoractivity.GravityActivity" >
+            android:name="jp.androidopentextbook.sensoractivity.GravityActivity" >
         </activity>
         <activity
-            android:name="com.techbooster.sensoractivity.RotationVectorActivity" >
+            android:name="jp.androidopentextbook.sensoractivity.RotationVectorActivity" >
         </activity>
         </application>
 </manifest>
