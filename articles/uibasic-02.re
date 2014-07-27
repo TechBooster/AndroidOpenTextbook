@@ -172,22 +172,13 @@ Graphical Layoutを使って、次のインターフェイスを作成してみ�
  * お電話番号
  * パスワード
 
-の4つのテキストフィールドがあり、それぞれ「Text Fields」フォルダの中から選んで配置しますが、それぞれの「Input Type」が異なるものを選んでくるのが最適です（@<img>{017}～@<img>{021}）。
+の4つのテキストフィールドがあり、それぞれ「Text Fields」フォルダの中から選んで配置しますが、それぞれの「Input Type」が異なるものを選んでくるのが最適です（@<img>{017}、@<img>{018-021}）。
 
 
-//image[017][E-mailでは、Input Typeの値が「textEmailAddress」になっている][scale=0.2]{
+//image[017][E-mailでは、Input Typeの値が「textEmailAddress」になっている][scale=0.6]{
 //}
 
-//image[018][][scale=0.2]{
-//}
-
-//image[019][][scale=0.2]{
-//}
-
-//image[020][][scale=0.2]{
-//}
-
-//image[021][それぞれの特徴にあったText Fieldsを選ぶ][scale=0.2]{
+//image[018-021][それぞれの特徴にあったText Fieldsを選ぶ]{
 //}
 
 こうすることで、Android OSが最適なIME（日本語入力）キーボード@<fn>{ime}を自動で表示することができます。
