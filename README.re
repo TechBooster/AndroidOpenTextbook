@@ -53,7 +53,7 @@ Re:VIEWはGithub上のソースをcloneしてパスを通せば利用できま�
 
 //emlist{
 git clone https://github.com/kmuto/review.git
-export PATH=$PATH:/path/to/review
+export PATH=$PATH:/path/to/review/bin
 //}
 
 ==== セットアップ
@@ -62,7 +62,7 @@ Android Open Textbookをクローンし、必要なライブラリ等をイン�
 
 //emlist{
 git clone https://github.com/TechBooster/AndroidOpenTextbook.git
-cd AndroidOpenTextbook.git
+cd AndroidOpenTextbook
 npm install
 //}
 
