@@ -92,7 +92,7 @@ ArduinoとPCをUSBケーブルで接続します。コントロールパネル�
 Arduinoのようなハードウェアで言う"Hello World"は"Lチカ"と言う動作が
 それに当たります。"Lチカ"とは"LEDチカチカ"の略です。
 
-Ardino IDEを起動してみましょう。起動したら、次のように"スケッチの例>01.Basics>Blink"
+Arduino IDEを起動してみましょう。起動したら、次のように"スケッチの例>01.Basics>Blink"
 を選択すると、サンプルのスケッチが開きます。
 
 //image[blink][Blinkを開く]{
