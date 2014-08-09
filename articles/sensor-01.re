@@ -900,8 +900,8 @@ public class MainActivity extends Activity
 
         // 位置情報の取得
         mLoc = mLocationClient.getLastLocation();
-        Log.d("LOCATION", "LAT: " + loc.getLatitude());
-        Log.d("LOCATION", "LON: " + loc.getLongitude());
+        Log.d("LOCATION", "LAT: " + mLoc.getLatitude());
+        Log.d("LOCATION", "LON: " + mLoc.getLongitude());
     }
 
     @Override
