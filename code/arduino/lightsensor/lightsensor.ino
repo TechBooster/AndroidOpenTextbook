@@ -21,8 +21,10 @@ void loop() {
   
   // 明るさによってLEDの点灯を変化させる
   if (light > 600) {
+    // 明るい
     digitalWrite(LED, LOW);
   } else {
+    // 暗い
     digitalWrite(LED, HIGH);
   }
 
