@@ -700,7 +700,6 @@ GPSは受信精度が高ければ、正確な位置を10m程度の誤差で測�
  の影響を受けるため、都心部ではむしろ位置精度が落ちることがある
  * 衛星の捕捉と位置検出には、60秒以上の時間が掛かる場合がある
 
-//footnote[mitibiki][@<href>{http://www.jaxa.jp/projects/sat/qzss/index_j.html}]
 
 ===[column] 日本独自のGPS衛星「みちびき」
 日本では独自GPS衛星として「みちびき」@<fn>{mitibiki}の打ち上げに成功し、今後4機
@@ -710,6 +709,8 @@ GPSは受信精度が高ければ、正確な位置を10m程度の誤差で測�
 アプリを作成するには特に意識する必要はありません。
 
 ===[/column]
+
+//footnote[mitibiki][@<href>{http://www.jaxa.jp/projects/sat/qzss/index_j.html}]
 
 == GPSを利用した位置情報の取得
 
