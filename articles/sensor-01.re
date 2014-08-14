@@ -50,7 +50,7 @@ Androidでは多くのセンサー情報が取得できますが、実際のハ�
 === センサー情報取得フレームワーク
 
 センサーの利用のために、便利なフレームワークが用意されています。
-使用するクラスは以下のとおりです。
+使用するクラスは次のとおりです。
 
  * Sensor
  * SensorManager
@@ -192,7 +192,7 @@ public class SensorActivity extends Activity implements SensorEventListener {
 
 それでは実際のセンサーの値を取得してみます。センサーのデータはコールバック内
 で取得します。センサーデータはSensorEventに入っています。SensorEventに
-は以下のデータが入っています
+は次のデータが入っています
 
  * accuray : 精度
  * sensor : センサーオブジェクト
@@ -204,7 +204,7 @@ public class SensorActivity extends Activity implements SensorEventListener {
 
 //footnote[sensor_motion][@<href>{http://developer.android.com/guide/topics/sensors/sensors_motion.html}]
 
-今回の加速度センサーの場合は以下のようになります。valuesの配列サイズは"3"です。
+今回の加速度センサーの場合は次のようになります。valuesの配列サイズは"3"です。
 また型はfloatなのでint等と間違えないように注意して下さい。
 
  * SensorEvent.values[0] : x軸加速度
@@ -503,7 +503,7 @@ x軸、y軸、z軸のそれぞれの加速度を重力加速度を差し引い�
 //}
 
 全センサーの取得には"Sensor.TYPE_ALL"を指定すると、センサーのリストとして取得できます。
-ログとして表示するようにしてみたのが以下になります。
+ログとして表示するようにしてみたのが次のコードになります。
 //list[sensor-all][センサーリストの取得]{
     // センサーのオブジェクトリストを取得する
     mSensors = mSensorManager.getSensorList(Sensor.TYPE_ALL);
@@ -983,7 +983,7 @@ public void onConnected(Bundle connectionHint) {
 //}
 
 プライオリティの設定は、端末の電池消費に影響します。例としてGalaxy Nexusの場合
-は以下のようになるという実験結果があります@<fn>{gps_priority}。
+は次のようになるという実験結果があります@<fn>{gps_priority}。
 
 //image[priority][プライオリティと電池消費量]{
 //}
