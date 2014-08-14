@@ -702,15 +702,15 @@ GPSは受信精度が高ければ、正確な位置を10m程度の誤差で測�
 
 
 ===[column] 日本独自のGPS衛星「みちびき」
+@<href>{http://www.jaxa.jp/projects/sat/qzss/index_j.html}
 日本では独自GPS衛星として「みちびき」@<fn>{mitibiki}の打ち上げに成功し、今後4機
 での本格運用が計画されています。これは「準天頂衛星システム」といい、従来のGPSを補完する
 ため、常に1機は日本上空にあって、マルチパスの影響を受けず正確な位置を測位することが可能に
 なります。みちびきを利用するには、端末のGPSのファームウェアのアップデートが必要になります。
-アプリを作成するには特に意識する必要はありません。
+アプリを作成するには特に意識する必要はありません。みちびきについてはこちら 
+@<href>{http://www.jaxa.jp/projects/sat/qzss/index_j.html}
 
 ===[/column]
-
-//footnote[mitibiki][@<href>{http://www.jaxa.jp/projects/sat/qzss/index_j.html}]
 
 == GPSを利用した位置情報の取得
 
