@@ -808,11 +808,12 @@ public class MainActivity extends Activity
      implements ConnectionCallbacks, OnConnectionFailedListener
 //}
 
-設定されるリスナーは3つで、OnConnectionFailedListenerは接続に失敗した時に呼ばれます（@<list>{gps_connectfail}）。
+設定されるコールバック関数は3つで、
+OnConnectionFailedListenerは接続に失敗した時に呼ばれます（@<list>{gps_connectfail}）。
 
 //list[gps_connectfail][接続失敗時のイベントコールバック]{
 @Override
-public void onConnectionFailed(ConnectionResult arg0) {
+public void onConnectionFailed(ConnectionResult result) {
   // Google Play Servicesの接続に失敗
 }
 //}
@@ -821,7 +822,7 @@ ConnectionCallbacksは接続時と切断時に呼ばれます（@<list>{gps_conn
 
 //list[gps_connect][接続時・切断時のイベントコールバック]{
 @Override
-public void onConnected(Bundle arg0) {
+public void onConnected(Bundle connectionHint) {
   // Google Play Servicesに接続した
 }
 
@@ -1040,7 +1041,7 @@ protected void onPause() {
 今回は取得したLocationオブジェクトからいくつかのデータを取り出しています。
 
  * Latitude : 緯度（度）
- * Longitude : 軽度（度）
+ * Longitude : 経度（度）
  * Altitude : 高度（m）
  * Speed : 移動速度（m/s）
  * Time : 取得時間（UTC）
