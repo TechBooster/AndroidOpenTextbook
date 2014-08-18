@@ -405,7 +405,7 @@ HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 
 リクエストはファイルの取得なので、setRequestMethod()メソッドで"GET"を渡します。
 また、setRequestProperty()メソッドを使うことでリクエストヘッダーを設定できます。
-Hostは設定しなくても自動的に追加させるのですが、説明上、あえて追加しました（@<list>{set-request-method}）。
+Hostは設定しなくても自動的に追加されるのですが、説明上、あえて追加しました（@<list>{set-request-method}）。
 //list[set-request-method][リクエストの設定]{
 connection.setRequestMethod("GET");
 connection.setRequestProperty("Host", "tomorrowkey.github.io");
