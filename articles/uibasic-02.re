@@ -14,7 +14,7 @@ Androidアプリのユーザーインターフェイスは、プロジェクト�
 この節では、ADTについている「Graphical Layout」を使ってレイアウトを完成させます。
 細かい部分に気を取られず、Androidにはどのようなパーツがあり、どんなときに使うのかをざっと把握することが目的です。
 
-=== 新規プロジェクトを作成し、「Graphical Layout」を表示する
+=== 新規プロジェクトを作成しGraphical Layoutを表示する
 
 ADTを起動し、新たにAndroidプロジェクトを作成します。
 
@@ -31,7 +31,7 @@ ADTを起動し、新たにAndroidプロジェクトを作成します。
 //image[001][Graphical Layout画面]{
 //}
 
-=== Graphical Layout の見方を確認しよう
+=== Graphical Layoutの見方を確認しよう
 
 Graphical Layout を開くと、Androidの画面が大きくあらわれます。初期状態では、「Hello world!」というテキストがひとつ書かれているのがわかります。
 他にもいくつかのパネルがあります。
