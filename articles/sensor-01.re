@@ -99,8 +99,8 @@ public final void onSensorChanged(SensorEvent event) {
 }
 //}
 
-onSensorChangedはセンサー値が変化した時に呼ばれます。
-onAccuracyChangedはセンサーの精度が変化した時に呼ばれます。たいていの場合、onSensorChangedを実装すれば問題ありません。
+SensorEventListener#onSensorChangedはセンサー値が変化した時に呼ばれます。
+SensorEventListener#onAccuracyChangedはセンサーの精度が変化した時に呼ばれます。たいていの場合、SensorEventListener#onSensorChangedを実装すれば問題ありません。
 実際のところセンサーの精度変化はほとんど起きないためです。
 
 
