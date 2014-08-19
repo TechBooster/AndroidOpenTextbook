@@ -257,9 +257,9 @@ y軸の加速度が重力加速度の約9.8に近い値になっています。�
 @Override
 protected void onResume() {
     super.onResume();
-    // センサの取得
+    // センサーの取得
     List<Sensor> sensors = mSensorManager.getSensorList(Sensor.TYPE_ALL);
-    // センサマネージャへリスナーを登録
+    // センサーマネージャへリスナーを登録
     for (Sensor sensor : sensors) {
         if (sensor.getType() == Sensor.TYPE_PROXIMITY) {
             mSensorManager.registerListener(this,
@@ -322,10 +322,10 @@ onPauseでの登録破棄も忘れないようにしてください（@<list>{or
 protected void onResume() {
     super.onResume();
 
-    // センサの取得
+    // センサーの取得
     List<Sensor> sensors = mSensorManager.getSensorList(Sensor.TYPE_ALL);
 
-    // センサマネージャへリスナーを登録
+    // センサーマネージャへリスナーを登録
     for (Sensor sensor : sensors) {
         if (sensor.getType() == Sensor.TYPE_MAGNETIC_FIELD) {
             mSensorManager.registerListener(this,
