@@ -211,7 +211,7 @@ public class SensorActivity extends Activity implements SensorEventListener {
  * SensorEvent.values[1] : y軸加速度
  * SensorEvent.values[2] : z軸加速度
 
-加速度なので、そのままx、y、xのそれぞれの加速度が取得できます。これを
+加速度なので、そのままx、y、zのそれぞれの加速度が取得できます。これを
 コードで取得するには、onSensorChangedを次のとおりに変更します（@<list>{sensorchange}）。
 
 //list[sensorchange][センサー値変化イベントコールバック]{
