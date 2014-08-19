@@ -90,12 +90,12 @@ SensorEventListenerの実装を見ていきましょう。ここではリスナ�
 //list[listener][イベントコールバック]{
 @Override
 public final void onAccuracyChanged(Sensor sensor, int accuracy) {
-    // TODO
+    // 処理
 }
 
 @Override
 public final void onSensorChanged(SensorEvent event) {
-    // TODO
+    // 処理
 }
 //}
 
