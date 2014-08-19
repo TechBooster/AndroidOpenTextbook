@@ -564,7 +564,7 @@ x軸、y軸、z軸のそれぞれの加速度を重力加速度を差し引い�
       android:required="true" />
 //}
 
-uses-feature要素を追記し、stepdetectorを持っていない機種のみにインストールを許可します。
+uses-feature要素を追記し、stepdetectorを持っている機種のみにインストールを許可します。
 
 
 ==== @<b>{センサーのハードウェアの違い}
