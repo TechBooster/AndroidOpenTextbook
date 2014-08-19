@@ -635,7 +635,7 @@ uses-feature要素を追記し、stepdetectorを持っている機種のみに�
 では、センサーのデータを複数回分貯めこんでおき、バッチ処理@<fn>{sensor_batch}で通知する仕組みがあります。
 
 バッチ処理が実行されるまでは、センサーは低消費電力な状態を維持できるので電池の消費を
-抑えることができます。このバッチ処理の間隔は設定ができるます。
+抑えることができます。このバッチ処理の間隔は設定ができます。
 
 バッチモードは、スクリーンがオフの状態やシステムがスリープ中でも動作するため、
 フィットネスや位置情報の追跡や監視などに有効な手段となります。Android 4.4からは
@@ -1049,7 +1049,7 @@ protected void onPause() {
  * Bearing : 北からの時計回りの角度（度）無い場合は０
 
 このように、ざっくりと位置を確認したい場合はLocationClient#getLastLocationを使い、
-時間や位置の変化で更新を伴ない場合はLocationRequest#requestLocationUpdatesを使用することが定石です（@<img>{update}）。
+時間や位置の変化で更新を伴う場合はLocationRequest#requestLocationUpdatesを使用することが定石です（@<img>{update}）。
 
 //image[update][位置情報データ][scale=0.15]{
 //}
