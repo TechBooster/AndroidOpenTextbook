@@ -90,17 +90,17 @@ SensorEventListenerの実装を見ていきましょう。ここではリスナ�
 //list[listener][イベントコールバック]{
 @Override
 public final void onAccuracyChanged(Sensor sensor, int accuracy) {
-    // TODO
+    // 処理
 }
 
 @Override
 public final void onSensorChanged(SensorEvent event) {
-    // TODO
+    // 処理
 }
 //}
 
-onSensorChangedはセンサー値が変化した時に呼ばれます。
-onAccuracyChangedはセンサーの精度が変化した時に呼ばれます。たいていの場合、onSensorChangedを実装すれば問題ありません。
+SensorEventListener#onSensorChangedはセンサー値が変化した時に呼ばれます。
+SensorEventListener#onAccuracyChangedはセンサーの精度が変化した時に呼ばれます。たいていの場合、SensorEventListener#onSensorChangedを実装すれば問題ありません。
 実際のところセンサーの精度変化はほとんど起きないためです。
 
 
@@ -211,7 +211,7 @@ public class SensorActivity extends Activity implements SensorEventListener {
  * SensorEvent.values[1] : y軸加速度
  * SensorEvent.values[2] : z軸加速度
 
-加速度なので、そのままx、y、xのそれぞれの加速度が取得できます。これを
+加速度なので、そのままx、y、zのそれぞれの加速度が取得できます。これを
 コードで取得するには、onSensorChangedを次のとおりに変更します（@<list>{sensorchange}）。
 
 //list[sensorchange][センサー値変化イベントコールバック]{
@@ -257,9 +257,9 @@ y軸の加速度が重力加速度の約9.8に近い値になっています。�
 @Override
 protected void onResume() {
     super.onResume();
-    // センサの取得
+    // センサーの取得
     List<Sensor> sensors = mSensorManager.getSensorList(Sensor.TYPE_ALL);
-    // センサマネージャへリスナーを登録
+    // センサーマネージャへリスナーを登録
     for (Sensor sensor : sensors) {
         if (sensor.getType() == Sensor.TYPE_PROXIMITY) {
             mSensorManager.registerListener(this,
@@ -322,10 +322,10 @@ onPauseでの登録破棄も忘れないようにしてください（@<list>{or
 protected void onResume() {
     super.onResume();
 
-    // センサの取得
+    // センサーの取得
     List<Sensor> sensors = mSensorManager.getSensorList(Sensor.TYPE_ALL);
 
-    // センサマネージャへリスナーを登録
+    // センサーマネージャへリスナーを登録
     for (Sensor sensor : sensors) {
         if (sensor.getType() == Sensor.TYPE_MAGNETIC_FIELD) {
             mSensorManager.registerListener(this,
@@ -564,7 +564,7 @@ x軸、y軸、z軸のそれぞれの加速度を重力加速度を差し引い�
       android:required="true" />
 //}
 
-uses-feature要素を追記し、stepdetectorを持っていない機種のみにインストールを許可します。
+uses-feature要素を追記し、stepdetectorを持っている機種のみにインストールを許可します。
 
 
 ==== @<b>{センサーのハードウェアの違い}
@@ -586,7 +586,7 @@ uses-feature要素を追記し、stepdetectorを持っていない機種のみ�
 このように端末によって細かい部分が異なる場合があるので、複数の端末で正常に動作するかどうか
 きちんと確認する必要があります（一部の安価な端末ではAndroid OSのバージョンが低く、MaxFifo、ReservedFifoは存在しない）。
 
-このような場合は、機種ごとに対応したり、値を正規化して相対値として使用できるか個別に検討が必要です
+このような場合は、機種ごとに対応したり、値を正規化して相対値として使用できるか個別に検討が必要です。
 
 == センサーの種類と系統
 
@@ -635,7 +635,7 @@ uses-feature要素を追記し、stepdetectorを持っていない機種のみ�
 では、センサーのデータを複数回分貯めこんでおき、バッチ処理@<fn>{sensor_batch}で通知する仕組みがあります。
 
 バッチ処理が実行されるまでは、センサーは低消費電力な状態を維持できるので電池の消費を
-抑えることができます。このバッチ処理の間隔は設定ができるます。
+抑えることができます。このバッチ処理の間隔は設定ができます。
 
 バッチモードは、スクリーンがオフの状態やシステムがスリープ中でも動作するため、
 フィットネスや位置情報の追跡や監視などに有効な手段となります。Android 4.4からは
@@ -1049,7 +1049,7 @@ protected void onPause() {
  * Bearing : 北からの時計回りの角度（度）無い場合は０
 
 このように、ざっくりと位置を確認したい場合はLocationClient#getLastLocationを使い、
-時間や位置の変化で更新を伴ない場合はLocationRequest#requestLocationUpdatesを使用することが定石です（@<img>{update}）。
+時間や位置の変化で更新を伴う場合はLocationRequest#requestLocationUpdatesを使用することが定石です（@<img>{update}）。
 
 //image[update][位置情報データ][scale=0.15]{
 //}
