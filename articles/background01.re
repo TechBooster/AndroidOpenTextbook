@@ -195,7 +195,7 @@ Handlerクラスは、処理順序のスケジューリングや、処理を別�
 プログラミングの目的は、さまざまなので、すべてのケースに当てはまるわけではありませんが、基本として理解しておくと応用の幅がひろがります。
 
 
-== AsyncTaskとLoader
+== AsyncTask
 
 AsyncTaskは非同期処理のための便利なヘルパークラスです。AsyncTaskクラス内部では、
 非同期処理の為にThreadとHendlerが使われていますが、クラス内で隠蔽されており意識する必要はありません。
@@ -230,13 +230,121 @@ Play Storeにもトイカメラ風の写真を撮るアプリなど面白い効�
 
 画面下の開始ボタンを押すと画像をモノクロに変換する処理を行います。
 
-まずは、AsyncTaskを使わずにプログラミングしてみます。これは、計算量の多い処理があるとUIスレッドが止まり、
+まずはレイアウトを作成します。
+
+//list[01][activity_main.xml]{
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    ...省略...
+    tools:context=".MainActivity" >
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/ic_launcher_big" />
+
+    <Button
+        android:id="@+id/execButton"
+        android:layout_below="@+id/imageView"
+        ...省略...
+        android:text="開始" />
+
+    <Button
+        android:id="@+id/countButton"
+        android:layout_below="@+id/execButton"
+        ...省略...
+        android:text="カウントアップ" />
+
+</RelativeLayout>
+//}
+
+はじめは、AsyncTaskを使わずにプログラミングしてみます。これは、計算量の多い処理があるとUIスレッドが止まり、
 ユーザーが操作できないことを確認するためです。操作できないことを体験するために、２番目のボタンも用意します。
 このボタンを押すと表示されているラベル（数字）がカウントアップしていくものです。
 
-#@# スケルトンXML
+//list[02][MainActivity.java]{
+public class MainActivity extends Activity {
 
-#@# スケルトンプログラム
+    private ImageView mImageView;
+    private Bitmap mBitmap;
+    private Button mCountButton;
+    private Integer mCount = 0;
+    
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        
+        // イメージの準備
+        mBitmap = BitmapFactory.decodeResource(
+                getResources(), R.drawable.ic_launcher_big);
+
+        // 変換前のイメージを表示
+        mImageView = (ImageView)findViewById(R.id.imageView);
+        mImageView.setImageBitmap(mBitmap);
+
+        // 押されるたびにカウントアップするボタン
+        mCountButton =  (Button)findViewById(R.id.countButton);
+        mCountButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mCount++;
+                ((Button)view).setText(mCount.toString());
+            }
+        });
+        ...省略...
+    }
+}
+//}
+
+
+2番目のボタンであるカウントボタンを配置し、引き続き開始ボタンの処理を記述します。
+
+//list[03][MainActivity.java]{
+
+    ...省略...
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        
+        ...省略...
+        
+        // 同期処理の開始
+        Button execButton = (Button)findViewById(R.id.execButton);
+        execButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // モノクロにする処理
+                Bitmap out = mBitmap.copy(Bitmap.Config.ARGB_8888, true);
+ 
+                int width = out.getWidth();
+                int height = out.getHeight();
+                int totalPixcel = width * height;
+ 
+                int i, j;
+                for (j = 0; j < height; j++) {
+                    for (i = 0; i < width; i++) {
+                        int pixelColor = out.getPixel(i, j);
+                        int y = (int) (0.299 * Color.red(pixelColor) +
+                                0.587 * Color.green(pixelColor) +
+                                0.114 * Color.blue(pixelColor));
+                        out.setPixel(i, j, Color.rgb(y, y, y));
+                    }
+                }
+ 
+                // 変換が終わったので表示する
+                mImageView.setImageBitmap(out);
+            }
+        });
+    }
+}
+
+//}
 
 アプリを実行して、開始ボタンとカウントボタンを押してみましょう。しばらく待っていると画像が、カラーからモノクロへ変換されます。
 すべてUIスレッドで処理しているため、開始ボタンを押したあとはカウントボタンが操作できず、最悪の場合、ANRに陥ります@<fn>{連打}。
@@ -260,30 +368,198 @@ AsyncTaskの主なメソッドは次の通りです
 各メソッドのParams、Progress、Resultは引数となるクラスの例です。実際には必要に応じて指定します。
 
 
-#@# サンプルコード
+//list[03][MonochromeTask.java]
+public class MonochromeTask extends AsyncTask<Bitmap, Integer, Bitmap> {
+    private ImageView mImageView;
+ 
+    public MonochromeTask(ImageView imageView) {
+        super();
+        mImageView = imageView;
+    }
+ 
+    @Override
+    protected Bitmap doInBackground(Bitmap... bitmap) {
+        // 非同期で処理する
+        Bitmap out = bitmap[0].copy(Bitmap.Config.ARGB_8888, true);
 
-ここで注目してもらいところは 「extendsAsyncTask<Bitmap, void, Bitmap>」です。前述の引数ではParams、Progress、Resultが出てきましたが、ここで引数の型を指定しています。
+        int width = out.getWidth();
+        int height = out.getHeight();
+        int totalPixcel = width * height;
+
+        int i, j;
+        for (j = 0; j < height; j++) {
+            for (i = 0; i < width; i++) {
+                int pixelColor = out.getPixel(i, j);
+                // モノクロ化
+                int y = (int) (0.299 * Color.red(pixelColor) +
+                        0.587 * Color.green(pixelColor) +
+                        0.114 * Color.blue(pixelColor));
+                out.setPixel(i, j, Color.rgb(y, y, y));
+            }
+        }
+        return out;
+    }
+ 
+    @Override
+    protected void onPostExecute(Bitmap result) {
+        // 実行後にImageViewへ反映
+        mImageView.setImageBitmap(result);
+    }
+}
+//}
+
+ここで注目すべきは 「extends AsyncTask<Bitmap, Integer, Bitmap>」です。
+前述の引数ではParams、Progress、Resultが出てきましたが、ここで引数の型を指定しています。
 
 １番目のParamsはバックグラウンド処理を実行する時に与えるexecuteメソッドの引数の型です。
 ２番目のProgressは進捗状況を表示するonProgressUpdateメソッドの引数の型です。
 最後のResultはバックグラウンド処理の後に受け取るonPostExecuteメソッドの引数の型です。
 
 今回はビットマップ画像を与えてモノクロに変換されたビットマップを受け取ります。
-まずは進捗表示を行わないのでProgressにはVoid（引数を持たない意味の型）を指定しています。
-
 
 Activity側で必要な処理は、MonochromeTaskクラス（Asynctaskのサブクラス）のインスタンスを生成することと、
 非同期処理を開始するために、executeメソッドを呼び出すことです。
 
-#@# サンプルコード
+execButtonのOnClickListenerを次の通り書き換えてみましょう。
 
-Asynctaskを使わない場合と違い、UIスレッドをブロックしません。
+//list[04][MainActivity.java]{
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        ...省略...
+        Button execButton = (Button)findViewById(R.id.execButton);
+        execButton.setOnClickListener(new OnClickListener() {
+            
+            MonochromeTask task =
+                    new MonochromeTask(mImageView);
+            
+            @Override
+            public void onClick(View view) {
+                // モノクロにする処理
+                task.execute(mBitmap);
+            }
+        });
+        ...省略...
+    }
+//}
+
+AsyncTaskを使わない場合と違い、UIスレッドをブロックしません。
 この状態でカウントボタンを押すと、問題なくカウントアップされていきます。
 
+=== 進捗を表示する
+画像処理に関わらず、重たい処理を行う時に見た目が固まるのは良くありません。
+何がおきているか、利用者が把握できず、不安になるためです。
+Windowsなどでファイルをコピーするときに出るプログレスバーがユーザビリティの良い例ですね。
+大量のファイルをコピーする時などプログレスバーが出ていないと本当にコピーしているのか不安になってします。
 
+最後にプログレスバーによる進捗表示を追加してみましょう。
+
+//list[05][MainActivity.java]{
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        ...省略...
+        Button execButton = (Button)findViewById(R.id.execButton);
+        execButton.setOnClickListener(new OnClickListener() {
+            
+            MonochromeTask task =
+                    new MonochromeTask(getParent(),mImageView);
+            
+            @Override
+            public void onClick(View view) {
+                // モノクロにする処理
+                task.execute(mBitmap);
+            }
+        });
+        ...省略...
+    }
+//}
+
+MonochromeTask（AsyncTask）のコンストラクタにgetParentメソッドで取得したActivityを渡します。
+
+MonochromeTaskでは、進捗を表示するためのプログレスバーをonPreExecuteメソッドで準備します。
+また、非同期処理を行うdoInBackgroundメソッドから進捗を随時アップデートするonProgressUpdateメソッドを呼び出します。
+
+//list[06][MonochromeTask.java]
+
+public class MonochromeTask extends AsyncTask<Bitmap, Integer, Bitmap> {
+    private ImageView mImageView;
+    private ProgressDialog mDialog;
+    private Context mContext;
+ 
+    public MonochromeTask(Context context, ImageView imageView) {
+        super();
+        mContext = context;
+        mImageView = imageView;
+    }
+    @Override
+    protected void onPreExecute() {
+        //処理前にプログレスバーを準備
+        mDialog = new ProgressDialog(mContext);
+        mDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+        mDialog.setIndeterminate(false);
+        mDialog.setMax(100); //100%表記
+        mDialog.show();
+    }
+    
+    @Override
+    protected Bitmap doInBackground(Bitmap... bitmap) {
+        // 非同期で処理する
+        Bitmap out = bitmap[0].copy(Bitmap.Config.ARGB_8888, true);
+
+        int width = out.getWidth();
+        int height = out.getHeight();
+        int totalPixcel = width * height;
+
+        int i, j;
+        for (j = 0; j < height; j++) {
+            for (i = 0; i < width; i++) {
+                int pixelColor = out.getPixel(i, j);
+                // モノクロ化
+                int y = (int) (0.299 * Color.red(pixelColor) +
+                        0.587 * Color.green(pixelColor) +
+                        0.114 * Color.blue(pixelColor));
+                out.setPixel(i, j, Color.rgb(y, y, y));
+            }
+            float percent = ((i + j*height) /
+                    (float)totalPixcel ) * 100;
+            onProgressUpdate((int)percent);
+        }
+        return out;
+    }
+    @Override
+    protected void onProgressUpdate(Integer... progress) {
+        // 実行中
+        mDialog.setProgress(progress[0]);
+    }
+    
+    @Override
+    protected void onPostExecute(Bitmap result) {
+        // 実行後にImageViewへ反映
+        mDialog.dismiss();
+        mImageView.setImageBitmap(result);
+    }
+}
+//}
+
+主な変更点は次の通りです。進捗を表示するためにコンストラクタの引数にContextを追加しました。
+準備としてonPreExecuteメソッドでプログレスダイアログ（ProgressDialog）を用意しています。
+進捗を更新するためにonProgressUpdateメソッドを追加し、doInBackgroundメソッドからonProgressUpdateメソッドを呼び出しています。
+処理が完了したら、onPostExecuteメソッドでダイアログを非表示にして終了です。
+
+AsyncTaskは非同期処理を行えるもっとも手軽な手段です。
+しかし、ProgressDialogのようにUIコンポーネントを使う場合は、思いの外、複雑になってしまいます。
+Contextを持つ必要があることからも、Activityと密結合せざるを得ません。
+
+サンプルコードでは、UIコンポーネントのProgressDialogをつかって進捗表示する例を挙げました。
+非同期処理をしているにも関わらず、ほかのUIを操作できなくなってしまいました。アプリとして、あまり嬉しい挙動ではないでしょう。
+
+実際、AsyncTaskが向いている処理は、ファイルのダウンロードや、データのネットワーク送信など進捗表示を必要としない
+バックグラウンド動作です@<fn>{fireandforget}。
+
+//footnote[fireandforget][Fire and Forget。このような非同期処理の特性を指して撃ちっ放しと呼ばれます]
+
+== AsyncTaskLoader
 
 == Thread、ExecutorService
-
 
 == Handler
 
