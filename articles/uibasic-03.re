@@ -269,7 +269,7 @@ ButtonやTextViewは、文字列を変更したり、文字の大きさや色を
 それぞれのビューが、横方向（layout_width）または縦方向（layout_height）に対してどれぐらいの領域を占めるかという設定です。
 これらには「wrap_content」と「match_parent@<fn>{matchparent}」というふたつの値が存在します。
 
-//footnote[matchparent][APIレベルxx以前は、「fill_parent」が使われていました。古いアプリではそれが使われていることもあります。]
+//footnote[matchparent][APIレベル7以前は、「fill_parent」が使われていました。古いアプリではそれが使われていることもあります。]
 
 #@# XXがあった。要注意
 
