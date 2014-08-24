@@ -3,8 +3,9 @@ PREDEF:
 CHAPS:
     - uibasic-01.re
     - uibasic-02.re
-    - arduino-01.re
+    - background01.re
     - sensor-01.re
+    - arduino-01.re
     - network-01.re
     - netdevice-01.re
     - graphics-01.re

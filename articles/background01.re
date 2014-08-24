@@ -414,7 +414,7 @@ AsyncTaskの主なメソッドは次の通りです。
 各メソッドのParams、Progress、Resultは引数となるクラスの例です。実際には必要に応じて指定します（@<list>{031}）。
 
 
-//list[031][MonochromeTask.java]
+//list[031][MonochromeTask.java]{
 public class MonochromeTask extends AsyncTask<Bitmap, Integer, Bitmap> {
     private ImageView mImageView;
  
@@ -524,8 +524,7 @@ MonochromeTask（AsyncTask）のコンストラクタにgetParentメソッドで
 MonochromeTaskでは、進捗を表示するためのプログレスバーをonPreExecuteメソッドで準備します。
 また、非同期処理を行うdoInBackgroundメソッドから進捗を随時アップデートするonProgressUpdateメソッドを呼び出します（@<list>{06}）。
 
-//list[06][MonochromeTask.java]
-
+//list[06][MonochromeTask.java]{
 public class MonochromeTask extends AsyncTask<Bitmap, Integer, Bitmap> {
     private ImageView mImageView;
     private ProgressDialog mDialog;
@@ -1396,9 +1395,9 @@ DEBUG/IntentService(478): onHandleIntent Start
 DEBUG/IntentService(478): intent msg:TestText
 //}
 
-IntentServiceは、Serviceとして動作することで確実にバックグラウンドで動作します。AsyncTask（またはThreadをつかった非同期処理）では、アプリケーションが非表示になる際に処理が中断される恐れがありました@<fn>{onPause}。確実に実行する作業
+IntentServiceは、Serviceとして動作することで確実にバックグラウンドで動作します。AsyncTask（またはThreadをつかった非同期処理）では、アプリケーションが非表示になる際に処理が中断される恐れがありました@<fn>{onPause}。確実に実行しなければならない作業では積極的に使っていくべきでしょう。
 
-//footnote[onPause][そのため、onPuaseメソッドなどで停止処理を組み込んだり、ライフサイクルを考慮したAsyncTaskLoaderがあります]
+//footnote[onPause][そのため、onPuaseメソッドなどで停止処理を組み込んで対応する、もしくはライフサイクルを考慮したAsyncTaskLoaderを使います]
 
 
 #@# == プロセス間通信（AIDL）
