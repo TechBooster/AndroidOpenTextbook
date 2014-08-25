@@ -459,7 +459,7 @@ keycolorという名前で「#b81c22（濃い赤）」を定義しました。�
 
 @<list>{color-marginpaddingok}の見出し部分、「android:background」と「android:textColor」の指定を@<list>{color-colorxmluse}のように変更します（4ヶ所）。
 
-//listnum[color-colorxmluse][colors.xmlのkeycodeという名前の色を指定]{
+//listnum[color-colorxmluse][colors.xmlのkeycolorという名前の色を指定]{
 android:background="@color/keycolor"
 android:textColor="@color/keycolor_text"
 //}
