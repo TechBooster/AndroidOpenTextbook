@@ -370,7 +370,7 @@ AndroidアプリのレイアウトXMLでは、余白を自動的にとってく�
         android:padding="10dp"
         android:layout_marginBottom="5dp"
         android:text="@string/animal" />
-    <TextView
+<TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
@@ -419,13 +419,13 @@ AndroidアプリのレイアウトXMLでは、余白を自動的にとってく�
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_margin="10dp"
-    android:orientation="vertical">
-　〜中略〜
-</LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:orientation="vertical">
+　   〜中略〜
+    </LinearLayout>
 </ScrollView>
 //}
 
@@ -487,7 +487,7 @@ colors.xmlで作成したサンプルファイルをそのまま使って見て�
         android:padding="10dp"
         android:layout_marginBottom="5dp"
         android:text="@string/animal" />
-    <TextView
+<TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
@@ -572,7 +572,7 @@ dimens.xmlは、主に数値を管理するファイルです。
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.example.androidxmlbasic.MainActivity$PlaceholderFragment" >
 　〜中略〜
-　</RelativeLayout>
+</RelativeLayout>
 //}
 
 dimens.xmlには@<list>{values-dimens}のコードが書かれています。
