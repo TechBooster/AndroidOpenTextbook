@@ -544,7 +544,7 @@ LinearLayoutの大きな特徴は、領域の大きさを比率で指定でき�
 そうすると、BとCで残った領域を比率によって配分することになります。
 @<list>{lnr-weightarea}のとおり、BとCの比率をB：C＝1：3に変更すると、@<img>{lnr-weightarea}のように表示されます。
 
-//listnum[lnr-weightarea][AとCはコンテンツの成り行きの高さになり、残りをB：C＝1：3となるように配分]{
+//listnum[lnr-weightarea][AとDはコンテンツの成り行きの高さになり、残りをB：C＝1：3となるように配分]{
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -566,7 +566,7 @@ LinearLayoutの大きな特徴は、領域の大きさを比率で指定でき�
 //}
 
 
-//image[lnr-weightarea][AとCはコンテンツの成り行きの高さになり、残りをB：C＝1：3となるように配分]{
+//image[lnr-weightarea][AとDはコンテンツの成り行きの高さになり、残りをB：C＝1：3となるように配分]{
 //}
 
 == いろいろな行ぞろえ/列ぞろえを決めるGravity
