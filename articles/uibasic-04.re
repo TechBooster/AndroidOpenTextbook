@@ -308,13 +308,13 @@ android:layout_alignBottom  下端をそろえて配置する
     android:layout_height="wrap_content"
     android:text="このイラストはドロイドくんです"
     android:layout_below="@id/droid"
-    android:layout_toLeftOf="@id/droid" />
+    android:layout_alignLeft="@id/droid" />
 <TextView
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:text="上側に配置します"
     android:layout_above="@id/droid"
-    android:layout_toLeftOf="@id/droid" />
+    android:layout_alignLeft="@id/droid" />
 //}
 
 
