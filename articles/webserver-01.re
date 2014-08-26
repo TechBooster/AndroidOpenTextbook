@@ -406,8 +406,6 @@ Webで情報をやりとりする際、Web上のどのサーバのどこにリ�
 たとえば架空のお天気情報Webサイトが@<href>{http://weahter.example.com/earth/japan/tokyo/taito-ku/2015/01/10}というURIを提供していたとしますと、これはHTTPというプロトコルで動作する、weather.example.com上の"/earth/japan/tokyo/taito-ku/2015/01/10"というpathにあるリソースを意味します。
 架空の例なのでなんとも言えませんが「台東区の2014年7月11日の天気」というリソースを提供していそうです。
 
-技術サークル「Tech Booster」の、Webサイトの、トップページを示す一意の表現を得ることができます。
-
 @<list>{uri_format}に同RFCに記載されたURIの例と対応する部品の名前を示しましょう
 
 //list[uri_format][URIのフォーマット]{
