@@ -1128,7 +1128,7 @@ curl（cURL）があります。
 これはいろいろなHTTPリクエストをサーバに送って見る上ではかなり便利です
 @<fn>{curl_is_really_useful}。
 
-//footnote[curl_is_really_useful][本当はAndroidアプリで取ってきた例を上げたほうがAndroidの教科書らしいんですけど、本章では時間の都合もあって省略します。いろいろ試す場合にそのたびにActivityを作ってアプリを起動して、とやるより、単にcurl一行でデータ取ってきて、状況に応じてPOSTリクエスト等を送るほうが、Webサービスの様子を調べるほうが効率はよいような気がします。]
+//footnote[curl_is_really_useful][本当はAndroidアプリで取ってきた例を上げたほうがAndroidの教科書らしいんですけど、本章では時間の都合もあって省略します。いろいろ試す場合にそのたびにActivityを作ってアプリを起動して、とやるより、単にcurl一行でデータ取ってきて、状況に応じてPOSTリクエスト等を送るほうが、Webサービスの様子を調べるのに効率がよいような気がします。]
 
 まず、curlで@<href>{http://techinstitute.jp/}というURIにGETリクエストを送る例を示します。
 
