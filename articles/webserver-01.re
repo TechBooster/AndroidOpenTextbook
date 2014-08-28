@@ -2624,7 +2624,7 @@ Pythonプログラム内でのデータの取り扱いと、SQLエンジンで�
 Python側のModelに関する定義をその都度変える必要は通常ありません
 @<fn>{need_to_modify_model}。
 
-//footnote[need_to_modify_model][SQLが似ているとは言うものの、個別のSQL実装毎に許す文字列長などは異なります。そういった制約の違いがDjangoの実装に「漏れて」くることがあります。SQLiteで動作するからと言って、MySQLに変更してそのDjangoプロジェクトをそのまま運用へ投入するのは実際的ではありません。]
+//footnote[need_to_modify_model][SQLが似ているとは言うものの、個別のSQL実装毎に許す文字列長などは異なります。そういった制約の違いがDjangoの実装に「漏れて」くることがあります。SQLiteで動作するからと言って、MySQLに変更してそのDjangoプロジェクトをそのまま運用へ投入するのは実践的ではありません。]
 
 参考まで、この仕組みをより一般に、プログラム上で見えるオブジェクト（Object）とSQLのような関係データベース（Relational Database）間を
 マップする仕組み（Mapper）ということでORM（ORM、Object-relational mapper）と呼んだりします。
