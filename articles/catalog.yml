@@ -11,7 +11,8 @@ CHAPS:
     - graphics-01.re
     - multidevice-01.re
     - accessibility.re
-
+    - ui-01.re
+    
 POSTDEF:
 
 #夏コミビルドではarduino-01.reは外しておくれ > @mhidaka
