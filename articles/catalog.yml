@@ -7,8 +7,6 @@ CHAPS:
     - sensor-01.re
     - arduino-01.re
     - network-01.re
-    - network-02.re
-    - network-03.re
     - netdevice-01.re
     - netdevice-02.re
     - graphics-01.re
