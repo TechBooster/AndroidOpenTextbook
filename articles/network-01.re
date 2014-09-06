@@ -19,7 +19,8 @@ Webサーバーと連携して最新のデータを取得したり、他のプ�
 ネットワーク通信では、クライアントからサーバーにリクエストを送り、サーバからレスポンスを取得することをセットで考えます。
 
 他のホストからのリクエストを待ち、データを提供するホストをサーバーといいます。
-それに対してリクエストを送る側のホストをクライアントといいます。
+インターネットをしている時にWebページを返すサーバーをWebサーバーといいます。
+サーバーに対して、リクエストを送る側のホストをクライアントといいます。
 
 == IPアドレス
 
@@ -95,7 +96,7 @@ Address: 49.212.164.150
 さきほど説明したDNSもプロトコルの一種です。
 DNSは"名前をDNSサーバに渡すことでIPアドレスを返す"という仕組みがあらかじめ決められています。
 
-Webサーバーからページを取得するときに使われるプロトコルをHTTPといいます。
+WebサーバーからWebページを取得するときに使われるプロトコルをHTTPといいます。
 ホストに対して特定のページがほしいとリクエストを送ると、そのページがレスポンスとして返されます。
 
 ブラウザで"http://tomorrowkey.jp/" にアクセスした場合を例にとって、具体的な値を説明しましょう。
@@ -123,7 +124,7 @@ Hostはアクセスするホストの名前を指定します。http://tomorrowk
 
 続いてレスポンスを見てみましょう(@<list>{http-response})
 
-//list[http-response][telnetを使ったHTTP通信のレスポンス]{
+//list[http-response][HTTPレスポンス]{
 HTTP/1.1 200 OK
 Date: Sun, 13 Jul 2014 06:20:10 GMT
 Server: Apache/2.2.15 (CentOS)
@@ -223,7 +224,6 @@ Content-Type: text/html
 </head>
 <body>
 <h1>Hello, Tomorrow!</h1>
-<a href="https://mixpanel.com/f/partner"><img src="//cdn.mxpnl.com/site_media/images/partner/badge_light.png" alt="Mobile Analytics" /></a>
 </body>
 </html>
 //}
