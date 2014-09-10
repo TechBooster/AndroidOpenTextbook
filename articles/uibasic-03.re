@@ -1,6 +1,6 @@
 = XMLを使ってパーツを作る
 
-Graphical Layoutではドラッグアンドドロップでだれでもレイアウトを作ることができます。しかし、Graphical Layoutでは細かいレイアウトの設定は困難です。
+「Graphical Layout」ではドラッグアンドドロップでだれでもレイアウトを作ることができます。しかし、「Graphical Layout」では細かいレイアウトの設定は困難です。
 より細かい設定はXMLを使って作ります。
 
 この節では、XMLを使って一般的によく使うパーツを作れるようになりましょう。
@@ -53,7 +53,7 @@ ADTを起動し、新たにAndroidプロジェクトを作成します。
 //}
 
 そうすると、「MainActivity.java」「activity_main.xml」のふたつのファイルが開かれた状態になります。
-前節と同じように「activity_main.xml」のGraphical Layoutを見ると、「Hello world!」が表示されています（@<img>{201}）。
+前節と同じように「activity_main.xml」の「Graphical Layout」を見ると、「Hello world!」が表示されています（@<img>{201}）。
 
 
 //image[201][Graphical Layoutを見る]{
@@ -87,7 +87,7 @@ ADTを起動し、新たにAndroidプロジェクトを作成します。
         android:text="XMLレイアウトの基礎" />
 //}
 
-確認方法は、AVD（仮想デバイス）でも実機でもどちらでもかまいません。簡易的な確認であれば、Graphical Layoutでもできます@<fn>[easy]（@<img>{203}）。
+確認方法は、AVD（仮想デバイス）でも実機でもどちらでもかまいません。簡易的な確認であれば、「Graphical Layout」でもできます@<fn>[easy]（@<img>{203}）。
 
 //footnote[easy][レイアウトが複雑になってきたり、プログラミングによってレイアウトを表示させたりするものは、Graphical Layoutでは確認できません。そのときはAVDや実機を使って確認するようにしましょう]
 
@@ -269,7 +269,7 @@ ButtonやTextViewは、文字列を変更したり、文字の大きさや色を
 それぞれのビューが、横方向（layout_width）または縦方向（layout_height）に対してどれぐらいの領域を占めるかという設定です。
 これらには「wrap_content」と「match_parent@<fn>{matchparent}」というふたつの値が存在します。
 
-//footnote[matchparent][APIレベルxx以前は、「fill_parent」が使われていました。古いアプリではそれが使われていることもあります。]
+//footnote[matchparent][APIレベル7以前は、「fill_parent」が使われていました。古いアプリではそれが使われていることもあります。]
 
 #@# XXがあった。要注意
 
@@ -342,6 +342,8 @@ wrap_contentを設定した場合、ビューを占める領域は、そのビ�
 
 
 実際のアプリケーションでは、ボタンをこのように縦方向の画面サイズいっぱいまで広げるようなレイアウトはほとんどありませんが、他のビューでは必要になることもありますので、覚えておきましょう。
+
+//footnote[match-parent][厳密にはmatch_parentは親のViewやLayoutのサイズ内いっぱいまで、という意味になります。そのため親にPaddingなどが指定されていれば、その影響も受けることになります。]
 
 
 === 画像
