@@ -308,13 +308,15 @@ android:background="#b81c22"
 ==== 4. 余白を調整する
 
 さて、ここまで装飾をしてきて、すっかりデザインをした気になっていませんか？
-よくある話なのですが、プログラマは、ここまでの見栄えができたら、アプリを公開してしまいます。しかし、この状態では「デザインされている」とはまったくもっていえません。
+しかし、この状態では「デザインされている」とはまったくもっていえません@<fn>{need-whitespace}。
 情報としてはまちがっていないですし、問題ないのですが、読みやすさに関してまったく配慮がなされていないのです。
 
 読みやすさを左右する重要な要素に、@<b>{余白}があります。
 AndroidアプリのレイアウトXMLでは、余白を自動的にとってくれるようなシステムは残念ながらありませんので、開発者ひとりひとりが気をつけながら作っていかなければなりません。
 開発に関するプログラムを学ぶことは必要最低限なことですが、その後良いアプリが作れるかどうかは別問題、デザイン力も必要になってきます。
 プログラムといっしょに、あわせてデザインに関する知識もつけていくようにしましょう。
+
+//footnote[need-whitespace][よくある話なのですが、プログラマは、ここまでの見栄えができたら、アプリを公開してしまいます。]
 
 @<img>{color-keycolor}において何がよくないのかというと、基本的に要素と要素がくっついているのが不自然なのです。
 
@@ -368,7 +370,7 @@ AndroidアプリのレイアウトXMLでは、余白を自動的にとってく�
         android:padding="10dp"
         android:layout_marginBottom="5dp"
         android:text="@string/animal" />
-    <TextView
+<TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
@@ -417,13 +419,13 @@ AndroidアプリのレイアウトXMLでは、余白を自動的にとってく�
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_margin="10dp"
-    android:orientation="vertical">
-　〜中略〜
-</LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:orientation="vertical">
+　   〜中略〜
+    </LinearLayout>
 </ScrollView>
 //}
 
@@ -457,7 +459,7 @@ keycolorという名前で「#b81c22（濃い赤）」を定義しました。�
 
 @<list>{color-marginpaddingok}の見出し部分、「android:background」と「android:textColor」の指定を@<list>{color-colorxmluse}のように変更します（4ヶ所）。
 
-//listnum[color-colorxmluse][colors.xmlのkeycodeという名前の色を指定]{
+//listnum[color-colorxmluse][colors.xmlのkeycolorという名前の色を指定]{
 android:background="@color/keycolor"
 android:textColor="@color/keycolor_text"
 //}
@@ -485,7 +487,7 @@ colors.xmlで作成したサンプルファイルをそのまま使って見て�
         android:padding="10dp"
         android:layout_marginBottom="5dp"
         android:text="@string/animal" />
-    <TextView
+<TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
@@ -493,7 +495,7 @@ colors.xmlで作成したサンプルファイルをそのまま使って見て�
 //}
 
 しかもこれはほんの一部であり、同じようなものが4回繰り返されるのです。
-色についてはcolors.xmlを使って一元管理しましたが、その他の部分に少しでも修正が入ったら…4ヶ所について同じように修正をしていかなければならず、ミスが発生しやすくなってしまいます。
+色についてはcolors.xmlを使って一元管理しましたが、その他の部分に少しでも修正が入ったら…。4ヶ所について同じように修正をしていかなければならず、ミスが発生しやすくなってしまいます。
 
 こういった同じ装飾を何度も繰り返す必要がある場合には、styles.xmlが便利です。
 styles.xmlには、すでにいくつかの指定が書いてありますが、それはそのままにしておいて、追記してきます。
@@ -570,7 +572,7 @@ dimens.xmlは、主に数値を管理するファイルです。
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.example.androidxmlbasic.MainActivity$PlaceholderFragment" >
 　〜中略〜
-　</RelativeLayout>
+</RelativeLayout>
 //}
 
 dimens.xmlには@<list>{values-dimens}のコードが書かれています。
