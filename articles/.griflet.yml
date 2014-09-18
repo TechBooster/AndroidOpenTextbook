@@ -1,3 +1,10 @@
 title: Android Open Textbook
 description: ""
-pdf_font: ipa
+specs:
+  - pdf
+  - name: pdf-ipa
+    out_font: ipa
+  - epub
+  - html
+  - text
+  - idgxml

@@ -13,6 +13,7 @@ CHAPS:
     - multidevice-01.re
     - accessibility.re
     - ui-01.re
+    - webserver-01.re
 POSTDEF:
 
 #夏コミビルドではarduino-01.reは外しておくれ > @mhidaka
