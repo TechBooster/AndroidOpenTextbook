@@ -1,5 +1,7 @@
 = Android Open Textbook
 
+[![Build Status](http://review-ci.vvakame.net/github.com/TechBooster/AndroidOpenTextbook/status.svg?branch=master)](http://review-ci.vvakame.net/github.com/TechBooster/AndroidOpenTextbook)
+
 Android Open Textbook は「Androidの教科書」をつくるオープンソースプロジェクトです。
 GitHubと書籍制作ツールRe:VIEWを利用して、開発者が欲しい技術情報を集約する試みです。
 
@@ -83,6 +85,17 @@ grunt readme
 //emlist{
 grunt html
 //}
+
+==== 原稿をビルドし、PDFを出力する
+
+PDFを出力するには、[MacTeX](http://tug.org/mactex/)が必要です。まずは[MacTeX](http://tug.org/mactex/)をインストールしてください。
+
+インストール後、以下のコマンドでPDFを出力できるようになります。
+
+//emlist{
+grunt pdf
+//}
+
 
 ==== タスクの種類を確認する
 
