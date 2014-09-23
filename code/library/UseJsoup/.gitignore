@@ -5,3 +5,6 @@
 .DS_Store
 /build
 *.iml
+.settings
+.classpath
+.project
