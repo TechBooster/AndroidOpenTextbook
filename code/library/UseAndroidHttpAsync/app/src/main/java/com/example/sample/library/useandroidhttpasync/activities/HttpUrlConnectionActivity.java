@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
+
 import com.example.sample.library.useandroidhttpasync.R;
 
 import java.io.IOException;
@@ -18,7 +20,7 @@ import java.net.URL;
 
 public class HttpUrlConnectionActivity extends Activity {
 
-    public static Intent createIntent(Context context){
+    public static Intent createIntent(Context context) {
         return new Intent(context, HttpUrlConnectionActivity.class);
     }
 
@@ -27,12 +29,22 @@ public class HttpUrlConnectionActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_http_url_connection);
 
-        new DownloadTask().execute();
+        new DownloadTask() {
+            @Override
+            protected void onPostExecute(String body) {
+                showBody(body);
+            }
+        }.execute();
     }
 
-    private static class DownloadTask extends AsyncTask<Void, Void, Void> {
+    private void showBody(String body){
+        TextView textView = (TextView) findViewById(R.id.text);
+        textView.setText(body);
+    }
+
+    private static class DownloadTask extends AsyncTask<Void, Void, String> {
         @Override
-        protected Void doInBackground(Void... params) {
+        protected String doInBackground(Void... params) {
             try {
                 URL url = new URL("http://tomorrowkey.github.io");
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -51,13 +63,13 @@ public class HttpUrlConnectionActivity extends Activity {
                 String body = readToEnd(inputStream);
                 Log.d("TEST", "body=" + body);
                 inputStream.close();
+
+                return body;
             } catch (MalformedURLException e) {
                 throw new RuntimeException(e);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-
-            return null;
         }
 
         private String readToEnd(InputStream inputStream) throws IOException {

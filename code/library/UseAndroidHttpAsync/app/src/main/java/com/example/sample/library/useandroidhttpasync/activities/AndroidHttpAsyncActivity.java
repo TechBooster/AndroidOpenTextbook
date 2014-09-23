@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 import com.example.sample.library.useandroidhttpasync.R;
 import com.loopj.android.http.AsyncHttpClient;
@@ -36,6 +37,7 @@ public class AndroidHttpAsyncActivity extends Activity {
                     public void onSuccess(int responseCode, Header[] headers, byte[] response) {
                         String body = new String(response);
                         Log.d("TEST", "body=" + body);
+                        showBody(body);
                     }
 
                     @Override
@@ -43,5 +45,10 @@ public class AndroidHttpAsyncActivity extends Activity {
                         //省略
                     }
                 });
+    }
+
+    private void showBody(String body){
+        TextView textView = (TextView) findViewById(R.id.text);
+        textView.setText(body);
     }
 }
