@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">UseAndroidHttpAsync</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_http_url_connection">HttpUrlConnectionActivity</string>
+    <string name="title_activity_android_http_async">AndroidHttpAsyncActivity</string>
+
+</resources>
