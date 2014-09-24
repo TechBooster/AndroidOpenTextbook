@@ -60,6 +60,10 @@ NDK@<fn>{ndk}を用いる事で、C/C++を使ってAndroidアプリケーショ�
 
 //footnote[dll][Windowsを利用している方は「.dll(Dynamic Link Library)」という拡張子のファイルを見たことがあると思います。これが動的リンクができるライブラリです。]
 
+=== クローズドソースなライブラリとオープンソースライブラリ
+
+//TOOD
+
 === Androidフレームワークもライブラリ
 
 前述の通りAndroidフレームワークもライブラリです。しかしAndroidアプリケーションを開発する時「Androidフレームワークのライブラリを使っている」と意識した事はあまりないかもしれません。実は新規プロジェクトを作成する時にAndroidフレームワークを選択しています。
@@ -95,7 +99,7 @@ importしているandroid.app.Activityクラスやandroid.os.Bundleクラス、M
 
 === jar形式のライブラリを使ってみよう
 
-ライブラリの形態とAndroidアプリケーションにおけるライブラリの種類がわかった所で、早速ライブラリを使ってみましょう。本項では@<href>{https://github.com/loopj/android-async-http,android-async-http}という非同期通信のためのライブラリを使って、ネットワークプログラミングの章(14 -2 -5 HttpURLConnection の利用)で作ったHttpURLConnectionの処理を置き換えます。android-async-httpはさまざまな形式で配布していますが、ここではjarファイルを直接利用する事とします。
+ライブラリの形態とAndroidアプリケーションにおけるライブラリの種類がわかった所で、早速ライブラリを使ってみましょう。本項では@<href>{https://github.com/loopj/android-async-http,android-async-http}という非同期通信のためのオープンソースライブラリを使って、ネットワークプログラミングの章(14 -2 -5 HttpURLConnection の利用)で作ったHttpURLConnectionの処理を置き換えます。android-async-httpはさまざまな形式で配布していますが、ここではjarファイルを直接利用する事とします。
 
 ==== jarファイルをダウンロードし、libsディレクトリへコピーする
 
@@ -106,7 +110,7 @@ android-async-httpのjarファイルは@<href>{http://loopj.com/android-async-ht
 
 ダウンロードしたjarファイルをAndroidプロジェクトのlibsディレクトリにコピーすれば利用できます。
 
-//image[copy-jar][jarファイルをlibsディレクトリにコピーする]{
+//image[copy-jar][jarファイルをlibsディレクトリにコピーする。android-support-v4.jarが無い場合があるかもしれませんが、問題はありません。]{
 //}
 
 libsディレクトリへのjarファイルのコピーの他に、AndroidManifest.xmlへ"android.permission.INTERNET"パーミッションを追加する事も忘れずに行いましょう。
@@ -122,6 +126,16 @@ libsディレクトリへのjarファイルのコピーの他に、AndroidManife
   </application>
 </manifest>
 //}
+
+==== 動作チェック
+
+正しく導入ができたか確認してみましょう。新しく作ったプロジェクトのMainActivity.javaの冒頭に@<list>{jar-check}のimport文を記述し、エラーが発生しなければ準備完了です。
+
+//list[jar-check][導入したライブラリのクラスをインポートする]{
+import com.loopj.android.http.AsyncHttpClient;
+//}
+
+もしエラーになる場合は、jarファイルをコピーした場所が正しいか確認してください。
 
 ==== ライブラリを用いない場合のコード
 
@@ -181,25 +195,25 @@ public class MainActivity extends Activity {
 }
 //}
 
-Socketを使った通信処理に比べればHttpURLConnectionはかなり楽に通信処理を記述できるようになっています。しかしまだまだ冗長です。HttpURLConnectionを使って通信処理をする場合常に以下の事を考慮しなければなりません。
+Socketを使った通信処理に比べればHttpURLConnectionはかなり楽に通信処理を記述できるようになっています。しかしまだまだ冗長です。AndroodアプリケーションでHttpURLConnectionを使って通信処理をする場合、常に以下の事を考慮しなければなりません。
 
  * AsyncTaskなど非同期処理のコードを追加しなければならない
  * 通信の成功や失敗を自分でチェックしなければならない
  * レスポンスをInputStreamで処理しなければならない
 
-こうした課題はある意味でチャンスだとも言えます。これらの課題を解決する便利なライブラリを作る事ができればAndroidアプリケーションの開発がより楽に、高品質になるからです。一方で「車輪の再発明」という考え方もプログラマの世界にはあります。「車輪の再発明」は既に課題を解決する成果物が存在するにも関わらず、1から開発をする事を表します。
+もちろんこれらの考慮点は一度覚えてしまえばそこまで難しいものではありません。しかし、アプリケーションで通信処理をする場合いつも実装しなければならない為、ボイラープレート・コード@<fn>{boilerplate}を沢山書く事になります。
 
-学習のために「車輪の再発明」をする事はよくありますが、今回は既に解決策として公開されているライブラリの一つを使ってみる事にしてみましょう。
+ボイラープレート・コードが増えると、本来やりたい事に割くべき時間が削られていきます。通信処理の場合やりたい事は通信処理そのものではなく、通信の結果取得したデータを取り扱う事のはずです。こうした問題を解決するには、処理を共通化したり、クラスを分解して汎用性を高めたりして再利用が可能な仕組みを構築していく必要があります。
 
-==== android-async-httpを用いる
+再利用が可能な仕組みを自分で構築する事はもちろん可能ですが、大抵の場合膨大な時間がかかります。そういった場合にライブラリの力を借りることになります。
 
-android-async-httpは主に非同期的
-
-もちろん非同期通信処理のライブラリはandroid-async-httpだけではありません。画像に特化したものや、SPDYなどの新しいプロトコルをサポートしたもの、
+//footnote[boilerplate][ボイラープレートとは鋳型の事です。ボイラープレート・コードは決まりきっているけど省略できないコードの断片の事を表します]
 
 ==== android-async-httpを用いたコード
 
-次はandroid-async-httpを用いたコードを見てみましょう。android-async-httpは主に非同期的にネットワーク処理を行うAsyncHttpClientクラスと、同期的にネットワーク処理を行うSyncHttpClientクラスを提供しています。@<list>{library}ではAsyncHttpClientを使って非同期のリクエスト処理をしています。実装の詳細はここでは深く立ち入りませんが、簡潔にリクエスト処理を記述できている事が分かると思います。
+ではandroid-async-httpを利用してみましょう。android-async-httpは非同期的にネットワーク処理を行うAsyncHttpClientクラスと、同期的にネットワーク処理を行うSyncHttpClientクラスを提供しています。今回行いたいのは非同期通信なので、AsyncHttpClientクラスを利用します。
+
+@<list>{library}はAsyncHttpClientクラスを使って実際に非同期のリクエスト処理する例です。実装の詳細はここでは深く立ち入りませんが、HttpURLConnectionを使う例に比べて簡潔にリクエスト処理を記述できている事が分かると思います。
 
 //list[library][android-http-asyncを用いる場合]{
 public class MainActivity extends Activity {
@@ -230,12 +244,13 @@ public class MainActivity extends Activity {
 }
 //}
 
+
+
+
 AsyncHttpClientクラスは自動的に非同期でネットワーク処理を行うのでUIスレッドから呼び出しても問題ありません。また通信完了後に呼び出されるコールバックはUIスレッドで実行されます。
 
-=== jarライブラリが利用できる仕組み
-
- クラスパスについて
- 1章のあたりで解説していないか確認する
+//エラーで落ちる場合 パーミッション忘れてるのでは
+//doc http://loopj.com/android-async-http/doc/
 
 === ライブラリを組み合わせてみよう
 
@@ -288,6 +303,8 @@ bootstrapで
 
 https://github.com/Bearded-Hen/Android-Bootstrap
 
+アプリ側でandroid-support-v4消すのを忘れずに
+
 === ライブラリとライセンス
 
  - GPL, Apache2, MITについて解説
@@ -295,6 +312,11 @@ https://github.com/Bearded-Hen/Android-Bootstrap
 === ライブラリのドキュメントを読む
 
 === ライブラリのソースを読む
+
+=== 演習問題
+
+
+=== まとめ
 
 
 
@@ -320,3 +342,8 @@ Calculatorクラスを作って、足し算メソッドを追加する
 カスタムアトリビュートを使って初期のペンの色設定を追加してみよう
 
 ===  Activityをライブラリに含める
+
+=== 演習問題
+
+
+=== まとめ
