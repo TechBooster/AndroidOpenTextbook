@@ -227,10 +227,13 @@ public class MainActivity extends Activity {
   }
   private void loadAsync() {
     AsyncHttpClient client = new AsyncHttpClient();
+
+    //自動的に別のスレッドで実行する
     client.get("http://tomorrowkey.github.io",
         new AsyncHttpResponseHandler() {
           @Override
           public void onSuccess(int responseCode, Header[] headers, byte[] response) {
+            //
             String body = new String(response);
             Log.d("TEST", "body=" + body);
           }
@@ -244,10 +247,16 @@ public class MainActivity extends Activity {
 }
 //}
 
+AsyncHttpClientクラスは自動的に非同期でネットワーク処理を行うのでUIスレッドから呼び出しても問題ありません。また通信処理の結果を受け取るためのAsyncHttpResponseHandlerクラスのメソッドは自動的にUIスレッドで呼び出されるのでスレッドを意識しなくてもすみます。
+
+AsyncHttpResponseHandlerクラスは抽象クラスで、 onSuccessメソッドとonFailureメソッドがabstractで宣言されています。@<list>{library}ではAsyncHttpClientクラスのgetメソッドの引数に渡すタイミングで、AsyncHttpResponseHandlerクラスのインスタンス化と実装を同時に行っています。既にButtonのOnClickListenerインタフェースをセットする際に見た事があるスタイルだと思います。このスタイルを "匿名クラス"と呼びます。
+
+AsyncHttpResponseHandlerクラスのonSuccessメソッドとonFailureメソッドは、通信処理が完了した時に呼び出されます。通信結果のステータスコードが300未満の時onSuccessメソッドが呼び出され、300以上の時onFailureメソッドが呼び出されます。
 
 
 
-AsyncHttpClientクラスは自動的に非同期でネットワーク処理を行うのでUIスレッドから呼び出しても問題ありません。また通信完了後に呼び出されるコールバックはUIスレッドで実行されます。
+//どうやっているか気になる人向け
+https://github.com/loopj/android-async-http/blob/master/library/src/main/java/com/loopj/android/http/AsyncHttpClient.java#L831
 
 //エラーで落ちる場合 パーミッション忘れてるのでは
 //doc http://loopj.com/android-async-http/doc/
@@ -272,6 +281,9 @@ http://rss.dailynews.yahoo.co.jp/fc/computer/rss.xml
 
 
 === 演習問題
+
+ * RSSフィードのitemをListViewに表示してみよう
+ * RSSフィードを表示したListViewの要素をタップして、URLをブラウザで開くようにしよう
 
 
 === まとめ
