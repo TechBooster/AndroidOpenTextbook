@@ -1,16 +1,13 @@
 machine:
-  services:
-    - docker
+  ruby:
+    version: 2.1.2
 
 dependencies:
-  override:
-#    - docker pull vvakame/review
-    - gem install review
+  post:
+    - gem install revi
 
 test:
   override:
-#    - docker run -t -i vvakame/review /bin/bash
-    - git clone https://github.com/vvakame/AndroidOpenTextbook.git
-    - cd AndroidOpenTextbook
+    - npm install -g grunt-cli
     - npm install
     - grunt clean pdf
