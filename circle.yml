@@ -3,11 +3,15 @@ machine:
     version: 2.1.2
 
 dependencies:
-  post:
-    - gem install review
-
-test:
   override:
     - npm install -g grunt-cli
+    - gem install review
     - npm install
+
+test:
+  pre:
+    - node -v
+    - ruby -v
+    - review-compile --version
+  override:
     - grunt clean html
