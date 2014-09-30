@@ -4,7 +4,7 @@ machine:
 
 dependencies:
   pre:
-    - sudo apt-add-repository ppa:texlive-backports/ppa
+    - sudo apt-add-repository -y ppa:texlive-backports/ppa
     - sudo apt-get update
     - sudo apt-get install -y locales
     - sudo apt-get install -y texlive-lang-cjk texlive-fonts-recommended
