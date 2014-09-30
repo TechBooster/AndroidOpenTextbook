@@ -7,7 +7,7 @@ dependencies:
     - sudo apt-add-repository -y ppa:texlive-backports/ppa
     - sudo apt-get update
     - sudo apt-get install -y locales
-    - sudo apt-get install -y texlive-lang-cjk texlive-fonts-recommended
+    - sudo apt-get install -y -f texlive-lang-cjk texlive-fonts-recommended
     - sudo gem install review rake --no-rdoc --no-ri
     - sudo apt-get install -y nodejs npm
     - sudo ln -s /usr/bin/nodejs /usr/bin/node
