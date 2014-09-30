@@ -4,12 +4,12 @@ machine:
 
 dependencies:
   pre:
-    - apt-get install -y locales
-    - apt-get install -y texlive-lang-cjk texlive-fonts-recommended
-    - gem install review rake --no-rdoc --no-ri
-    - apt-get install -y nodejs npm
-    - ln -s /usr/bin/nodejs /usr/bin/node
-    - npm install -g grunt-cli
+    - sudo apt-get install -y locales
+    - sudo apt-get install -y texlive-lang-cjk texlive-fonts-recommended
+    - sudo gem install review rake --no-rdoc --no-ri
+    - sudo apt-get install -y nodejs npm
+    - sudo ln -s /usr/bin/nodejs /usr/bin/node
+    - sudo npm install -g grunt-cli
     - npm install
 
 test:
