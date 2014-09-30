@@ -4,6 +4,7 @@ machine:
 
 dependencies:
   pre:
+    - sudo apt-get uninstall -y texlive-common
     - sudo apt-add-repository -y ppa:texlive-backports/ppa
     - sudo apt-get update
     - sudo apt-get install -y locales
