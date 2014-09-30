@@ -1,0 +1,17 @@
+machine:
+  ruby:
+    version: 2.1.2
+
+dependencies:
+  pre:
+    - apt-get install -y locales
+    - apt-get install -y texlive-lang-cjk texlive-fonts-recommended
+    - gem install review rake --no-rdoc --no-ri
+    - apt-get install -y nodejs npm
+    - ln -s /usr/bin/nodejs /usr/bin/node
+    - npm install -g grunt-cli
+    - npm install
+
+test:
+  override:
+    - grunt clean pdf
