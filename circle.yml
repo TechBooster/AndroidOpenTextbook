@@ -10,4 +10,4 @@ test:
   override:
     - npm install -g grunt-cli
     - npm install
-    - grunt clean pdf
+    - grunt clean html
