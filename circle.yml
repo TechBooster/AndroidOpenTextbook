@@ -4,7 +4,7 @@ machine:
 
 dependencies:
   post:
-    - gem install revi
+    - gem install review
 
 test:
   override:
