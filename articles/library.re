@@ -434,15 +434,15 @@ jsoup(http://jsoup.org/)というjar形式のライブラリを導入し、RSS�
 
 === ライブラリプロジェクトとは何か
 
-ライブラリプロジェクトはAndroid専用のライブラリ形式で、ソースコードとリソースファイルを内部に持つ点が特徴です。リソースファイルを内包しているので、レイアウトファイルやdrawableを利用するActivityやViewなどをライブラリとして提供できます。
+ライブラリプロジェクトはAndroid専用のライブラリ形式です。ソースコードとリソースファイルを内部に持つ事ができ、レイアウトファイルやdrawableを利用するActivityやViewなどをライブラリとして提供できます。
 
 //image[jar-libraryproject][JAR形式とライブラリプロジェクト形式の違い]
 
 === Androidアプリケーションのビルドフロー
 
-ライブラリプロジェクトは前節で利用したJAR形式のライブラリと何が違うのでしょうか。JAR形式のライブラリにリソースファイルライブラリプロジェクトとJAR形式のライブラリの違いを理解するにはAndroidアプリケーションがどの様なプロセスを経てビルドされるかを知る必要があります。
+なぜライブラリプロジェクトが誕生したのでしょうか。JAR形式のライブラリにリソースファイルを含める事はできないのでしょうか。これらの点を理解するにはAndroidアプリケーションがどの様なプロセスでビルドされているかを知る必要があります。
 
-Androidアプリケーションは複数のツールを組み合わせてビルドします。@<img>{build-flow}はAndroid DevelopersのBuilding and Running@<fn>{Building and Running}に記載されているAndroidアプリケーションをビルドするフローです。Androidプロジェクトからapkに変換されるまでの間に複数のツールで順番に処理されます@<fn>{sdk-tools}。それぞれのツールで何が行われているか見て行きましょう。
+@<img>{build-flow}はAndroid DevelopersのBuilding and Running@<fn>{Building and Running}に記載されているAndroidアプリケーションをビルドするフローです。Androidプロジェクトからapkに変換されるまでの間に複数のツールで順番に処理されている事がわかります@<fn>{sdk-tools}。それぞれのツールで何が行われているか見て行きましょう。
 
 //image[build-flow][Androidアプリケーションをビルドするフロー]{
 //}
@@ -454,13 +454,14 @@ Androidアプリケーションは複数のツールを組み合わせてビル�
 
 ==== aidl
 
-AIDLはAndroid Interface Definition Languageの略で、プロセス間通信の為のインタフェースを定義するDSLです。javaとは異なる独自の言語ですのでそのままではコンパイルできません。アプリケーションのソースコードをコンパイルする前に、AIDLをコンパイルしてjavaのソースコードを生成します。典型的な例としてはアプリ内課金などを実装する際にAIDLを利用します。
+AIDLはAndroid Interface Definition Languageの略で、プロセス間通信の為のインタフェースを定義するDSLです。異なるプロセスで動作するServiceに対してActivityなどから接続する際に利用します@<fn>{aidl-example}。AIDLはJavaとは異なる独自の言語ですのでそのままではJavaコンパイラでコンパイルできません。アプリケーションのソースコードをコンパイルする前に、AIDLをコンパイルしてJavaのソースコードを生成します。
 
 //footnote[dsl][DSLはDomain-Specific Languageの略でドメイン固有言語と呼びます。DSLは特定のタスク向けに設計された独自の言語の事を差します。AIDLはプロセス間通信の為に設計された独自の言語という事になります]
+//footnote[aidl-example][典型的な例としてはアプリ内課金などを実装する際にAIDLを利用します。アプリ内課金はGoogle Playを通して行います。Google Playに対して決済の処理などを依頼する為にAIDLを使って接続します]
 
 ==== aapt
 
-aapt(Android Asset Packaging Tool)はアプリケーションのリソースファイルやAndroidManifest.xmlを解析しR.javaを生成します。ここで生成するR.javaによってアプリケーションのプログラムで画像やレイアウトファイルへのアクセスが可能になるのです。その他valuesディレクトリをコンパイルしてアーカイブします。
+aapt(Android Asset Packaging Tool)はアプリケーションのリソースファイルやAndroidManifest.xmlを解析しR.javaを生成します。ここで生成するR.javaを使って画像やレイアウトファイルへプログラムからアクセスする事になります。その他valuesディレクトリをコンパイルしてアーカイブします。
 
 ==== Java Compiler
 
@@ -468,7 +469,7 @@ aapt(Android Asset Packaging Tool)はアプリケーションのリソースフ�
 
 ==== dex
 
-classファイルをコンパイルし、Dalvik VMのバイトコードであるdexファイルへ変換します。この時、AndroidプロジェクトがJAR形式のライブラリを利用している場合は、それらのライブラリも同時にdexファイルへコンパイルします。
+classファイルをコンパイルし、Dalvik VMのバイトコードであるdexファイルへ変換します。この時、AndroidプロジェクトがJAR形式のライブラリを利用している場合は、それらのライブラリ内のclassファイルも同時にdexファイルへコンパイルします。
 
 ==== apkbuilder(sdklib.jar)
 
@@ -482,23 +483,23 @@ jarsignerはJavaの標準のツールです。jarsignerを使ってapkファイ�
 
 zipalignはapkを最適化するツールです。apkはアプリケーションのインストール時や、ホームアプリケーションに名前やアイコンを表示する時など様々な場面で読み取られます。apkbuilderでアーカイブしたapkの内部をzipalignを使って整列する事で、apkの読み取りを高速化できるようになります。
 
-==== JAR形式のライブラリがリソースファイルを持てない理由
+=== JAR形式のライブラリがリソースファイルを持てない理由
 
-Androidアプリケーションのビルドフローを見ると、JAR形式のライブラリが処理されるのはdexファイルに変換されるタイミングだという事がわかります。リソースファイルを取り扱うにはR.javaに定義されたリソースIDが必要です。R.javaはaaptコマンドによって生成されるので、JAR形式のライブラリからはR.javaの中のリソースIDを事前に知るすべがありません。その為JAR形式のライブラリではリソースファイルを持てないという事になるわけです。
+Androidアプリケーションのビルドフローを見ると、JAR形式のライブラリが処理されるのはdexファイルに変換されるタイミングだという事がわかります。リソースファイルを取り扱うにはR.javaに定義されたリソースIDが必要です。R.javaはaaptコマンドによって生成されるので、JAR形式のライブラリからはR.javaの中のリソースIDを事前に知ることができません。その為JAR形式のライブラリではリソースファイルを持てない、持ったとしても内部から利用できないという事になるわけです。
 
 ==== ライブラリプロジェクトの誕生
 
-そこで誕生したのがライブラリプロジェクトというわけです。ライブラリプロジェクトはAndroidプロジェクトと同じ構造をなのでリソースファイルを持てます。ビルドの際はAndroidプロジェクトと一緒にビルドフローを辿るので、R.javaが問題になる事はありません。この仕組みによって画面を持つActivityやViewなどをライブラリ化できるようになったのです。
+そこで誕生したのがライブラリプロジェクトです。ライブラリプロジェクトはAndroidプロジェクトと同じ構造をなのでリソースファイルを持てます。ビルドの際はAndroidプロジェクトと一緒にビルドフローを辿るので、R.javaが問題になる事はありません。この仕組みによって画面を持つActivityやViewなどをライブラリ化できるようになりました。
 
 === ライブラリプロジェクトを導入してみよう
 
-ではライブラリプロジェクトを利用してみましょう。本節ではAndroid-BootstrapというスタイリッシュなUIの構築を助けるライブラリを導入します。
+ライブラリプロジェクトを使ってアプリケーションを開発してみましょう。本節ではAndroid-BootstrapというスタイリッシュなUIの構築を助けるライブラリを導入します。
 
 ==== Android-Bootstrapとは
 
 Android-Bootstrapは、Web用のフロントエンドフレームワーク「Bootstrap」のコンセプトを元に構成したAndroid用のUIライブラリです。角丸ボタンやアイコン付きボタン、FontAwesomeの利用、円形サムネイルなど様々なUI部品を提供しています。
 
-//image[android-bootstrap][Android-Bootstrap]{
+//image[android-bootstrap][Android-Bootstrapのコンポーネントたち]{
 //}
 
 ==== ライブラリプロジェクトをダウンロードする
@@ -509,15 +510,15 @@ Android-Bootstrapは@<href>{https://github.com/Bearded-Hen/Android-Bootstrap/}�
 
 ==== ライブラリプロジェクトをインポートする
 
-ライブラリは通常のAndroidプロジェクトと同じ構造を持つので、そのままEclipseにインポートできます。zipファイルを解凍し、ライブラリプロジェクトをインポートしましょう。
+ライブラリプロジェクトは通常のAndroidプロジェクトと同じ構造を持つので、そのままEclipseにインポートできます。zipファイルを解凍し、ライブラリプロジェクトをインポートしましょう。
 
 //image[setting-android-bootstrap01][「Android Project from Existing Code」でライブラリプロジェクトをインポートする]
 
-解凍したディレクトリをインポート対象に選択すると、AndroidBootstrapとAndroidBootstrapTestの2つのプロジェクトが表示されます@<img>{setting-android-bootstrap02}。両方インポートしても問題ありませんが、AndroidBootstrapTestは今回利用しないのでチェックを外しておきましょう。
+解凍したディレクトリをインポート対象に選択すると、AndroidBootstrapとAndroidBootstrapTestの2つのプロジェクトが表示されます(@<img>{setting-android-bootstrap02})。両方インポートしても問題ありませんが、AndroidBootstrapTestは今回利用しないのでチェックを外しておきましょう。
 
 //image[setting-android-bootstrap02][AndroidBootstrapを選択してインポートする]
 
-インポートが成功すればPackage ExprolrerにAndroidBootstrapが追加されます@<img>{setting-android-bootstrap03}。
+インポートが成功すればPackage ExprolrerにAndroidBootstrapが追加されます(@<img>{setting-android-bootstrap03})。
 
 //image[setting-android-bootstrap03][]
 
@@ -527,15 +528,15 @@ Android-Bootstrapは@<href>{https://github.com/Bearded-Hen/Android-Bootstrap/}�
 
 //image[setting-android-bootstrap04][AndroidプロジェクトのPropertiesを開く]
 
-"Android"の項目のLibraryのセクションのAddボタンを押下してください@<img>{setting-android-bootstrap05}。
+"Android"の項目を開き、LibraryセクションのAddボタンを押下してください(@<img>{setting-android-bootstrap05})。
 
 //image[setting-android-bootstrap05][LibraryセクションのAddボタンを押下する]
 
-すると参照できるライブラリプロジェクトの一覧が表示されるので、AndroidBootstrapを選択し、OKを押下してください@<img>{setting-android-bootstrap06}。
+すると参照できるライブラリプロジェクトの一覧が表示されるので、AndroidBootstrapを選択し、OKを押下してください(@<img>{setting-android-bootstrap06})。
 
 //image[setting-android-bootstrap06][参照できるライブラリプロジェクトの一覧]
 
-LibraryセクションにAndroidBootstrapが追加されていれば成功です@<img>{setting-android-bootstrap07}。
+LibraryセクションにAndroidBootstrapが追加されていれば成功です(@<img>{setting-android-bootstrap07})。
 
 //image[setting-android-bootstrap07][AndroidBootstrapを参照すると、Libraryセクションに参照しているライブラリが追加される]
 
@@ -584,15 +585,15 @@ library:bb_type="success"
 
 これは「カスタム属性」というAndroidの機能です。Androidではレイアウトファイルで利用する属性値を自分で定義できます。Android-Bootstrapは「カスタム属性」を各種コンポーネントに定義し、レイアウトファイル上で様々な設定ができるようになっています@<fn>{custom-attribute-namespace}。
 
-BootstrapButtonの「bb_type」属性を書き換えてみましょう。
+BootstrapButtonの「bb_type」属性の値を変更してみましょう。
 
 //list[BootstrapButton-attribute-bb-type][bb_typeを変更する]{
 library:bb_type="danger"
 //}
 
-bb_type属性を書き換えて実行すると@<img>{use-android-bootstrap2}の様に表示が切り替わります。このようにAndroid-Bootstrapはカスタム属性によって様々な表示を簡単に設定できる仕組みを提供しています。
+アプリケーションを実行すると@<img>{use-android-bootstrap2}の様になります。このようにAndroid-Bootstrapはカスタム属性によって様々な表示を簡単に設定できる仕組みを提供しています。
 
-//image[use-android-bootstrap2][カスタム属性bb_typeを"danger"変更する]
+//image[use-android-bootstrap2][カスタム属性bb_typeを"danger"に変更する]
 
 //footnote[custom-attribute-namespace]["library:"というプレフィクスを使っていますが、特に決まりはありません。このプレフィクスは「名前空間」と呼び、属性の名前が衝突しない為に用いられます。カスタム属性の為の名前空間は、レイアウトファイルの冒頭のxmlns属性定義で自由に決められます。本書ではxmlns:library="http://schemas.android.com/apk/res-auto"という定義し"library:"というプレフィクスを用いることを宣言しています]
 
