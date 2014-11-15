@@ -12,7 +12,7 @@
 
 この章で出てくるキーワード一覧
 
-Google Play、Developer Console、
+Google Play、Developer Console、電子署名、keystore
 
 == 開発者として登録する
 Google Playストアでアプリを公開するためには、有料の開発者登録が必要です。
