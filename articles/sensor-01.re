@@ -719,7 +719,7 @@ GPSを利用して位置情報を取得しますが、これは通常のセン�
 
 === Google Play Services Libraryの導入
 
-Android Studioの左のペインから"Gardle Scripts"から
+Android Studioの左のペインの"Gardle Scripts"から
 "build.gradle(Module.app)"を開きます。
 
 //list[google-play][build.gradleファイルの編集]{
@@ -751,7 +751,7 @@ dependencies {
 }
 //}
 
-Gradleのファイルを手動で編集した場合、Gradleの同期更新を行う必要があります（図xx）。
+Gradleのファイルを手動で編集した場合、Gradleの同期更新を行う必要があります（@<img>{gradlesync}）。
 編集して保存すると、"Sync Now"というメッセージが出ますので、それをクリックするか、
 GradleのSyncボタンをクリックしてGradleを同期更新します。
 
