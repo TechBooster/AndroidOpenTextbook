@@ -719,34 +719,44 @@ GPSを利用して位置情報を取得しますが、これは通常のセン�
 
 === Google Play Services Libraryの導入
 
-@<b>{Android SDK Manager}から@<b>{Google Play Services}を選択して、インストールします（@<img>{play_service-01}）。
-//image[play_service-01][Google Play Servicesのインストール 1][scale=0.4]{
+Android Studioの左のペインから"Gardle Scripts"から
+"build.gradle(Module.app)"を開きます。
+
+//list[google-play][build.gradleファイルの編集]{
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 21
+    buildToolsVersion "21.1.1"
+
+    defaultConfig {
+        applicationId "com.techbooster.location"
+        minSdkVersion 18
+        targetSdkVersion 21
+        versionCode 1
+        versionName "1.0"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile 'com.android.support:appcompat-v7:21.0.2'
+    compile 'com.google.android.gms:play-services:+'   <-- この1文を追加
+}
 //}
 
-@<b>{Existing Android Code into Worksapce}を選択します（@<img>{play_service-02}）。
-//image[play_service-02][Google Play Servicesのインストール 2][scale=0.35]{
+Gradleのファイルを手動で編集した場合、Gradleの同期更新を行う必要があります（図xx）。
+編集して保存すると、"Sync Now"というメッセージが出ますので、それをクリックするか、
+GradleのSyncボタンをクリックしてGradleを同期更新します。
+
+//image[gradlesync][Gradleファイルの同期]{
 //}
-
-@<b>{Browse}から@<b>{google-play-services_lib}を選択し、@<b>{Copy projects into workspaceにチェック}
-を入れて@<b>{Finish}ボタンを押します（@<img>{play_service-03}）。
-
-//image[play_service-03][Google Play Servicesのインストール 3][scale=0.35]{
-//}
-
-google-play-servicesはAndroid SDKを
-インストールした@<b>{$(ANDORID_SDK)/extras/google/google_play_services}にあります。
-
-ビルドしてエラーが無いことを確認しておきましょう（@<img>{play_service-04}）。
-//image[play_service-04][Google Play Servicesのインストール 4][scale=0.4]{
-//}
-
-アプリを作成時のひな形作成した後、Google Play ServicesライブラリをAndroid
-ライブラリとして組み込むすることで使用できます（@<img>{play_service-05}）。
-
-//image[play_service-05][Google Play Servicesのインストール 5][scale=0.4]{
-//}
-
-これでGoogle Play Servicesライブラリの導入は完了です。
 
 === 位置情報精度の設定
 
