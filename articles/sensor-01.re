@@ -509,7 +509,6 @@ x軸、y軸、z軸のそれぞれの加速度を重力加速度を差し引い�
     // センサーのオブジェクトリストを取得する
     mSensors = mSensorManager.getSensorList(Sensor.TYPE_ALL);
     // センサーリストから個別のセンサーを取得
-    ArrayList<String> list = new ArrayList<String>();
     for (Sensor sensor : mSensors) {
         Log.v("SENSOR", sensor.getFifoMaxEventCount());
         Log.v("SENSOR", sensor.getFifoReservedEventCount());
