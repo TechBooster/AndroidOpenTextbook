@@ -758,6 +758,8 @@ GradleのSyncボタンをクリックしてGradleを同期更新します。
 //image[gradlesync][Gradleファイルの同期]{
 //}
 
+これでGoogle Play Servicesがアプリのビルド時に組み込まれるようになります。
+
 === 位置情報精度の設定
 
 GPSを使用して精度を上げたい場合はGPS機能を有効にする必要があります。
