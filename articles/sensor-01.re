@@ -37,7 +37,7 @@ Androidでは多くのセンサー情報が取得できますが、実際のハ�
 
 //footnote[sensor_ref][@<href>{http://developer.android.com/reference/android/hardware/Sensor.html}]
 
-リファレンスによると、現在のAPI Level 20で使用可能なセンサーの一覧は次のようになります（@<img>{list}）。
+リファレンスによると、現在のAPI Level 21で使用可能なセンサーの一覧は次のようになります（@<img>{list}）。
 //image[list][センサー一覧]{
 //}
 
@@ -400,7 +400,7 @@ public void onSensorChanged(SensorEvent event) {
 
 == 使用可能なセンサーの概要
 
-API-Level 20で規定されているセンサーをざっと整理してみましょう。
+API-Level 21で規定されているセンサーをざっと整理してみましょう。
 
 ==== @<b>{加速度センサー (Acceleration sensor)}
 
@@ -644,7 +644,7 @@ uses-feature要素を追記し、stepdetectorを持っている機種のみに�
 
 //footnote[sensor_batch][@<href>{https://source.android.com/devices/sensors/batching.html}]
 
-バッチモードを使用するには、LocationManager#registerListenerメソッドで指定します。
+バッチモードを使用するには、SensorManager#registerListenerメソッドで指定します。
 通常のセンサーのメソッドにバッチ処理時間が引数で増えています。
 
 次の例はバッチ処理として1000 * 1000 * 10 μs = 10sに設定した場合です（@<list>{sensor_batch}）。
