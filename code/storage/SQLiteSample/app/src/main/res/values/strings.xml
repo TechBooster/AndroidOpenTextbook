@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">SQLiteSample</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="create">Create</string>
+    <string name="id">ID</string>
+    <string name="memo">Memo</string>
+    <string name="update">Update</string>
+    <string name="delete">Delete</string>
+
+</resources>
