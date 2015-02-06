@@ -233,21 +233,291 @@ DELETE FROM worker WHERE id=2
 SQLと少しお友達になれたところで、AndroidアプリでSQLiteを使ってみましょう。AndroidでSQLiteを使うには、次の2ステップが必要です。
 
  * SQLiteOpenHelperクラスを継承したクラスを定義する
- * 必要な場面で、定義したクラスのオブジェクトを作る
+ * 必要な場面で、定義したクラスのオブジェクトを作り、メソッドを呼ぶ
 
 さっそく、やってみましょう
 
 === SQLiteOpenHelperを継承したクラスを定義する
 
+まず、SQLiteOpenHelperを継承したMyHelperというクラスを定義しましょう。
+
+//emlist[MyHelperクラスを定義する]{
+public class MyHelper extends SQLiteOpenHelper {
+    private static final String DB_NAME = "my.db";
+    private static final int DB_VERSION = 1;
+
+    /**
+     * コンストラクタ
+     */
+    public MyHelper(Context context) {
+        super(context, DB_NAME, null, DB_VERSION);
+    }
+}
+//}
+
+SQLiteOpenHelperクラスには引数ありコンストラクタが既に定義されているので、MyHelperクラスにもコンストラクタを用意し、super()を呼びます。第2引数はデータベース名、第3引数はnullを指定します。第4引数は自分で決めたデータベースのバージョンを指定します。現時点では1を指定しておけばよいでしょう。
+
+=== onCreate()でテーブル作成SQLを実行する
+
+SQLiteOpenHelperには2つの抽象メソッドが定義されています。
+
+ * public void onCreate(SQLiteDatabase db)
+ * public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion)
+
+onCreate()は、データベースのファイルを作る必要が生じた時に呼ばれます。onUpgrade()は、データベースのバージョンに変化が起きた時に呼ばれます。
+
+onCreate()が呼ばれた時に、テーブルを作成するSQLが実行されるようにしましょう。SQLを実行するには、引数で渡されるSQLiteDatabaseオブジェクトのexecSQL()メソッドを呼びます。
+
+//emlist[memoテーブルを作成する]{
+public class MyHelper extends SQLiteOpenHelper {
+
+    public static final String TABLE_NAME = "memo";
+    private static final String SQL_CREATE_TABLE =
+            "CREATE TABLE " + TABLE_NAME + "(" +
+            Columns._ID + " INTEGER primary key autoincrement," +
+            Columns.MEMO + " TEXT," +
+            Columns.CREATE_TIME + " INTEGER," +
+            Columns.UPDATE_TIME + " INTEGER)";
+
+    public interface Columns extends BaseColumns {
+        public static final String MEMO = "memo";
+        public static final String CREATE_TIME = "create_time";
+        public static final String UPDATE_TIME = "update_time";
+    }
+
+    @Override
+    public void onCreate(SQLiteDatabase db) {
+        db.execSQL(SQL_CREATE_TABLE);
+    }
+
+    @Override
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        // 現時点では何もしない
+    }
+}
+//}
+
+SQLのCREATE TABLE文は間違いが発生しないよう、文字列定数の足し算で構成しています。実際にexecSQL()メソッドで実行されるSQLは次の通りです。
+
+//emlist[CREATE TABLE文]{
+CREATE TABLE memo(
+    _id INTEGER primary key autoincrement,
+    memo TEXT,
+    create_time INTEGER,
+    update_time INTEGER)
+//}
+
+memoテーブルの主キーをINTEGER型の_idというフィールドに指定しています。Androidでは、主キーがINTEGER型の_idであるテーブルに対して特定の機能を提供するAPIが存在するため、特に理由が無い場合は主キーを_idにすることが多いです。
+
 === MyHelperオブジェクトを作る
+
+MyHelperクラスの定義ができたら、次はオブジェクトを作りましょう。ここでは、ActivityのonCreate()内で生成し、フィールドにセットしておきます。
+
+//emlist[MyHelperオブジェクトを作る]{
+public class MainActivity extends ActionBarActivity {
+    private MyHelper mHelper;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        // MyHelperオブジェクトを作り、フィールドにセット
+        mHelper = new MyHelper(this);
+    }
+}
+//}
 
 === 行を追加する
 
+データベースに行を追加するには、次の3ステップを行います。
+
+ * MyHelperオブジェクトのgetWritableDatabase()を呼び、SQLiteDatabaseオブジェクトを取得する。
+ * 必要なデータを準備し、SQLiteDatabaseオブジェクトのinsert()を呼ぶ。
+ * SQLiteDatabaseオブジェクトのclose()を呼び、処理の終了を伝える。
+
+//emlist[行を追加する]{
+public class MainActivity extends ActionBarActivity {
+    // 中略
+
+    // 引数memoは、画面で入力された内容とします。
+    private void insert(String memo) {
+        SQLiteDatabase db = mMemoDB.getWritableDatabase();
+
+        // 列に対応する値をセットする
+        ContentValues values = new ContentValues();
+        values.put(MyHelper.Columns.MEMO, memo);
+        values.put(MyHelper.Columns.CREATE_TIME, System.currentTimeMillis());
+        values.put(MyHelper.Columns.UPDATE_TIME, System.currentTimeMillis());
+
+        // データベースに行を追加する
+        long id = db.insert(MyHelperDB.TABLE_NAME, null, values);
+        if (id == -1) {
+            Log.v("Database", "行の追加に失敗したよ");
+        }
+
+        // データベースを閉じる（処理の終了を伝える）
+        db.close();
+    }
+}
+//}
+
+追加する行のデータは、ContentValuesオブジェクトのput()で列毎に指定します。ここでは、次のように値をセットしています。
+
+ * memo列に入力された値
+ * create_timeとupdate_timeには現在時刻
+
 === 行を検索する
+
+次に、追加した行をデータベースを検索して取得しましょう。行の検索は次の7ステップです。
+
+ * MyHelperオブジェクトのgetReadableDatabase()を呼び、SQLiteDatabaseオブジェクトを取得する。
+ * SQLiteDatabaseオブジェクトのquery()を呼ぶ。検索結果はCursorオブジェクトとして返却される。
+ * CursorオブジェクトのmoveToFirst()を呼び、読み込み中の位置を検索結果の最初の行に移動させる。これがfalseを返した場合は、検索結果は0件。
+ * CursorオブジェクトのgetColumnIndex()を呼び、列に対応するインデックスを取得する。
+ * do - whileを用いて、１行ずつ読み込み位置をずらしながら行のデータを取得する。
+ * Cursorオブジェクトのclose()を呼び、読み込み終了を伝える。
+ * SQLiteDatabaseオブジェクトのclose()を呼び、処理の終了を伝える。
+
+ややステップ数が多いので、最初にコード全体を示します。 
+ 
+//emlist[行の検索]{
+public class MainActivity extends ActionBarActivity {
+    // 中略
+    
+    private List<Memo> loadMemo() {
+        SQLiteDatabase db = mMyHelper.getReadableDatabase();
+        
+        // query()を呼び、検索を行う。
+        Cursor cursor = db.query(MyHelper.TABLE_NAME, null, null, null, null, null,
+                MyHelper.Columns.CREATE_TIME + " ASC");
+        // 読み込み位置を先頭にする。falseの場合は結果0件
+        if (!cursor.moveToFirst()) {
+            cursor.close();
+            db.close();
+            return new ArrayList<>();
+        }
+        
+        // 列のindex（位置）を取得する
+        int idIndex = cursor.getColumnIndex(MyHelper.Columns._ID);
+        int memoIndex = cursor.getColumnIndex(MyHelper.Columns.MEMO);
+        int createIndex = cursor.getColumnIndex(MyHelper.Columns.CREATE_TIME);
+        int updateIndex = cursor.getColumnIndex(MyHelper.Columns.UPDATE_TIME);
+
+        // 行を読み込む。
+        List<Memo> list = new ArrayList<>(cursor.getCount());
+        do {
+            Memo item = new Memo();
+            item.mId = cursor.getInt(idIndex);
+            item.mMemo = cursor.getString(memoIndex);
+            item.mCreateTime = cursor.getLong(createIndex);
+            item.mUpdateTime = cursor.getLong(updateIndex);
+
+            list.add(item);
+        // 読み込み位置を次の行に移動させる。
+        // 次の行が無い時はfalseを返すのでループを抜ける
+        } while (cursor.moveToNext());
+
+        cursor.close();
+        db.close();
+
+        return list;
+    }
+}    
+//}
+
+SQLiteDatabaseオブジェクトのquery()を使用すると、自分で複雑なSELECT文を記述することなく検索が行えます。ここでは全件取得し、作成時刻の昇順でソートしています。
+
+メモリ節約のため、取得する列を指定する場合はquery()の第2引数に列名の配列を指定します。次は、_idとmemo列だけ取得する例です。
+
+//emlist[指定した列だけ取得する]{
+String[] columns = {
+        MyHelper.Columns._ID, 
+        MyHelper.Columns.MEMO
+};
+Cursor cursor = db.query(MemoDB.TABLE_NAME, columns, null, null, null, null,
+        MyHelper.Columns.CREATE_TIME + " ASC");
+//}
+
+SQLのWHEREで条件を指定して、特定の行だけ取得するには、第3引数にWHEREの内容を、第4引数には第3引数の?の部分に入れる値を指定します。文章で説明するとイメージしにくいので、_idが指定したものと一致する行だけ取得する例で説明します。
+
+//emlist[WHEREで条件を指定する]{
+// idは引数で渡された値とします。
+String where = MyHelper.Columns._ID + "=?";
+String[] args = { String.valueOf(id) };
+Cursor cursor = db.query(MyHelper.TABLE_NAME, null, where, args, null, null,
+        MyHelper.Columns.CREATE_TIME + " ASC");
+//}
+
+ここでは、第3引数は"_id=?"という文字列になっています。=の右辺はユーザーの操作によって実行時に変化するので、?を指定します。そして、第4引数で?の部分に入れる値を指定しています。第3引数が"height > ? AND earnings > ?"のように、?を複数含む場合は、第4引数は?の数と同じ長さの配列にします。
+
+勘がいい方は、「なぜ第3引数を"_id=" + idのようにしないんだろう？」と思うかもしれません。なぜこのように?を指定し、第4引数で値を指定するかは後ほど紹介します。
 
 === 行を更新する
 
+行の更新は行の追加と似ています。
+
+ * MyHelperオブジェクトのgetWritableDatabase()を呼び、SQLiteDatabaseオブジェクトを取得する。
+ * 必要なデータを準備し、SQLiteDatabaseオブジェクトのupdate()を呼ぶ。
+ * SQLiteDatabaseオブジェクトのclose()を呼び、処理の終了を伝える。
+
+//emlist[行を更新する]{
+public class MainActivity extends ActionBarActivity {
+    // 中略
+    
+    private void updateMemo(int id, String memo) {
+        SQLiteDatabase db = mMyHelper.getWritableDatabase();
+
+        // 更新する値をセット
+        ContentValues values = new ContentValues();
+        values.put(MyHelper.Columns.MEMO, memo);
+        values.put(MyHelper.Columns.UPDATE_TIME, System.currentTimeMillis());
+
+        // 更新する行をWHEREで指定
+        String where = MyHelper.Columns._ID + "=?";
+        String[] args = { String.valueOf(id) };
+
+        int count = db.update(MyHelper.TABLE_NAME, values, where, args);
+        if (count == 0) {
+            Log.v("Edit", "Failed to update");
+        }
+
+        db.close();
+    }
+}
+//}
+ 
+SQLのUPDATE文で説明しましたが、行の更新はWHEREで更新する行を指定します。WHERE部分の指定はupdate()の第3引数と第4で行います。指定方法はquery()の時と同様で、第3引数で?を含む条件を記述し、第4引数で?にいれる値を指定します。update()は呼ぶと、更新に成功した行数を返します。
+
 === 行を削除する
+
+行の削除はSQLiteDatabaseオブジェクトのdelete()を呼びます。呼ぶまでの手順は行の更新とほぼ同じです。
+
+ * MyHelperオブジェクトのgetWritableDatabase()を呼び、SQLiteDatabaseオブジェクトを取得する。
+ * 必要なデータを準備し、SQLiteDatabaseオブジェクトのdelete()を呼ぶ。
+ * SQLiteDatabaseオブジェクトのclose()を呼び、処理の終了を伝える。
+
+//emlist[行の削除]{
+public class MainActivity extends ActionBarActivity {
+    // 中略
+
+    private void deleteMemo(int id) {
+        SQLiteDatabase db = mMyHelper.getWritableDatabase();
+
+        String where = MyHelper.Columns._ID + "=?";
+        String[] args = { String.valueOf(id) };
+
+        int count = db.delete(MyHelper.TABLE_NAME, where, args);
+        if (count == 0) {
+            Log.v("Edit", "Failed to delete");
+        }
+
+        db.close();
+    }
+}
+//}
+ 
+こちらもupdate()と同様、どの行を削除するかをdelete()の第2引数と第3引数で指定します。指定方法もupdate()の時と同様です。delete()は呼ぶと削除した行数を返します。
 
 === 練習問題
 
