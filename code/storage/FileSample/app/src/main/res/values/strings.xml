@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">FileSample</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="internal_storage">Internal Storage</string>
+    <string name="load">Load</string>
+    <string name="save">Save</string>
+    <string name="external_storage">External storage</string>
+    <string name="save_done">Save done!</string>
+    <string name="load_done">Load done!</string>
+
+</resources>

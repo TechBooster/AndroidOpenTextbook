@@ -4,14 +4,13 @@
 
 == ストレージとメモリ
 
-メモリ->アプリを終了させたり電源を切ったりすると消える
-ストレージ->電源を切っても消えない
+まず、データの記録について学びましょう。これまでのアプリ開発で登場した変数やフィールドは身近なデータを記録するための仕組みです。変数やフィールドに保存されたデータはアプリ実行中のメモリ上に記録されるため、アプリを終了させたり端末の電源を切ったりすると、記録した内容は失われてしまいます。
+
+これに対し、ストレージに記録されたデータはアプリを終了させたり、端末の電源を切っても失われることはありません（物理的に壊れたりした場合は別ですが）。
 
 == ファイル
 
-これまでにJavaソースファイルや画像ファイルを扱っていますよね。
-PC->ストレージにデータをファイルという形で保存
-Androidもストレージへのデータ保存はファイルという形
+データを扱う時の基本単位となるまとまりを「ファイル」と呼びます。既にJavaソースファイルや画像ファイルなどを扱っているため、ファイルがどのようなものかはイメージできるでしょう。PCのハードディスクやSSDなどへの読み書きがファイル単位で行われるのと同様に、Androidもストレージへの読み書きはファイル単位で行われます。
 
 ファイルシステムはコラムで
 
@@ -521,15 +520,231 @@ public class MainActivity extends ActionBarActivity {
 
 === 練習問題
 
-== File
+== ファイル
+
+本節では、Androidアプリでファイルを読み書きする方法を学びます。
+
+=== ファイルを保存する場所
+
+Androidアプリでファイルを保存できる場所は次の2箇所です。
+
+ * 内部ストレージ
+ * （アプリから見た）外部ストレージ
+
+内部ストレージに保存したファイルは、他のアプリは読み書きできませんが、外部ストレージに保存したファイルは、他のアプリから読み書きできます。なので、作成するファイルの用途に応じて使い分けましょう。
+
+=== ファイル(File)とストリーム(Stream)
+
+ファイル(File)とストリーム(Stream)は、Androidアプリでファイルの読み書き時に使用するクラスです。Javaで既にこれらの使い方を学んでいる方はこの節を読み飛ばしてもかまいません。
+
+ * ファイル
+
+ファイルは、ディスク上のファイルやフォルダ（ディレクトリ）を表します。
+
+ * ストリーム
+
+ストリームとは、データの流れを扱う「もの」です。流れてきたデータを読み込むストリームをInputStreaemと呼び、データを流すためのストリームをOutputStreamと呼びます。（図xx）
+
+=== 内部ストレージにファイルを作成する
+
+内部ストレージにファイルを作成するには、次の3ステップを行います。
+
+ * ContextのopenFileOutput()を呼び、OutputStreamオブジェクトを取得する。
+ * 取得したOutputStreamオブジェクトに対し、データを書き込む。
+ * OutputStreamオブジェクトのclose()を呼び、処理の終了を伝える。
+
+//emlist[内部ストレージにファイルを作成する]{
+public class MainActivity extends ActionBarActivity {
+    // 中略
+    
+    void internalSaveClicked() {
+        OutputStream out = null;
+        OutputStreamWriter writer = null;
+        BufferedWriter bw = null;
+        try {
+            out = openFileOutput("myText.txt", Context.MODE_PRIVATE);
+            writer = new OutputStreamWriter(out);
+            bw = new BufferedWriter(writer);
+
+            String text = mEdit.getText().toString();
+            bw.write(text);
+
+            Toast.makeText(this, R.string.save_done, Toast.LENGTH_SHORT).show();
+
+        } catch (IOException e) {
+            Log.e("Internal", "IO Exception " + e.getMessage(), e);
+        } finally {
+            try {
+                if (bw != null) { bw.close(); }
+                if (writer != null) { writer.close(); }
+                if (out != null) { out.close(); }
+            } catch (IOException e) {
+                Log.e("Internal", "IO Exception " + e.getMessage(), e);
+            }
+        }
+    }
+}
+//}
+
+まず、openFileOutput()を呼び、OutputStreamオブジェクトを取得します。第1引数にはファイル名を指定します。第2引数にはContext.MODE_PRIVATEを指定します。
+
+続いて、OutputStreamWriterオブジェクトとBufferedWriterオブジェクトを生成します。OutputStreamオブジェクトを用いて直接データを書き込んでもよいのですが、OutputStreamクラスには文字列を効率的に書き込むためのメソッドが用意されていないので、このようにBufferedWriterオブジェクトを用意します。
+
+BufferedWriterオブジェクトの生成まで完了したら、後はwrite()でストリームに文字列を書き込みます。
+
+ファイルのオープンや書き込みはIOExceptionが発生することがあります。そのため、処理全体をtry-catchで囲みます。また、処理途中でIOExceptionが発生した時も確実に各Streamをクローズする必要があるため、finallyの部分でclose()を呼びます。
+
+=== 内部ストレージ内のファイルを読み込む
+
+内部ストレージ内のファイルを読み込むには、次の3ステップを行います。
+
+ * ContextのopenFileInput()を呼び、InputStreamオブジェクトを取得する。
+ * 取得したInputStreamオブジェクトから、データを読み込む。
+ * InputStreamオブジェクトのclose()を呼び、処理の終了を伝える。
+
+//emlist[内部ストレージ内のファイルを読み込む]{
+public class MainActivity extends ActionBarActivity {
+    // 中略
+
+    void internalLoadClicked() {
+        InputStream in = null;
+        InputStreamReader sr = null;
+        BufferedReader br = null;
+        try {
+            in = openFileInput("myText.txt");
+            sr = new InputStreamReader(in);
+            br = new BufferedReader(sr);
+
+            String line;
+            StringBuilder sb = new StringBuilder();
+            while ((line = br.readLine()) != null) {
+                sb.append(line).append("\n");
+            }
+            mEdit.setText(sb.toString());
+
+            Toast.makeText(this, R.string.load_done, Toast.LENGTH_SHORT).show();
+        } catch (IOException e) {
+            Log.e("Internal", "IO Exception " + e.getMessage(), e);
+        } finally {
+            try {
+                if (br != null) { br.close(); }
+                if (sr != null) { sr.close(); }
+                if (in != null) { in.close(); }
+            } catch (IOException e) {
+                Log.e("Internal", "IO Exception " + e.getMessage(), e);
+            }
+        }
+    }    
+}
+//}
+
+まず、openFileInput()を呼び、InputStreamオブジェクトを取得します。第1引数にはファイル名を指定します。
+
+続いて、InputStreamReaderとBufferedReaderオブジェクトを生成します。ファイルの書き込みと同様、InputStreamクラスには文字列を効率的に読み込むためのメソッドが用意されていないので、BufferedReaderオブジェクトを用意します。
+
+BufferedReaderオブジェクトの生成まで完了したら、readLine()を用いて1行ずつ読み込みます。
+
+ファイルの書き込みと同様に、ファイルのオープンや読み込みはIOExceptionが発生することがあります。そのため、処理全体をtry-catchで囲みます。また、処理途中でIOExceptionが発生した時も確実に各Streamをクローズする必要があるため、finallyの部分でclose()を呼びます。
+
+=== 外部ストレージにファイルを作成する
+
+外部ストレージにファイルを作成するには、次の4ステップを行います。
+
+ * Fileオブジェクトを作成する。
+ * 作成したFileオブジェクトを元に、FileOutputStreamオブジェクトを作成する。
+ * 作成したFileOutputStreamオブジェクトに対し、データを書き込む。
+ * OutputStreamオブジェクトのclose()を呼び、処理の終了を伝える。
+
+OutputStreamオブジェクトを作成した後の処理は内部ストレージへの書き込みと同様なので、ここではOutputStreamオブジェクトを作成するまでを解説します。
+
+//emlist[外部ストレージにファイルを作成する]{
+public class MainActivity extends ActionBarActivity {
+    // 中略
+    void externalSaveClicked() {
+        OutputStream out = null;
+        OutputStreamWriter writer = null;
+        BufferedWriter bw = null;
+        try {
+            File foler = Environment.getExternalStoragePublicDirectory(
+                "MyDocuments");
+            if (!foler.exists()) {
+                boolean result = foler.mkdir();
+                if (!result) {
+                    return;
+                }
+            }
+            File file = new File(foler, "myText.txt");
+            out = new FileOutputStream(file);
+
+            // 以下、内部ストレージへの書き込みと同様
+        }
+    }
+}
+//}
+
+まず、保存先のフォルダを表すオブジェクトをEnvironment.getExternalStoragePublicDirectory()で取得します。引数にはフォルダの種類を文字列で指定します。ここでは独自に決めたMyDocumentsという種類を指定していますが、システムで用意されている定数を指定することもできます。
+
+ * Environment.DIRECTORY_ALARMS
+ * Environment.DIRECTORY_PICTURES
+ * Environment.DIRECTORY_MUSIC
+ * Environment.DIRECTORY_MOVIES
+
+次に、フォルダが実際に存在するかをexists()で確認します。もし存在しない場合はmkdir()でフォルダを作成します。
+
+フォルダの作成まで完了したら、newで保存先となるFileオブジェクトを作成します。第1引数には先ほど作成したフォルダオブジェクトを指定します。第2引数にはファイル名を指定します。
+
+ファイルオブジェクト作成後、newでFileOutputStreamオブジェクトを作成します。引数には保存先となるFileオブジェクトを指定します。
+
+=== 外部ストレージ内のファイルを読み込む
+
+外部ストレージ内のファイルを読み込むには、次の4ステップを行います。
+
+ * Fileオブジェクトを作成する。
+ * 作成したFileオブジェクトを元に、FileInputStreamオブジェクトを作成する。
+ * 取得したFileInputStreamオブジェクトから、データを読み込む。
+ * InputStreamオブジェクトのclose()を呼び、処理の終了を伝える。
+
+InputStreamオブジェクトを作成した後の処理は内部ストレージ内の読み込みと同様なので、ここではInputStreamオブジェクトを作成するまでを解説します。
+
+//emlist[外部ストレージ内のファイルを読み込む]{
+public class MainActivity extends ActionBarActivity {
+    // 中略
+    
+    void externalLoadClicked() {
+        InputStream in = null;
+        InputStreamReader sr = null;
+        BufferedReader br = null;
+        try {
+            File foler = Environment.getExternalStoragePublicDirectory(
+                "MyDocuments");
+            File file = new File(foler, "myText.txt");
+            in = new FileInputStream(file);
+            /// 以下、内部ストレージ内のファイル読み込みと同様
+        }
+    }
+}
+//}
+
+Fileオブジェクトの作成までは、外部ストレージにファイルを作成する時と同様です。Fileオブジェクトの作成が完了したら、newでFileInputStreamオブジェクトを作成します。引数には読み込み元を表すFileオブジェクトを指定します。
 
 === Permission
 
-=== ファイルを作成しよう
+内部ストレージへのファイル読み書きは特別なPermissionは不要ですが、外部ストレージへのファイル読み書きは他アプリに影響が出るため、Permissionの追加が必要です。
 
-=== ファイルを読み込んでみよう
+開発したAndroidアプリが外部ストレージのファイルを読み込む場合はandroid.permission.READ_EXTERNAL_STORAGEを、外部ストレージのファイルに書き込む場合はandroid.permission.WRITE_EXTERNAL_STORAGEをAndroidManifest.xmlに追加します。
 
-=== フォルダを作成しよう
+//emlist[Permissionの追加]{
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="jp.androidopentextbook.storage.filesample" >
+
+    <!-- ファイルを読み込む場合 -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    
+    <!-- ファイルに書き込む場合 -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <!-- 中略 -->
+</manifext>
+//}
 
 == まとめ
 
