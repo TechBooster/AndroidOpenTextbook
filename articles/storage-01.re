@@ -53,10 +53,13 @@ SharedPreferences pref =
 
 === SharedPreferencesにデータを保存する
 
-次に、取得したSharedPreferencesオブジェクトを用いてデータを保存します。まず、SharedPreferencesオブジェクトのedit()メソッドを呼び、Editorオブジェクトを取得します。Editorにはデータの型に応じたputメソッドが用意されています。ここでは、入力された名前をputString()メソッドで保存します。
+SharedPreferencesにデータを保存するには、次の4ステップを行います。
 
-保存したいデータをputメソッドで保存したら、最後にEditorオブジェクトのapply()メソッドを呼び、変更を反映させます。
-
+ * Context(Activity)のgetSharedPreferences()で、SharedPreferencesオブジェクトを取得する。
+ * SharedPreferencesオブジェクトのedit()で、Editorオブジェクトを取得する。
+ * Editorオブジェクトのputメソッドで、保存するデータをセットする。
+ * apply()を呼び、変更を反映させる。
+ 
 //emlist[SharedPreferencesにデータを保存する]{
 private static final String KEY_NAME = "name";
 
@@ -69,13 +72,18 @@ edit.apply();
 
 === SharedPreferencesからデータを読み込む
 
-データをSharedPreferencesに保存できたら、次はそのデータを読み込んでみましょう。データの読み込みもSharedPreferencesオブジェクトを使用します。SharedPreferencesにはデータの種類に応じたgetメソッドが用意されています。ここでは、先ほど保存した名前をgetString()メソッドで読み込んでみます。もし、第一引数で指定したキーに対応する値が無い場合は、代わりに第二引数で指定した値が返却されます。
+SharedPreferencesからデータを読み込むには、次の2ステップを行います。
 
+ * Context(Activity)のgetSharedPreferences()で、SharedPreferencesオブジェクトを取得する。
+ * SharedPreferencesオブジェクトのgetメソッドで、保存したデータを取得する。
+ 
 //emlist[SharedPreferencesからデータを読み込む]{
 SharedPreferences pref =
     getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
 String name = pref.getString(KEY_NAME, DEFAULT_NAME);
 //}
+
+ここでは保存した名前を文字列として取得するため、SharedPreferencesオブジェクトのgetString()を呼んでいます。第1引数で指定したキーに対応する値が無かったり、型が違ったりした場合、getString()は第2引数で指定した値を代わりに返します。
 
 === SharedPreferencesが苦手とすること
 
@@ -90,6 +98,17 @@ SharedPreferencesでデータを読み込むには、キーを事前に知って
 残念なことに、SharedPreferencesは複数プロセスから読み書きすると、「アプリで保存したはずの値がServiceで読み込めない」といった挙動をすることがあります。詳しくは紹介しませんが、「問題がある」ということは頭の片隅に置いておきましょう。
 
 === 練習問題
+
+@<img>{lesson1-1}のように、TextView / EditText / Buttonを1つずつ配置してください。そして、次のような動作をするよう、SharedPreferencesを用いて処理を記述し動作確認しましょう。
+
+ * Buttonをタップすると、EditTextに入力された内容をSharedPreferencesを用いて保存する。
+ * アプリ起動時に、SharedPreferencesに値が保存されていれば@<img>{lesson1-2}のようにTextViewの文字列をセットする。
+
+//image[lesson1-1][練習問題レイアウト][scale=0.35]{
+//}
+
+//image[lesson1-2][保存した名前を表示][scale=0.35]{
+//}
 
 == SQLite
 
@@ -115,7 +134,7 @@ SQLの文法は、大きく3種類に分けられます。
 
 SQLについて詳しく説明すると、それだけで数百ページの教科書となってしまいます。ですので、本章ではAndroidでSQLiteを使うために最低限必要となる文法のみ解説します。
 
-=== テーブルを作ってみよう
+=== テーブルを作る
 
 まず、SQLに慣れるところから始めましょう。SQLでデータベースにテーブルを作るには、CREATE文を使用します。
 
@@ -144,7 +163,21 @@ CREATE TABLE user(
 
 === 練習問題
 
-=== テーブルに行を追加しよう
+@<table>{lesson2}のようなlectureテーブルを作成するSQLを書いてみましょう。列の型は次のようにします。
+
+ * _id : INTEGER
+ * date : INTEGER
+ * title : TEXT
+
+//table[lesson2][lectureテーブル]
+_id	date	title
+---------------------
+1	4/2	開発環境セットアップ
+2	4/3	Java基礎
+3	4/4	Java応用
+//}
+
+=== テーブルに行を追加する
 
 テーブルができたら、次はそのテーブルにデータ（行）を追加しましょう。行の追加はINSERT文を使います。
 
@@ -164,7 +197,7 @@ INSERT INTO user(name, age) VALUES('fkm', 30)
 INSERT INTO user(age, name) VALUES(30, 'fkm')
 //}
 
-=== テーブルから行を取得しよう
+=== テーブルから行を取得する
 
 テーブルに追加した行（データ）を取得するには、SELECT文を使います。すべてのパターンを説明すると膨大な量になるので、ここでは代表的なもののみ解説します。
 
@@ -227,18 +260,16 @@ WHEREの部分は、SELECT文で紹介した条件を指定し、条件に一致
 DELETE FROM worker WHERE id=2
 //}
 
-=== Androidで使ってみよう
+=== Androidで使う
 
 SQLと少しお友達になれたところで、AndroidアプリでSQLiteを使ってみましょう。AndroidでSQLiteを使うには、次の2ステップが必要です。
 
- * SQLiteOpenHelperクラスを継承したクラスを定義する
- * 必要な場面で、定義したクラスのオブジェクトを作り、メソッドを呼ぶ
-
-さっそく、やってみましょう
+ * SQLiteOpenHelperクラスを継承したクラスを定義する。
+ * 必要な場面で、定義したクラスのオブジェクトを作り、メソッドを呼ぶ。
 
 === SQLiteOpenHelperを継承したクラスを定義する
 
-まず、SQLiteOpenHelperを継承したMyHelperというクラスを定義しましょう。
+まず、SQLiteOpenHelperを継承したMyHelperというクラスを定義します。
 
 //emlist[MyHelperクラスを定義する]{
 public class MyHelper extends SQLiteOpenHelper {
