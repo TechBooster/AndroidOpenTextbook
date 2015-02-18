@@ -169,7 +169,7 @@ CREATE TABLE user(
  * date : INTEGER
  * title : TEXT
 
-//table[lesson2][lectureテーブル]
+//table[lesson2][lectureテーブル]{
 _id	date	title
 ---------------------
 1	4/2	開発環境セットアップ
