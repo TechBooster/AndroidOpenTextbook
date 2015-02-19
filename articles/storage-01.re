@@ -1,22 +1,30 @@
 = ストレージ
 
-ストレージとは、データを永続的に記録する装置です。Android端末にもストレージはあり、アプリはAPIを介してストレージにアプリのデータを記録したりできます。この章では、Androidアプリ開発で主に用いられる３つのストレージAPIについて学びます。
+== 概要
 
-== ストレージとメモリ
+=== ストレージとは
 
-まず、データの記録について学びましょう。これまでのアプリ開発で登場した変数やフィールドは身近なデータを記録するための仕組みです。変数やフィールドに保存されたデータはアプリ実行中のメモリ上に記録されるため、アプリを終了させたり端末の電源を切ったりすると、記録した内容は失われてしまいます。
+ストレージとは、データを永続的に記録する装置です。PCではハードディスクやSSDがストレージに該当します。Android端末にもストレージはあり、アプリはAPIを介してストレージにデータを記録したりできます。この章では、Androidアプリ開発で主に用いられる３つのストレージAPIについて学びます。
 
-これに対し、ストレージに記録されたデータはアプリを終了させたり、端末の電源を切っても失われることはありません（物理的に壊れたりした場合は別ですが）。
+=== ストレージとメモリ
 
-== ファイル
+まず、データの記録について学びましょう。これまでのアプリ開発で使用した「変数」や「フィールド」は一時的なデータを記録するための仕組みです。変数やフィールドに保存されたデータはアプリ実行中、メモリ上に記録されるため、アプリを終了させたり端末の電源を切ったりすると、記録した内容は失われてしまいます。
 
-データを扱う時の基本単位となるまとまりを「ファイル」と呼びます。既にJavaソースファイルや画像ファイルなどを扱っているため、ファイルがどのようなものかはイメージできるでしょう。PCのハードディスクやSSDなどへの読み書きがファイル単位で行われるのと同様に、Androidもストレージへの読み書きはファイル単位で行われます。
+これに対し、ストレージに記録されたデータはアプリを終了させたり、端末の電源を切っても失われることはありません（経年劣化などで物理的に壊れたりした場合は別ですが）。
 
-ファイルシステムはコラムで
+=== ファイル
+
+データを扱う時の基本単位となるまとまりを「ファイル」と呼びます。画像データが保存されているファイルや、Javaソースコードが保存されているファイルなど、既になじみ深いものだと思います。PCのハードディスクやSSDなどへの読み書きがファイル単位で行われるのと同様に、Androidもストレージへの読み書きはファイル単位で行われます。
+
+===[column]ファイルシステム
+
+ストレージへの読み書きはファイル単位で行われます。このファイル単位による読み書きを提供するシステムを「ファイルシステム」と呼び、OSによって提供されます。ファイルシステムはWindowsではNTFS、Linuxではext3やext4など、いろいろな種類があります。Androidでは2.3からext4が使用されています。
+
+===[/column]
 
 == Androidアプリ開発で主に利用するストレージAPI
 
-Androidでは、ストレージに対してデータを作成したり、読み込んだりするためのAPIや仕組みがいくつか用意されています。
+Androidでは、ストレージに対してデータを作成したり、読み込んだりするためのAPIや仕組みがいくつか用意されています。代表的なものは次の3つです。
 
  * SharedPreferences
  * SQLiteDatabase
@@ -27,9 +35,11 @@ Androidでは、ストレージに対してデータを作成したり、読み�
  * ContentProvider
  * Storage Access Framework（Android 4.4で追加）
 
+本章では、この3つの代表的なAPIの使い方を学びます。
+
 == SharedPreferences
 
-SharedPreferencesとは、アプリの設定情報などを保存する仕組みです。SharedPreferencesは、データをKey-Value形式で保存します。
+SharedPreferencesとは、アプリの設定情報などを保存する仕組みです。SharedPreferencesは、データをKey-Value形式で保存し、「このキーに対応するデータはこの値です」や、「このキーに対応するデータをください」といった操作ができます。
 
 === SharedPreferencesに保存可能なデータの種類
 
@@ -42,15 +52,6 @@ SharedPreferencesに値として保存可能なデータの種類は次の6種�
  * boolean
  * Set<String>
 
-=== SharedPreferencesを取得する
-
-さっそくSharedPreferencesを使ってデータの読み書きしてみましょう。アプリ内でSharedPreferenceを利用するには、Context(Activity)のgetSharedPreferences()メソッドを呼び、SharedPreferencesオブジェクトをを取得します。第一引数には、自分で決めたSharedPreferences名を指定します。第二引数はContext.MODE_PRIVATEを指定します。
-
-//emlist[SharedPreferencesを取得する]{
-SharedPreferences pref =
-    getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
-//}
-
 === SharedPreferencesにデータを保存する
 
 SharedPreferencesにデータを保存するには、次の4ステップを行います。
@@ -59,7 +60,7 @@ SharedPreferencesにデータを保存するには、次の4ステップを行�
  * SharedPreferencesオブジェクトのedit()で、Editorオブジェクトを取得する。
  * Editorオブジェクトのputメソッドで、保存するデータをセットする。
  * apply()を呼び、変更を反映させる。
- 
+
 //emlist[SharedPreferencesにデータを保存する]{
 private static final String KEY_NAME = "name";
 
@@ -69,6 +70,8 @@ SharedPreferences.Editor edit = pref.edit();
 edit.putString(KEY_NAME, name);
 edit.apply();
 //}
+
+SharedPreferencesオブジェクトを取得するには、Context(Activity)のgetSharedPreferences()を呼びます。第1引数には、自分で決めたSharedPreferences名を指定します。第2引数はContext.MODE_PRIVATEを指定します。
 
 === SharedPreferencesからデータを読み込む
 
@@ -95,7 +98,7 @@ SharedPreferencesでデータを読み込むには、キーを事前に知って
 
  * 複数プロセスで読み書きすると予想外の挙動をすることがある
 
-残念なことに、SharedPreferencesは複数プロセスから読み書きすると、「アプリで保存したはずの値がServiceで読み込めない」といった挙動をすることがあります。詳しくは紹介しませんが、「問題がある」ということは頭の片隅に置いておきましょう。
+残念なことに、SharedPreferencesは複数プロセスから読み書きすると、「アプリで保存したはずの値がServiceで読み込めない」といった挙動をすることがあります。問題となるパターンは基礎の範囲を超えるため、ここでは紹介しません。ですが、「問題がある」ということは頭の片隅に置いておきましょう。
 
 === 練習問題
 
@@ -112,7 +115,7 @@ SharedPreferencesでデータを読み込むには、キーを事前に知って
 
 == SQLite
 
-SQLiteとは、Androidで標準で利用可能なデータベース管理システムのことです。本節では、このSQLiteの使い方を学びます。
+SQLiteとは、Android標準で利用可能なデータベース管理システムのことです。ここでは、SQLiteの使い方を学びます。
 
 === リレーショナルデータベース
 
@@ -120,11 +123,11 @@ SharedPreferencesはKey-Value形式でデータを管理する仕組みでした
 
 === テーブル・列・行
 
-リレーショナルデータベースでは、データは図xxxのように表の形式で保存されています。この表のことを「テーブル」と呼びます。テーブルには名前があり、１つのデータベースに複数のテーブルを格納することができます。次に、テーブルの「名前」や「年齢」に相当するものを「列」と呼びます。「列」には名前の他に、数値や文字列などの「型」の情報も持ちます。最後に、テーブル内のデータ１つ１つを「行」と呼びます。各データがどのようなフィールドで構成されているかは、「列」を見ればわかりますよね。
+リレーショナルデータベースでは、データは図xxxのように表の形式で保存されています。この表のことを「テーブル」と呼びます。テーブルには名前があり、１つのデータベースに複数のテーブルを格納することができます。また、テーブルの「名前」や「年齢」に相当するものを「列」と呼びます。「列」には名前の他に、数値や文字列などの「型」の情報も持ちます。テーブル内のデータ１つ１つを「行」と呼びます。各データがどのようなフィールドで構成されているかは、「列」を見ればわかります。
 
 === SQLとは
 
-Androidアプリ開発では、端末に対する命令などをJavaという言語で記述しています。これに対し、RDBMSに対する命令（問い合わせ）はSQLと呼ばれる言語で記述します。Androidで用意されているSQLiteに対する問い合わせもSQLで記述します。
+Androidアプリ開発では、端末に対する命令などをJavaという言語で記述しました。これに対し、RDBMSに対する命令（問い合わせ）はSQLと呼ばれる言語で記述します。Android標準のSQLiteに対する問い合わせもSQLで記述します。
 
 SQLの文法は、大きく3種類に分けられます。
 
@@ -132,7 +135,33 @@ SQLの文法は、大きく3種類に分けられます。
  * データ操作言語(DML)
  * データ制御言語(DCL)
 
-SQLについて詳しく説明すると、それだけで数百ページの教科書となってしまいます。ですので、本章ではAndroidでSQLiteを使うために最低限必要となる文法のみ解説します。
+SQLについて詳しく説明すると、それだけで数百ページの教科書となってしまうので、本章ではAndroidでSQLiteを使うために最低限必要となる文法のみ解説します。
+
+=== PCでSQLを実行する
+
+Android実機にはアプリから利用するためのSQLiteソフトウェアが入っていますが、Android SDKにもSQLiteソフトウェアが入っています。これを利用して、次節から解説するSQLをPC上で実行することができます。
+
+Windowsでは、<Android SDKのインストールフォルダ>¥platform-tools内に「sqlite3.exe」ファイルがあるので、これをダブルクリックで起動します。（@<img>{sqlite1}）
+
+//image[sqlite1][platform-tools内のsqlite3.exe][scale=0.35]{
+//}
+
+Mac / Linuxでは、<Android SDKのインストールフォルダ>/platform-tools内にsqlite3ファイルがあるので、ターミナルで実行します。
+
+sqlite3を起動すると、@<img>{sqlite2}のようなウィンドウが表示されます。終了する時は「.exit」を実行します。Connected to a transient in-memory databaseというメッセージの通り、起動直後はメモリ上のデータベースに接続されます。このデータベースは.exitなどで終了すると同時に消えてしまうので、気軽にSQLを実行して動作を確認したりできます。
+
+//image[sqlite2][sqlite3.exeが起動したウィンドウ][scale=0.35]{
+//}
+
+sqlite3は、初期設定では結果の表示方法がやや不親切なので、次の2つのコマンドを実行しておきます。
+
+//emlist[sqlite3の設定変更]{
+.mode column
+.header on
+//}
+
+//image[sqlite3][設定を変更する][scale=0.35]{
+//}
 
 === テーブルを作る
 
@@ -160,6 +189,12 @@ CREATE TABLE user(
   name TEXT,
   age INTEGER)
 //}
+
+sqlite3では、@<img>{sqlite4}のようにCREATE文を実行します。sqlite3では、セミコロンまでを1つのSQLと解釈して実行するため、途中で改行をいれても大丈夫です。途中で改行をいれた場合は、入力行の先頭がsqliteから...に変化します。
+
+//image[sqlite4][CREATE文をsqlite3で実行する][scale=0.35]{
+//}
+
 
 === 練習問題
 
@@ -211,7 +246,7 @@ SELECT * FROM <テーブル名>
 SELECT name FROM user
 //}
 
-指定した条件を満たす行（データ）だけ取得したい場合は、FROM <テーブル名> の後にWHEREと条件を追加します。次は、年齢が20歳未満の行を取得するためのSELECT文です。
+指定した条件を満たす行（データ）だけ取得したい場合は、FROM <テーブル名> の後にWHEREと条件（これをWHERE句と呼びます）を追加します。次は、年齢が20歳未満の行を取得するためのSELECT文です。
 
 //emlist[20歳未満の行を取得するSELECT文]{
 SELECT * FROM user WHERE age < 20
@@ -232,7 +267,12 @@ SELECT * FROM user WHERE age < 20
 SELECT * FROM worker WHERE height > 180 AND earnings >= 1000
 //}
 
-=== 行を更新しよう
+@<img>{sqlite5}に、sqlite3でINSERT文とSELECT文を実行した例を示します。
+
+//image[sqlite5][INSERTとSELECT文をsqlite3で実行する][scale=0.35]{
+//}
+
+=== 行を更新する
 
 テーブル内の行を更新するには、UPDATE文を使用します。
 
@@ -240,13 +280,13 @@ SELECT * FROM worker WHERE height > 180 AND earnings >= 1000
 UPDATE <テーブル名> SET 列名1=値,列名2=値,... WHERE 条件
 //}
 
-WHEREの部分は、SELECT文で紹介した条件を指定し、条件に一致した列の、指定した列を更新します。WHEREの指定を忘れると、テーブル内のすべての行を更新してしまうので注意しましょう。次は、id=1の行の収入を300に更新する例です。
+WHERE句で指定した条件に一致した行の、指定した列を更新します。WHERE句を忘れると、テーブル内のすべての行を更新してしまうので注意します。次は、id=1の行の収入を300に更新する例です。
 
 //emlist[UPDATE文の例]{
 UPDATE worker SET earnings=300 WHERE id=1
 //}
 
-=== 行を削除しよう
+=== 行を削除する
 
 テーブル内の行を削除するには、DELETE文を使用します。
 
@@ -254,15 +294,20 @@ UPDATE worker SET earnings=300 WHERE id=1
 DELETE FROM <テーブル名>  WHERE 条件
 //}
 
-WHEREの部分は、SELECT文で紹介した条件を指定し、条件に一致した列を削除します。WHEREの指定を忘れると、テーブル内のすべての行を削除してしまうので注意しましょう。次は、id=2の行を削除する例です。
+WHERE句で指定した条件に一致した行を削除します。WHERE句を忘れると、テーブル内のすべての行を削除してしまうので特に注意します。次は、id=2の行を削除する例です。
 
 //emlist[DELETE文の例]{
 DELETE FROM worker WHERE id=2
 //}
 
+@<img>{sqlite6}に、sqlite3でUPDATE文とDELETE文を実行した例を示します。DELETE文を実行した後、再度SELECT文で行を取得しようとすると、結果が0件であることがわかります。
+
+//image[sqlite6][UPDATEとDELETE文をsqlite3で実行する][scale=0.35]{
+//}
+
 === Androidで使う
 
-SQLと少しお友達になれたところで、AndroidアプリでSQLiteを使ってみましょう。AndroidでSQLiteを使うには、次の2ステップが必要です。
+SQLに慣れてきたところで、AndroidアプリでSQLiteを使ってみましょう。AndroidでSQLiteを使うには、準備として次の2ステップを行います。
 
  * SQLiteOpenHelperクラスを継承したクラスを定義する。
  * 必要な場面で、定義したクラスのオブジェクトを作り、メソッドを呼ぶ。
@@ -289,14 +334,14 @@ SQLiteOpenHelperクラスには引数ありコンストラクタが既に定義�
 
 === onCreate()でテーブル作成SQLを実行する
 
-SQLiteOpenHelperには2つの抽象メソッドが定義されています。
+SQLiteOpenHelperには2つの抽象メソッドが定義されています。MyHelperクラスはこの2つのメソッドをOverrideしなければなりません。
 
  * public void onCreate(SQLiteDatabase db)
  * public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion)
 
-onCreate()は、データベースのファイルを作る必要が生じた時に呼ばれます。onUpgrade()は、データベースのバージョンに変化が起きた時に呼ばれます。
+onCreate()は、データベースのファイルを作る必要が生じた時に呼ばれます。onUpgrade()は、データベースのバージョンに変化が起きた時（たとえばアプリのバージョンアップなど）に呼ばれます。
 
-onCreate()が呼ばれた時に、テーブルを作成するSQLが実行されるようにしましょう。SQLを実行するには、引数で渡されるSQLiteDatabaseオブジェクトのexecSQL()メソッドを呼びます。
+onCreate()が呼ばれた時に、データベースの初期化としてテーブルを作成するSQLを実行します。SQLを実行するには、onCreate()の引数で渡されるSQLiteDatabaseオブジェクトのexecSQL()を呼びます。
 
 //emlist[memoテーブルを作成する]{
 public class MyHelper extends SQLiteOpenHelper {
@@ -337,11 +382,11 @@ CREATE TABLE memo(
     update_time INTEGER)
 //}
 
-memoテーブルの主キーをINTEGER型の_idというフィールドに指定しています。Androidでは、主キーがINTEGER型の_idであるテーブルに対して特定の機能を提供するAPIが存在するため、特に理由が無い場合は主キーを_idにすることが多いです。
+memoテーブルの主キーをINTEGER型の_idというフィールドに指定しています。Androidでは、主キーがINTEGER型の_idであるテーブルに対して特定の機能を提供するAPIが存在するため、特に理由が無い場合は主キーを_idにしておきます。
 
 === MyHelperオブジェクトを作る
 
-MyHelperクラスの定義ができたら、次はオブジェクトを作りましょう。ここでは、ActivityのonCreate()内で生成し、フィールドにセットしておきます。
+MyHelperクラスの定義ができたら、次にオブジェクトを作ります。ここでは、ActivityのonCreate()内で生成し、フィールドにセットしておきます。
 
 //emlist[MyHelperオブジェクトを作る]{
 public class MainActivity extends ActionBarActivity {
@@ -394,8 +439,8 @@ public class MainActivity extends ActionBarActivity {
 
 追加する行のデータは、ContentValuesオブジェクトのput()で列毎に指定します。ここでは、次のように値をセットしています。
 
- * memo列に入力された値
- * create_timeとupdate_timeには現在時刻
+ * memo列：入力された値
+ * create_time列とupdate_time列：現在時刻
 
 === 行を検索する
 
@@ -469,9 +514,9 @@ Cursor cursor = db.query(MemoDB.TABLE_NAME, columns, null, null, null, null,
         MyHelper.Columns.CREATE_TIME + " ASC");
 //}
 
-SQLのWHEREで条件を指定して、特定の行だけ取得するには、第3引数にWHEREの内容を、第4引数には第3引数の?の部分に入れる値を指定します。文章で説明するとイメージしにくいので、_idが指定したものと一致する行だけ取得する例で説明します。
+SQLのWHERE句で条件を指定して、特定の行だけ取得するには、第3引数にWHEREの内容を、第4引数には第3引数の?の部分に入れる値を指定します。文章で説明するとイメージしにくいので、_idが指定したものと一致する行だけ取得する例で説明します。
 
-//emlist[WHEREで条件を指定する]{
+//emlist[WHERE句で条件を指定する]{
 // idは引数で渡された値とします。
 String where = MyHelper.Columns._ID + "=?";
 String[] args = { String.valueOf(id) };
@@ -481,7 +526,15 @@ Cursor cursor = db.query(MyHelper.TABLE_NAME, null, where, args, null, null,
 
 ここでは、第3引数は"_id=?"という文字列になっています。=の右辺はユーザーの操作によって実行時に変化するので、?を指定します。そして、第4引数で?の部分に入れる値を指定しています。第3引数が"height > ? AND earnings > ?"のように、?を複数含む場合は、第4引数は?の数と同じ長さの配列にします。
 
-勘がいい方は、「なぜ第3引数を"_id=" + idのようにしないんだろう？」と思うかもしれません。なぜこのように?を指定し、第4引数で値を指定するかは後ほど紹介します。
+勘がいい方は、「なぜ第3引数を"_id=" + idのようにしないんだろう？」と思うかもしれません。なぜこのように?で場所を指定し、第4引数で値を指定するかは後ほど紹介します。
+
+query()の結果はCursorオブジェクトで返されます。Cursorオブジェクトには検索結果の行と、読み込み中の行の位置が格納されています。query()直後は読み込み中の行の位置が不定なので、moveToFirst()を呼び、先頭に移動させます。検索結果が0件の場合は、moveToFirst()がfalseを返すので、そこで処理を終了します。
+
+結果が1件以上あった場合、次にCursorオブジェクトのgetColumnIndex()で、指定した列名に対するインデックス（位置）を列毎に取得します。これは、Cursorオブジェクトから読み込み中の行の、指定した列のデータを読み込む際、列名ではなく位置を指定するためです。
+
+列名に対する位置が取得できたら、いよいよ各行のデータを読み込みます。moveToFirst()で読み込み位置が最初の行に移動しているので、do-whileループを使用します@<fn>{cursor-next}。ここでは、1行分のデータを表すMemoオブジェクトを作り、その中に読み込んだデータを格納するようにしています。
+
+//footnote[cursor-next][Cursorクラスには「次の要素があるか」を判定するメソッドが無いため、このようにdo-whileループを用いるしかありません。]
 
 === 行を更新する
 
@@ -517,7 +570,7 @@ public class MainActivity extends ActionBarActivity {
 }
 //}
  
-SQLのUPDATE文で説明しましたが、行の更新はWHEREで更新する行を指定します。WHERE部分の指定はupdate()の第3引数と第4で行います。指定方法はquery()の時と同様で、第3引数で?を含む条件を記述し、第4引数で?にいれる値を指定します。update()は呼ぶと、更新に成功した行数を返します。
+SQLのUPDATE文で説明しましたが、行の更新はWHERE句で更新する行を指定します。WHERE部分の指定はupdate()の第3引数と第4で行います。指定方法はquery()の時と同様で、第3引数で?を含む条件を記述し、第4引数で?にいれる値を指定します。update()は呼ぶと、更新に成功した行数を返します。
 
 === 行を削除する
 
@@ -549,7 +602,43 @@ public class MainActivity extends ActionBarActivity {
  
 こちらもupdate()と同様、どの行を削除するかをdelete()の第2引数と第3引数で指定します。指定方法もupdate()の時と同様です。delete()は呼ぶと削除した行数を返します。
 
+=== なぜWHERE句に?を使用するか
+
+query()やupdate()などは、SQLiteDatabaseクラスの内部でSQLを組み立てた上で実行されます。この時、WHERE句で指定した条件はSQL組み立て時にそのまま使用されます。もし、WHERE句に?が含まれていた場合は、SQLとして意味が変わらないよう、順に値が割り当てられます。
+
+では、WHERE句の条件に?を使用せず、"name=" + nameのように文字列を連結したものを渡した場合を考えてみます。変数nameはString型として、"fkm"が入っていた場合、最終的に次のようなSQLが実行されるでしょう。
+
+//emlist[nameにfkmが入っていた場合]{
+SELECT * FROM user WHERE name=fkm
+//}
+
+もし、変数nameに"a OR 1=1"が入っていた場合、次のようなSQLが実行されてしまいます。
+
+//emlist[nameにa OR 1=1が入っていた場合]{
+SELECT * FROM user WHERE name=a OR 1=1
+//}
+
+これは、「userテーブル内で、nameがaと等しいか、1=1が真となる行をすべて取得しなNさい」という意味になります。この場合、1=1は常に真となるので、userテーブル内のすべての行が取得できてしまいます。
+
+?を含む文字列を条件として指定し、その次の引数で?に割り当てる値を指定した場合、次のようなSQLが実行され、「全件取得してしまう」のような意図しない動作を防ぐことができます。
+
+//emlist[条件に?を用いた場合]{
+SELECT * FROM user WHERE name='a OR 1=1'
+//}
+
+このように、WHERE句の指定に?を使用せず、入力値を連結したものを使用した場合、値によって意図していないSQLが実行されてしまうことがあります。上記のnameのような変数にSQLの動作を変える文字列を入れることで、不正にデータを取得したり、データベースを破壊したりすることを「SQLインジェクション」と呼びます。
+
 === 練習問題
+
+@<img>{lesson2-1}のようなレイアウトを作成し、入力されたToDoをSQLiteに保存するミニアプリを作ってみましょう。
+
+ * 「保存」ボタンを押すと、入力されたToDoをtodoテーブルにinsertする。
+ * 「取得」ボタンを押すと、todoテーブルの内容を全件取得し、TextViewに1行ずつ表示する。
+
+//image[lesson2-1][ToDoを保存するアプリ][scale=0.35]{
+//}
+
+テーブル定義などはこれまでの内容を参考にして、自分で決めてみましょう。
 
 == ファイル
 
