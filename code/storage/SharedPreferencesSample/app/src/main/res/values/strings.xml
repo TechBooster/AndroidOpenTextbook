@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">SharedPreferencesSample</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="input_name">Input your name</string>
+    <string name="save">Save</string>
+    <string name="save_done">Save done!</string>
+
+</resources>
