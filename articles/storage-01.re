@@ -8,7 +8,7 @@
 
 アプリの設定情報など、簡単なデータの読み書きができるようになります。
 
- * ファイルの読み書きできるようになる。
+ * ファイルの読み書きができるようになる。
 
 画像など、やや大きめのデータをファイルに保存したり、ファイルから読み込んだりできるようになります。
 
@@ -24,7 +24,7 @@
 
 == ファイル
 
-データを扱う時の基本単位となるまとまりを「ファイル」と呼びます。画像データが保存されているファイルや、Javaソースコードが保存されているファイルなど、既になじみ深いものだと思います。PCのハードディスクやSSDなどへの読み書きがファイル単位で行われるのと同様に、Androidもストレージへの読み書きはファイル単位で行われます。
+ストレージを扱う時の基本単位となるデータのまとまりを「ファイル」と呼びます。画像データが保存されているファイルや、Javaソースコードが保存されているファイルなど、既になじみ深いものだと思います。PCのハードディスクやSSDなどへの読み書きがファイル単位で行われるのと同様に、Androidでもストレージへの読み書きはファイル単位で行われます。
 
 ===[column]ファイルシステム
 
@@ -49,7 +49,7 @@ Androidでは、ストレージに対してデータを作成したり、読み�
 
 == SharedPreferences
 
-SharedPreferencesとは、アプリの設定情報などを保存する仕組みです。SharedPreferencesは、データをKey-Value形式で保存し、「このキーに対応するデータはこの値です」や、「このキーに対応するデータをください」といった操作ができます。
+SharedPreferencesとは、アプリの設定情報などを保存する仕組みです。SharedPreferencesは、データをKey-Value形式で保存します。Key-Value形式とは、データを「キー」と「値」のペアで保存する形式で、身近なものだと辞書がこれに該当します。
 
 === SharedPreferencesに保存可能なデータの種類
 
@@ -73,15 +73,21 @@ SharedPreferencesにデータを保存するには、次の4ステップを行�
 
 //emlist[SharedPreferencesにデータを保存する]{
 private static final String KEY_NAME = "name";
+private static final String KEY_AGE = "age";
 
 SharedPreferences pref =
     getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
 SharedPreferences.Editor edit = pref.edit();
 edit.putString(KEY_NAME, name);
+edit.putString(KEY_AGE, age);
 edit.apply();
 //}
 
 SharedPreferencesオブジェクトを取得するには、Context(Activity)のgetSharedPreferences()を呼びます。第1引数には、自分で決めたSharedPreferences名を指定します。第2引数はContext.MODE_PRIVATEを指定します。
+
+次に、SharedPreferencesオブジェクトのedit()で、データを書き込むためのオブジェクトを取得します。このオブジェクトには、putString()やputInt()など、値の種類に応じたメソッドが用意されています。ここでは"name"というキーに、入力された文字列を値として保存しています。保存したいデータが複数ある場合は、putXXX()をデータの数だけ呼びます。また、同じキーを指定した場合、値は上書きされます。
+
+最後に、apply()を呼ぶことでデータの変更を反映させます。これを呼び忘れるとデータは保存されないので注意しましょう。
 
 === SharedPreferencesからデータを読み込む
 
@@ -96,7 +102,7 @@ SharedPreferences pref =
 String name = pref.getString(KEY_NAME, DEFAULT_NAME);
 //}
 
-ここでは保存した名前を文字列として取得するため、SharedPreferencesオブジェクトのgetString()を呼んでいます。第1引数で指定したキーに対応する値が無かったり、型が違ったりした場合、getString()は第2引数で指定した値を代わりに返します。
+SharedPreferencesオブジェクトの取得は書き込み時と同様です。値を読み込むには、値の型に応じたgetXXX()を呼びます。ここでは保存した名前を文字列として取得するため、SharedPreferencesオブジェクトのgetString()を呼んでいます。第1引数で指定したキーに対応する値が無かったり、型が違ったりした場合、getString()は第2引数で指定した値を代わりに返します。
 
 === SharedPreferencesが苦手とすること
 
@@ -146,7 +152,10 @@ Androidアプリでファイルを保存できる場所は次の2箇所です。
 
  * ストリーム
 
-ストリームとは、データの流れを扱う「もの」です。流れてきたデータを読み込むストリームをInputStreaemと呼び、データを流すためのストリームをOutputStreamと呼びます。（図xx）
+ストリームとは、データの流れを扱う「もの」です。流れてきたデータを読み込むストリームをInputStreaemと呼び、データを流すためのストリームをOutputStreamと呼びます。（@<img>{streams}）
+
+//image[streams][InputStreamとOutputStream][scale=0.15]{
+//}
 
 === 内部ストレージにファイルを作成する
 
@@ -247,7 +256,9 @@ public class MainActivity extends ActionBarActivity {
 
 BufferedReaderオブジェクトの生成まで完了したら、readLine()を用いて1行ずつ読み込みます。
 
-ファイルの書き込みと同様に、ファイルのオープンや読み込みはIOExceptionが発生することがあります。そのため、処理全体をtry-catchで囲みます。また、処理途中でIOExceptionが発生した時も確実に各Streamをクローズする必要があるため、finallyの部分でclose()を呼びます。
+ファイルの書き込みと同様に、ファイルのオープンや読み込みはIOException@<fn>{ioexception}が発生することがあります。そのため、処理全体をtry-catchで囲みます。また、処理途中でIOExceptionが発生した時も確実に各Streamをクローズする必要があるため、finallyの部分でclose()を呼びます。
+
+//footnote[ioexception][実行時、入出力に関するエラーが発生した時に投げられる例外です。例えば、存在しないファイルを読み込み用でオープンしようとした時に発生します。]
 
 === 外部ストレージにファイルを作成する
 
@@ -349,6 +360,9 @@ Fileオブジェクトの作成までは、外部ストレージにファイル�
 </manifext>
 //}
 
+=== 練習問題
 
+@<img>{lesson2-1}のような、入力内容をファイルに保存するメモ帳アプリを作成してみましょう。メモが他のアプリに読まれてしまうのを防ぐため、内部ストレージに保存するようにしてみましょう。
 
-
+//image[lesson2-1][ファイルを使ったメモ帳][scale=0.45]{
+//}
