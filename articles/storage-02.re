@@ -1,18 +1,43 @@
 = ストレージ(2)
 
-== 概要
+== 本節で学べること
 
+ * 基本的なSQL文が書けるようになる。
+
+テーブル作成と、基本的なデータ操作を行うSQL文が書けるようになります。
+
+ * AndroidのSQLiteを用いたプログラムが書けるようになる。
+
+SQLiteOpenHelperを継承したクラスの作成と、SQLiteDatabaseクラスを使ったデータベース操作ができるようになります。
+
+== 本節のキーワード
+
+ * SQL
+ * CREATE TABLE / INSERT / SELECT / UPDATE / DELETE文
+ * SQLite
+ * SQLiteOpenHelper
+ * SQLiteDatabase
+ * Cursor
+ 
 == SQLite
 
 SQLiteとは、Android標準で利用可能なデータベース管理システムのことです。ここでは、SQLiteの使い方を学びます。
 
 === リレーショナルデータベース
 
-SharedPreferencesはKey-Value形式でデータを管理する仕組みでしたが、関係モデル（リレーショナルモデル）に基づいてデータを管理するシステムもあります。このシステムを「リレーショナルデータベースマネジメントシステム（RDBMS）」と呼び、SQLiteはこのRDBMSの一つです。RDBMSによって構築されるデータベースを「リレーショナルデータベース」と呼び、データベース内の関係（リレーション）は一般に「表（テーブル）」と呼ばれます。図xxxに、RDBMSとリレーショナルデータベース・テーブルの関係を示します。
+SharedPreferencesはKey-Value形式でデータを管理する仕組みでしたが、関係モデル（リレーショナルモデル）に基づいてデータを管理するシステムもあります。このシステムを「リレーショナルデータベースマネジメントシステム（RDBMS）」と呼び、SQLiteはこのRDBMSの一つです。RDBMSによって構築されるデータベースを「リレーショナルデータベース」と呼び、データベース内の関係（リレーション）は一般に「表（テーブル）」と呼ばれます。@<img>{rdbms}に、RDBMSとリレーショナルデータベース・テーブルの関係を示します。
+
+//image[rdbms][RDBMSとリレーショナルデータベース・テーブル][scale=0.35]{
+//}
+
+//footnote[relational-model][関係モデルについて説明すると、それだけで1冊の教科書となってしまいます。ここでは、「データを表のようなかたちで表すモデル」というイメージの紹介にとどめておきます。]
 
 === テーブル・列・行
 
-リレーショナルデータベースでは、データは図xxxのように表の形式で保存されています。この表のことを「テーブル」と呼びます。テーブルには名前があり、１つのデータベースに複数のテーブルを格納することができます。また、テーブルの「名前」や「年齢」に相当するものを「列」と呼びます。「列」には名前の他に、数値や文字列などの「型」の情報も持ちます。テーブル内のデータ１つ１つを「行」と呼びます。各データがどのようなフィールドで構成されているかは、「列」を見ればわかります。
+リレーショナルデータベースでは、データは@<img>{tablerowcolumn}のように表の形式で保存されています。この表のことを「テーブル」と呼びます。テーブルには名前があり、１つのデータベースに複数のテーブルを格納することができます。また、テーブルの「名前」や「年齢」に相当するものを「列」と呼びます。「列」には名前の他に、数値や文字列などの「型」の情報も持ちます。テーブル内のデータ１つ１つを「行」と呼びます。各データがどのようなフィールドで構成されているかは、「列」を見ればわかります。
+
+//image[tablerowcolumn][テーブル・列・行][scale=0.35]{
+//}
 
 === SQLとは
 
@@ -121,9 +146,9 @@ INSERT INTO user(name, age) VALUES('fkm', 30)
 INSERT INTO user(age, name) VALUES(30, 'fkm')
 //}
 
-=== テーブルから行を取得する
+=== テーブルから行を取り出す
 
-テーブルに追加した行（データ）を取得するには、SELECT文を使います。すべてのパターンを説明すると膨大な量になるので、ここでは代表的なもののみ解説します。
+テーブルに追加した行（データ）を取り出す（取得する）には、SELECT文を使います。すべてのパターンを説明すると膨大な量になるので、ここでは代表的なもののみ解説します。
 
 //emlist[すべて取得するSELECT文]{
 SELECT * FROM <テーブル名>
@@ -161,9 +186,9 @@ SELECT * FROM worker WHERE height > 180 AND earnings >= 1000
 //image[sqlite5][INSERTとSELECT文をsqlite3で実行する][scale=0.35]{
 //}
 
-=== 行を更新する
+=== 行を書き換える
 
-テーブル内の行を更新するには、UPDATE文を使用します。
+テーブル内の行を書き換える（更新する）には、UPDATE文を使用します。
 
 //emlist[UPDATE文]{
 UPDATE <テーブル名> SET 列名1=値,列名2=値,... WHERE 条件
@@ -249,17 +274,27 @@ public class MyHelper extends SQLiteOpenHelper {
         public static final String UPDATE_TIME = "update_time";
     }
 
+    /**
+     * データベースファイルを作成すべき時に呼ばれる。
+     */
     @Override
     public void onCreate(SQLiteDatabase db) {
+        // CREATE文を実行する
         db.execSQL(SQL_CREATE_TABLE);
     }
 
+    /**
+     * データベースのバージョン（コンストラクタの第4引数）が
+     * 変化した時に呼ばれる。    
+     */
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         // 現時点では何もしない
     }
 }
 //}
+
+ここでは、データベースファイル作成と同時にCREATE TABLE文を実行し、memoテーブルを作成しています。このため、memoテーブルに行を追加したり、検索しようとした時にテーブルが作成されていないといった問題が起きなくなります。
 
 SQLのCREATE TABLE文は間違いが発生しないよう、文字列定数の足し算で構成しています。実際にexecSQL()メソッドで実行されるSQLは次の通りです。
 
@@ -271,7 +306,9 @@ CREATE TABLE memo(
     update_time INTEGER)
 //}
 
-memoテーブルの主キーをINTEGER型の_idというフィールドに指定しています。Androidでは、主キーがINTEGER型の_idであるテーブルに対して特定の機能を提供するAPIが存在するため、特に理由が無い場合は主キーを_idにしておきます。
+_id列にprimary keyとautoincrementというキーワードが付いています。primary keyは「主キー」と呼び、テーブル内で行を一意に識別するための列であることを示します。ここでは、_id列をprimary keyに指定しているので、_id=1となる行はmemoテーブルに1つしか存在できません。_id=1となる行がmemoテーブルに存在する状態で、別の_id=1となる行を追加しようとするとエラーになります。autoincrementを付けると、行の追加時に自動で1つずつ増やしながら値を設定してくれます。
+
+Androidでは、主キーがINTEGER型の_idであるテーブルに対して特定の機能を提供するAPIが存在するため、特に理由が無い場合は主キーを_idにしておきます。
 
 === MyHelperオブジェクトを作る
 
@@ -335,13 +372,13 @@ public class MainActivity extends ActionBarActivity {
 
 次に、追加した行をデータベースを検索して取得しましょう。行の検索は次の7ステップです。
 
- * MyHelperオブジェクトのgetReadableDatabase()を呼び、SQLiteDatabaseオブジェクトを取得する。
- * SQLiteDatabaseオブジェクトのquery()を呼ぶ。検索結果はCursorオブジェクトとして返却される。
- * CursorオブジェクトのmoveToFirst()を呼び、読み込み中の位置を検索結果の最初の行に移動させる。これがfalseを返した場合は、検索結果は0件。
- * CursorオブジェクトのgetColumnIndex()を呼び、列に対応するインデックスを取得する。
- * do - whileを用いて、１行ずつ読み込み位置をずらしながら行のデータを取得する。
- * Cursorオブジェクトのclose()を呼び、読み込み終了を伝える。
- * SQLiteDatabaseオブジェクトのclose()を呼び、処理の終了を伝える。
+ 1. MyHelperオブジェクトのgetReadableDatabase()を呼び、SQLiteDatabaseオブジェクトを取得する。
+ 2. SQLiteDatabaseオブジェクトのquery()を呼ぶ。検索結果はCursorオブジェクトとして返却される。
+ 3. CursorオブジェクトのmoveToFirst()を呼び、読み込み中の位置を検索結果の最初の行に移動させる。これがfalseを返した場合は、検索結果は0件。
+ 4. CursorオブジェクトのgetColumnIndex()を呼び、列に対応するインデックスを取得する。
+ 5.  do - whileを用いて、１行ずつ読み込み位置をずらしながら行のデータを取得する。
+ 6. Cursorオブジェクトのclose()を呼び、読み込み終了を伝える。
+ 7. SQLiteDatabaseオブジェクトのclose()を呼び、処理の終了を伝える。
 
 ややステップ数が多いので、最初にコード全体を示します。 
  
@@ -350,25 +387,26 @@ public class MainActivity extends ActionBarActivity {
     // 中略
     
     private List<Memo> loadMemo() {
+        // 1. SQLiteDatabaseオブジェクト取得
         SQLiteDatabase db = mMyHelper.getReadableDatabase();
         
-        // query()を呼び、検索を行う。
+        // 2. query()を呼び、検索を行う。
         Cursor cursor = db.query(MyHelper.TABLE_NAME, null, null, null, null, null,
                 MyHelper.Columns.CREATE_TIME + " ASC");
-        // 読み込み位置を先頭にする。falseの場合は結果0件
+        // 3. 読み込み位置を先頭にする。falseの場合は結果0件
         if (!cursor.moveToFirst()) {
             cursor.close();
             db.close();
             return new ArrayList<>();
         }
         
-        // 列のindex（位置）を取得する
+        // 4. 列のindex（位置）を取得する
         int idIndex = cursor.getColumnIndex(MyHelper.Columns._ID);
         int memoIndex = cursor.getColumnIndex(MyHelper.Columns.MEMO);
         int createIndex = cursor.getColumnIndex(MyHelper.Columns.CREATE_TIME);
         int updateIndex = cursor.getColumnIndex(MyHelper.Columns.UPDATE_TIME);
 
-        // 行を読み込む。
+        // 5. 行を読み込む。
         List<Memo> list = new ArrayList<>(cursor.getCount());
         do {
             Memo item = new Memo();
@@ -382,7 +420,9 @@ public class MainActivity extends ActionBarActivity {
         // 次の行が無い時はfalseを返すのでループを抜ける
         } while (cursor.moveToNext());
 
+        // 6. Cursorを閉じる
         cursor.close();
+        // 7. データベースを閉じる
         db.close();
 
         return list;
@@ -390,7 +430,7 @@ public class MainActivity extends ActionBarActivity {
 }    
 //}
 
-SQLiteDatabaseオブジェクトのquery()を使用すると、自分で複雑なSELECT文を記述することなく検索が行えます。ここでは全件取得し、作成時刻の昇順でソートしています。
+SQLiteDatabaseオブジェクトのquery()を使用すると、自分で複雑なSELECT文を記述することなく検索が行えます。ここでは全件取得し、作成時刻の小さい順（昇順）で並び替えしています。
 
 メモリ節約のため、取得する列を指定する場合はquery()の第2引数に列名の配列を指定します。次は、_idとmemo列だけ取得する例です。
 
@@ -429,18 +469,19 @@ query()の結果はCursorオブジェクトで返されます。Cursorオブジ�
 
 行の更新は行の追加と似ています。
 
- * MyHelperオブジェクトのgetWritableDatabase()を呼び、SQLiteDatabaseオブジェクトを取得する。
- * 必要なデータを準備し、SQLiteDatabaseオブジェクトのupdate()を呼ぶ。
- * SQLiteDatabaseオブジェクトのclose()を呼び、処理の終了を伝える。
+ 1. MyHelperオブジェクトのgetWritableDatabase()を呼び、SQLiteDatabaseオブジェクトを取得する。
+ 2. 必要なデータを準備し、SQLiteDatabaseオブジェクトのupdate()を呼ぶ。
+ 3. SQLiteDatabaseオブジェクトのclose()を呼び、処理の終了を伝える。
 
 //emlist[行を更新する]{
 public class MainActivity extends ActionBarActivity {
     // 中略
     
     private void updateMemo(int id, String memo) {
+        // 1. SQLiteDatabase取得
         SQLiteDatabase db = mMyHelper.getWritableDatabase();
 
-        // 更新する値をセット
+        // 2. 更新する値をセット
         ContentValues values = new ContentValues();
         values.put(MyHelper.Columns.MEMO, memo);
         values.put(MyHelper.Columns.UPDATE_TIME, System.currentTimeMillis());
@@ -454,28 +495,31 @@ public class MainActivity extends ActionBarActivity {
             Log.v("Edit", "Failed to update");
         }
 
+        // 3. データベースを閉じる
         db.close();
     }
 }
 //}
  
-SQLのUPDATE文で説明しましたが、行の更新はWHERE句で更新する行を指定します。WHERE部分の指定はupdate()の第3引数と第4で行います。指定方法はquery()の時と同様で、第3引数で?を含む条件を記述し、第4引数で?にいれる値を指定します。update()は呼ぶと、更新に成功した行数を返します。
+SQLのUPDATE文で説明しましたが、行の更新はWHERE句で更新する行を指定します。WHERE部分の指定はupdate()の第3引数と第4で行います。指定方法はquery()の時と同様で、第3引数で?を含む条件を記述し、第4引数で?にいれる値を指定します。update()は呼ぶと、更新に成功した行数を返します。ここでは、_id列が指定された値と一致する行のmemo列とupdate_time列を更新しています。
 
 === 行を削除する
 
 行の削除はSQLiteDatabaseオブジェクトのdelete()を呼びます。呼ぶまでの手順は行の更新とほぼ同じです。
 
- * MyHelperオブジェクトのgetWritableDatabase()を呼び、SQLiteDatabaseオブジェクトを取得する。
- * 必要なデータを準備し、SQLiteDatabaseオブジェクトのdelete()を呼ぶ。
- * SQLiteDatabaseオブジェクトのclose()を呼び、処理の終了を伝える。
+ 1. MyHelperオブジェクトのgetWritableDatabase()を呼び、SQLiteDatabaseオブジェクトを取得する。
+ 2. 必要なデータを準備し、SQLiteDatabaseオブジェクトのdelete()を呼ぶ。
+ 3. SQLiteDatabaseオブジェクトのclose()を呼び、処理の終了を伝える。
 
 //emlist[行の削除]{
 public class MainActivity extends ActionBarActivity {
     // 中略
 
     private void deleteMemo(int id) {
+        // 1. SQLiteDatabaseを取得
         SQLiteDatabase db = mMyHelper.getWritableDatabase();
 
+        // 2. 削除する行の条件を設定
         String where = MyHelper.Columns._ID + "=?";
         String[] args = { String.valueOf(id) };
 
@@ -484,12 +528,13 @@ public class MainActivity extends ActionBarActivity {
             Log.v("Edit", "Failed to delete");
         }
 
+        // 3. データベースを閉じる
         db.close();
     }
 }
 //}
  
-こちらもupdate()と同様、どの行を削除するかをdelete()の第2引数と第3引数で指定します。指定方法もupdate()の時と同様です。delete()は呼ぶと削除した行数を返します。
+こちらもupdate()と同様、どの行を削除するかをdelete()の第2引数と第3引数で指定します。指定方法もupdate()の時と同様です。delete()は呼ぶと削除した行数を返します。ここでは、_id列が指定した値と同じ行を削除しています。
 
 === なぜWHERE句に?を使用するか
 
@@ -507,7 +552,7 @@ SELECT * FROM user WHERE name=fkm
 SELECT * FROM user WHERE name=a OR 1=1
 //}
 
-これは、「userテーブル内で、nameがaと等しいか、1=1が真となる行をすべて取得しなNさい」という意味になります。この場合、1=1は常に真となるので、userテーブル内のすべての行が取得できてしまいます。
+これは、「userテーブル内で、nameがaと等しいか、1=1が真となる行をすべて取得しなさい」という意味になります。この場合、1=1は常に真となるので、userテーブル内のすべての行が取得できてしまいます。
 
 ?を含む文字列を条件として指定し、その次の引数で?に割り当てる値を指定した場合、次のようなSQLが実行され、「全件取得してしまう」のような意図しない動作を防ぐことができます。
 
