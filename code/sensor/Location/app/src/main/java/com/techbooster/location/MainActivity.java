@@ -6,18 +6,18 @@ import com.google.android.gms.common.GooglePlayServicesClient.OnConnectionFailed
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.location.LocationClient;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class MainActivity extends Activity implements ConnectionCallbacks, OnConnectionFailedListener {
+public class MainActivity extends ActionBarActivity implements ConnectionCallbacks, OnConnectionFailedListener {
 
     private LocationClient mLocationClient;
     private Location mLoc;
