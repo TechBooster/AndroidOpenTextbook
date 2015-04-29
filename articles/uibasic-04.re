@@ -186,7 +186,7 @@ TextViewを次のように変更します（@<list>{rltv-normal3}）。
 
 //footnote[idname][「@」と「id」の間に「+」があるかどうかに注意してください。「+」がある場合は「id名をつける」という意味になりますし、ない場合は「id名を参照する」という意味になります]
 
-//footnote[idjava][つけたidは、プログラムから参照するときにも使います]
+//footnote[idjava][つけたid名は、プログラムから参照するときにも使います]
 
 「layout_below」は、基準となるパーツのどこに配置するかを指示するもので、この場合は「下に配置する」という意味になります。
 
@@ -308,13 +308,13 @@ android:layout_alignBottom  下端をそろえて配置する
     android:layout_height="wrap_content"
     android:text="このイラストはドロイドくんです"
     android:layout_below="@id/droid"
-    android:layout_toLeftOf="@id/droid" />
+    android:layout_alignLeft="@id/droid" />
 <TextView
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:text="上側に配置します"
     android:layout_above="@id/droid"
-    android:layout_toLeftOf="@id/droid" />
+    android:layout_alignLeft="@id/droid" />
 //}
 
 
@@ -544,7 +544,7 @@ LinearLayoutの大きな特徴は、領域の大きさを比率で指定でき�
 そうすると、BとCで残った領域を比率によって配分することになります。
 @<list>{lnr-weightarea}のとおり、BとCの比率をB：C＝1：3に変更すると、@<img>{lnr-weightarea}のように表示されます。
 
-//listnum[lnr-weightarea][AとCはコンテンツの成り行きの高さになり、残りをB：C＝1：3となるように配分]{
+//listnum[lnr-weightarea][AとDはコンテンツの成り行きの高さになり、残りをB：C＝1：3となるように配分]{
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -566,7 +566,7 @@ LinearLayoutの大きな特徴は、領域の大きさを比率で指定でき�
 //}
 
 
-//image[lnr-weightarea][AとCはコンテンツの成り行きの高さになり、残りをB：C＝1：3となるように配分]{
+//image[lnr-weightarea][AとDはコンテンツの成り行きの高さになり、残りをB：C＝1：3となるように配分]{
 //}
 
 == いろいろな行ぞろえ/列ぞろえを決めるGravity
