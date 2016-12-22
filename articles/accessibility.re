@@ -39,7 +39,7 @@
 
 次に、レイアウトXML内の文字列（TextViewやButtonなど）を置き換えていきます。android:textやandroid:hintなど、文字列を指定する箇所を@string/xxxx形式で指定します。xxxxの部分は、先ほど作成したstrings.xmlのname属性に設定した名前を指定します。たとえば、@<list>{layout_string}では、TextViewに「メモ帳アプリ」が表示されます。
 
-//list[layout_string][TextViewの文字列を置き換える]{
+//lst[layout_string][TextViewの文字列を置き換える]{
 <TextView
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
@@ -67,7 +67,7 @@ TextViewのsetTextメソッドやAlertDialog.BuilderのsetMessageメソッドな
  3. コピーしたstrings.xmlファイルの文字列をその言語に翻訳する
 
 これにより、端末の言語設定に応じて参照するstrings.xmlファイルが変更されます。なお、res/valuesフォルダ内のstrings.xmlはデフォルトリソースと呼ばれ、現在の言語設定に対応したstrings.xmlファイルが見つからない時に使用されます。
- 
+
 === ローカライズした画像を用意する
 
 アプリのタイトル画面用ロゴなど、文字列を画像で用意することもあるでしょう。この場合、ローカライズした画像ファイルを用意し、res/drawable-<言語コード>-<ピクセル密度>フォルダに同じファイル名で入れます。
